@@ -167,6 +167,8 @@ a:hover {
   height: 740px;
   display: block;
   overflow: visible;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .wires { color: var(--ink); }
@@ -174,8 +176,7 @@ a:hover {
 .sym {
   color: var(--ink);
   cursor: pointer;
-  pointer-events: bounding-box;
-  transition: color 0.22s ease, filter 0.22s ease;
+  transition: color 0.22s ease;
 }
 .sym path,
 .sym circle,
@@ -199,10 +200,6 @@ a:hover {
   font-weight: 600;
   letter-spacing: -0.025em;
   opacity: 1;
-  paint-order: stroke fill;
-  stroke: var(--paper);
-  stroke-width: 4.5px;
-  stroke-linejoin: round;
 }
 .sym.is-hot text,
 .sym.is-hover text {
@@ -211,11 +208,9 @@ a:hover {
 .sym .fill { fill: currentColor; stroke: none; }
 .sym.is-hot {
   color: var(--spike);
-  filter: drop-shadow(0 0 4px rgba(180, 35, 24, 0.16));
 }
 .sym.is-hover {
   color: var(--spike);
-  filter: drop-shadow(0 0 6px rgba(180, 35, 24, 0.28));
 }
 .sym.is-hover path,
 .sym.is-hover circle:not(.fill),
