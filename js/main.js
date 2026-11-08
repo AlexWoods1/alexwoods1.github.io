@@ -25,8 +25,8 @@
     [812, 385],
     [1070, 390]
   ];
-  var NAMES = ["Current", "Charge", "Leak", "Threshold", "Spike", "Synapse"];
-  var HASH = ["current", "charge", "leak", "threshold", "spike", "synapse"];
+  var NAMES = ["About", "Experience", "Skills", "Projects", "Highlights", "Contact"];
+  var HASH = ["about", "experience", "skills", "projects", "highlights", "contact"];
 
   var app = document.getElementById("app");
   var stage = document.getElementById("stage");
@@ -170,27 +170,27 @@
     var pts = [-65];
     var stops = [];
 
-    // 01 · Current (I(t)): Resting membrane potential V_rest = -65 mV
+    // 01 · About (I(t)): Resting membrane potential V_rest = -65 mV
     pushCurve(pts, -65, -65, 12, 1);
     stops.push(pts.length);
 
-    // 02 · Charge (C): Exponential RC charging toward -55 mV
+    // 02 · Experience (C): Exponential RC charging toward -55 mV
     pushCurve(pts, -65, -55, 18, 2.2);
     stops.push(pts.length);
 
-    // 03 · Leak (R): Subthreshold leak decay toward V_rest (-58 mV)
+    // 03 · Skills (R): Subthreshold leak decay toward V_rest (-58 mV)
     pushCurve(pts, -55, -58, 14, 1.8);
     stops.push(pts.length);
 
-    // 04 · Threshold (V >= V_th): Depolarization reaches threshold V_th = -50 mV
+    // 04 · Projects (V >= V_th): Depolarization reaches threshold V_th = -50 mV
     pushCurve(pts, -58, -50, 14, 1.5);
     stops.push(pts.length);
 
-    // 05 · Spike: Rapid action potential upstroke to +30 mV peak
+    // 05 · Highlights (Spike): Rapid action potential upstroke to +30 mV peak
     pushCurve(pts, -50, 30, 8, -2.2);
     stops.push(pts.length);
 
-    // 06 · Synapse: Repolarization & reset to V_reset = -70 mV
+    // 06 · Contact (Synapses): Repolarization & reset to V_reset = -70 mV
     pushCurve(pts, 30, -72, 9, 1.6);
     pushCurve(pts, -72, -70, 9, 1.5);
     stops.push(pts.length);
@@ -441,7 +441,10 @@
     drawScope();
   });
 
-  var start = HASH.indexOf((location.hash || "").replace("#", ""));
+  var rawHash = (location.hash || "").replace("#", "");
+  var LEGACY_HASH = ["current", "charge", "leak", "threshold", "spike", "synapse"];
+  var start = HASH.indexOf(rawHash);
+  if (start < 0) start = LEGACY_HASH.indexOf(rawHash);
   if (start < 0) start = 0;
   index = start;
   placeSpike(MAP[index]);
