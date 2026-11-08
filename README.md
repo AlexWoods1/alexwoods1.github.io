@@ -1,8 +1,8 @@
 # Alexander Woods
 
-Personal site for [alexwoods1.github.io](https://alexwoods1.github.io). It is static HTML, CSS, and JavaScript — there is no build step and no GitHub Actions workflow.
+Personal site for [alexwoods1.github.io](https://alexwoods1.github.io). Static HTML, CSS, and JavaScript — no build step and no GitHub Actions workflow.
 
-The page is laid out like the circuit for a leaky integrate-and-fire neuron: a live membrane trace, the parallel RC schematic, and spikes that travel the board’s traces. If the browser asks for reduced motion, the scope draws one reference sweep and the travelling pulses stay off.
+The page is one neuron. The name is the soma. Work, Projects, and Contact are terminals on the axon. Choosing a terminal sends a spike down that trace, and the words sit on the trace. If the browser asks for reduced motion, the spike does not travel and the text appears at once.
 
 ## Preview locally
 
@@ -16,8 +16,8 @@ Open [http://localhost:8000](http://localhost:8000).
 
 ## GitHub Pages
 
-The live site is already published from this repository. Before this change it was the default Jekyll theme. `.nojekyll` is included so Pages serves `index.html` directly instead of running Jekyll.
+Pages already publishes this repository. `.nojekyll` keeps Jekyll from theming `index.html`.
 
 After this branch is merged into `main`, wait for the Pages deployment and reload [https://alexwoods1.github.io/](https://alexwoods1.github.io/).
 
-Leave **Settings → Pages → Source** on **Deploy from a branch**, branch **main**, folder **/ (root)**. Do not switch the source to GitHub Actions — there is no Actions workflow.
+Leave **Settings → Pages → Source** on **Deploy from a branch**, branch **main**, folder **/ (root)**. Do not switch the source to GitHub Actions — there is no workflow.
