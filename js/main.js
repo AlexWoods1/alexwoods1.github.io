@@ -336,6 +336,8 @@
     if (i === index) return;
     var from = index;
     index = i;
+    var navHint = document.getElementById("nav-hint");
+    if (navHint) navHint.classList.add("is-hidden");
     if (i === 0 || (from >= 3 && i < 3)) {
       triggerResetSwitch();
     }
