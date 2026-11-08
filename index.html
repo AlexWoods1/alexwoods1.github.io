@@ -43,15 +43,10 @@
             <path d="M380 390 V500"/>
             <path d="M380 518 V590"/>
             <path d="M380 390 V330"/>
-            <path d="M380 204 V148"/>
+            <path d="M380 204 V136"/>
             <path d="M380 390 H530"/>
-            <path d="M640 390 H720"/>
-            <path d="M720 390 H770 L798 300 L826 470 L854 390 H1020"/>
-            <path d="M1020 390 L1120 300"/>
-            <path d="M1020 390 H1140"/>
-            <path d="M1020 390 L1120 480"/>
-            <path d="M430 390 V468"/>
-            <path d="M430 506 V568"/>
+            <path d="M640 390 H770"/>
+            <path d="M854 390 H1020"/>
           </g>
           <path id="flow" class="flow" />
 
@@ -59,47 +54,68 @@
             <circle cx="150" cy="390" r="36"/>
             <path d="M128 390 H166" marker-end="url(#arrow)"/>
             <text x="150" y="452" text-anchor="middle">I(t)</text>
+            <text class="node-tag" x="150" y="336" text-anchor="middle">01 · About</text>
           </g>
 
           <g id="sym-1" class="sym">
             <path d="M352 500 H408 M352 518 H408"/>
             <path class="ground" d="M348 590 H412 M360 602 H400 M370 614 H390"/>
-            <text x="422" y="514">C</text>
+            <text x="334" y="514" text-anchor="end">C</text>
+            <text class="node-tag" x="334" y="542" text-anchor="end">02 · Charge</text>
           </g>
 
           <g id="sym-2" class="sym">
             <path d="M380 330 L396 312 L364 294 L396 276 L364 258 L396 240 L364 222 L380 204"/>
             <path d="M352 136 H408 M364 120 H396"/>
             <text x="422" y="132">V<tspan baseline-shift="sub" font-size="11">rest</tspan></text>
-            <text x="404" y="268">R</text>
+            <text x="410" y="268">R</text>
+            <text class="node-tag" x="410" y="244">03 · Skills</text>
           </g>
 
           <g id="sym-3" class="sym">
             <path d="M530 325 V455 L640 390 Z"/>
-            <path d="M530 390 H640"/>
-            <text x="548" y="368">+</text>
-            <text x="548" y="428">−</text>
-            <text x="530" y="488">V<tspan baseline-shift="sub" font-size="11">th</tspan></text>
+            <path d="M500 424 H530"/>
+            <circle class="fill" cx="500" cy="424" r="2.8"/>
+            <text x="546" y="374">+</text>
+            <text x="546" y="428">−</text>
+            <text x="492" y="429" text-anchor="end">V<tspan baseline-shift="sub" font-size="11">th</tspan></text>
+            <text class="node-tag" x="575" y="306" text-anchor="middle">04 · Projects</text>
           </g>
 
           <g id="sym-4" class="sym">
-            <text x="798" y="284" text-anchor="middle">spike</text>
+            <path d="M770 390 L798 300 L826 470 L854 390"/>
+            <text x="798" y="282" text-anchor="middle">spike</text>
+            <text class="node-tag" x="812" y="498" text-anchor="middle">05 · Highlights</text>
           </g>
 
           <g id="sym-5" class="sym">
+            <path d="M1020 390 L1120 300"/>
+            <path d="M1020 390 H1140"/>
+            <path d="M1020 390 L1120 480"/>
+            <circle class="fill" cx="1020" cy="390" r="4"/>
             <circle class="fill" cx="1120" cy="300" r="6"/>
             <circle class="fill" cx="1140" cy="390" r="6"/>
             <circle class="fill" cx="1120" cy="480" r="6"/>
+            <text class="node-tag" x="1080" y="274" text-anchor="middle">06 · Contact</text>
+          </g>
+
+          <g id="sym-reset" class="sym sym-reset">
+            <path d="M442 390 V462"/>
+            <path d="M442 500 V552"/>
+            <path d="M426 552 H458"/>
+            <path class="feedback" d="M685 390 V481 H458" stroke-dasharray="4 4"/>
+            <circle class="fill" cx="442" cy="390" r="3.5"/>
+            <circle class="fill" cx="685" cy="390" r="3.5"/>
+            <circle class="fill" cx="442" cy="462" r="3.2"/>
+            <path id="reset-blade" d="M442 462 L460 496"/>
+            <circle cx="442" cy="500" r="3.2"/>
+            <text x="572" y="473" text-anchor="middle">reset</text>
+            <text x="442" y="574" text-anchor="middle">V<tspan baseline-shift="sub" font-size="11">reset</tspan></text>
           </g>
 
           <g class="ink">
             <circle class="fill" cx="380" cy="390" r="4.5"/>
             <text x="392" y="378">V</text>
-            <circle class="fill" cx="430" cy="468" r="3.2"/>
-            <path d="M430 468 L456 444"/>
-            <circle cx="430" cy="506" r="3.2"/>
-            <text x="468" y="500">reset</text>
-            <text x="444" y="586">V<tspan baseline-shift="sub" font-size="11">reset</tspan></text>
           </g>
 
           <defs>
@@ -109,12 +125,13 @@
           </defs>
         </svg>
         <div class="spike" id="spike" aria-hidden="true"></div>
-        <button type="button" class="hotspot" data-i="0" style="left:150px;top:390px" tabindex="-1" aria-hidden="true"></button>
-        <button type="button" class="hotspot" data-i="1" style="left:380px;top:509px" tabindex="-1" aria-hidden="true"></button>
-        <button type="button" class="hotspot" data-i="2" style="left:380px;top:250px" tabindex="-1" aria-hidden="true"></button>
-        <button type="button" class="hotspot" data-i="3" style="left:585px;top:390px" tabindex="-1" aria-hidden="true"></button>
-        <button type="button" class="hotspot" data-i="4" style="left:798px;top:360px" tabindex="-1" aria-hidden="true"></button>
-        <button type="button" class="hotspot" data-i="5" style="left:1040px;top:390px" tabindex="-1" aria-hidden="true"></button>
+        <button type="button" class="hotspot" data-i="0" style="left:150px;top:390px" aria-label="01 About: I(t) current source"></button>
+        <button type="button" class="hotspot" data-i="1" style="left:380px;top:509px" aria-label="02 Charge: C membrane capacitance"></button>
+        <button type="button" class="hotspot" data-i="2" style="left:380px;top:250px" aria-label="03 Skills: R leak conductance"></button>
+        <button type="button" class="hotspot" data-i="3" style="left:585px;top:390px" aria-label="04 Projects: Vth threshold comparator"></button>
+        <button type="button" class="hotspot" data-i="4" style="left:812px;top:385px" aria-label="05 Highlights: Action potential spike"></button>
+        <button type="button" class="hotspot" data-i="5" style="left:1080px;top:390px" aria-label="06 Contact: Output synapses"></button>
+        <button type="button" class="hotspot hotspot-reset" id="reset-btn" style="left:450px;top:485px" aria-label="Reset membrane to resting potential"></button>
       </div>
     </div>
 

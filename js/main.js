@@ -39,6 +39,9 @@
   var prevBtn = document.getElementById("prev");
   var nextBtn = document.getElementById("next");
   var minimap = document.getElementById("minimap");
+  var resetBtn = document.getElementById("reset-btn");
+  var symReset = document.getElementById("sym-reset");
+  var resetBlade = document.getElementById("reset-blade");
   var ctx = canvas.getContext("2d");
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -52,6 +55,7 @@
   var traceToken = 0;
   var wheelAcc = 0;
   var wheelLock = 0;
+  var resetTimer = null;
 
   function clamp(i) {
     return Math.max(0, Math.min(MAP.length - 1, i));
@@ -93,9 +97,9 @@
     for (var p = 0; p < panels.length; p++) {
       panels[p].classList.toggle("is-on", p === i);
     }
-    var syms = document.querySelectorAll(".sym");
-    for (var s = 0; s < syms.length; s++) {
-      syms[s].classList.toggle("is-hot", s === i);
+    for (var s = 0; s < MAP.length; s++) {
+      var sym = document.getElementById("sym-" + s);
+      if (sym) sym.classList.toggle("is-hot", s === i);
     }
     var buttons = minimap.querySelectorAll("button");
     for (var b = 0; b < buttons.length; b++) {
@@ -304,11 +308,35 @@
     requestAnimationFrame(step);
   }
 
+  function triggerResetSwitch() {
+    if (!symReset || !resetBlade) return;
+    if (resetTimer) clearTimeout(resetTimer);
+    symReset.classList.add("is-hot");
+    resetBlade.setAttribute("d", "M442 462 L442 500");
+    resetTimer = setTimeout(function () {
+      symReset.classList.remove("is-hot");
+      resetBlade.setAttribute("d", "M442 462 L460 496");
+    }, 450);
+  }
+
+  function resetMembrane() {
+    triggerResetSwitch();
+    if (index !== 0) {
+      go(0);
+    } else {
+      reveal = TRACE_STOP[1];
+      setTrace(0);
+    }
+  }
+
   function go(i) {
     i = clamp(i);
     if (i === index) return;
     var from = index;
     index = i;
+    if (i === 0 || (from >= 3 && i < 3)) {
+      triggerResetSwitch();
+    }
     frame(i);
     show(i);
     travel(from, i);
@@ -366,7 +394,7 @@
   document.body.classList.add("circuit-on");
   buildMinimap();
 
-  document.querySelectorAll(".hotspot").forEach(function (btn) {
+  document.querySelectorAll(".hotspot[data-i]").forEach(function (btn) {
     var idx = Number(btn.dataset.i);
     var sym = document.getElementById("sym-" + idx);
     btn.addEventListener("click", function () { go(idx); });
@@ -377,6 +405,15 @@
       btn.addEventListener("blur", function () { sym.classList.remove("is-hover"); });
     }
   });
+
+  if (resetBtn && symReset) {
+    resetBtn.addEventListener("click", resetMembrane);
+    resetBtn.addEventListener("mouseenter", function () { symReset.classList.add("is-hover"); });
+    resetBtn.addEventListener("mouseleave", function () { symReset.classList.remove("is-hover"); });
+    resetBtn.addEventListener("focus", function () { symReset.classList.add("is-hover"); });
+    resetBtn.addEventListener("blur", function () { symReset.classList.remove("is-hover"); });
+  }
+
   prevBtn.addEventListener("click", function () { go(index - 1); });
   nextBtn.addEventListener("click", function () { go(index + 1); });
 
