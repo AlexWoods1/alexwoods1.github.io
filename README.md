@@ -2,7 +2,7 @@
 
 Personal site for [alexwoods1.github.io](https://alexwoods1.github.io). Static HTML, CSS, and JavaScript — no build step and no GitHub Actions workflow.
 
-The page is one neuron. The name is the soma. Work, Projects, and Contact are terminals on the axon. Choosing a terminal sends a spike down that trace, and the words sit on the trace. If the browser asks for reduced motion, the spike does not travel and the text appears at once.
+The page is one viewport: a leaky integrate-and-fire schematic. You are the spike. Arrows, scroll, swipe, or a click carry you from node to node, and each node holds a section. The membrane trace charges as you move and fires at threshold. If the browser asks for reduced motion, the camera jumps and the text appears at once. Without JavaScript, every section is on the page as ordinary text.
 
 ## Preview locally
 
