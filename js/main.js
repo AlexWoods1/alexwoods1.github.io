@@ -19,11 +19,11 @@
   var MAP = [0, 2, 4, 7, 9, 12];
   var CAM = [
     [150, 390],
-    [380, 530],
-    [400, 230],
-    [590, 390],
-    [820, 380],
-    [1060, 400]
+    [380, 520],
+    [390, 235],
+    [585, 390],
+    [812, 385],
+    [1070, 390]
   ];
   var NAMES = ["Current", "Charge", "Leak", "Threshold", "Spike", "Synapse"];
   var HASH = ["current", "charge", "leak", "threshold", "spike", "synapse"];
@@ -42,10 +42,14 @@
   var ctx = canvas.getContext("2d");
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var FULL_TRACE = buildTrace(5);
+  var TRACE_STOP = [0, 1, 2, 3, 4, 5].map(function (i) {
+    return buildTrace(i).length;
+  });
+
   var index = 0;
   var trip = 0;
-  var goal = [];
-  var reveal = 0;
+  var reveal = TRACE_STOP[0];
   var traceToken = 0;
   var wheelAcc = 0;
   var wheelLock = 0;
@@ -70,18 +74,19 @@
   }
 
   function frame(i) {
-    var mobile = window.innerWidth <= 800;
-    var nwp = CAM[i];
     var vw = window.innerWidth;
     var vh = window.innerHeight;
+    var mobile = vw <= 860;
+    var nwp = CAM[i];
     var scale = mobile
-      ? Math.max(1.05, Math.min(1.45, vw / 380))
-      : Math.min(1.7, Math.max(1.22, vw / 980));
-    var ax = mobile ? 0.5 : 0.3;
-    var ay = mobile ? 0.2 : 0.46;
+      ? Math.max(0.85, Math.min(1.25, vw / 420))
+      : Math.min(1.55, Math.max(1.05, (vw - 400) / 720));
+    var panelW = mobile ? 0 : Math.min(384, vw - 40) + 20;
+    var ax = mobile ? 0.5 : Math.max(0.28, ((vw - panelW) * 0.52) / vw);
+    var ay = mobile ? 0.27 : 0.44;
     var tx = vw * ax - nwp[0] * scale;
     var ty = vh * ay - nwp[1] * scale;
-    stage.style.transform = "translate(" + tx + "px," + ty + "px) scale(" + scale + ")";
+    stage.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(3) + ")";
   }
 
   function show(i) {
@@ -113,7 +118,7 @@
     var b = MAP[to];
     if (reduce.matches || from === to) {
       placeSpike(b);
-      done();
+      if (done) done();
       return;
     }
     var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -125,10 +130,10 @@
     if (!len) {
       path.remove();
       placeSpike(b);
-      done();
+      if (done) done();
       return;
     }
-    var dur = Math.max(260, Math.min(880, 220 + Math.abs(to - from) * 180));
+    var dur = Math.max(260, Math.min(680, 220 + Math.abs(to - from) * 140));
     var t0 = performance.now();
     function tick(now) {
       if (my !== trip) {
@@ -143,7 +148,7 @@
       if (t < 1) requestAnimationFrame(tick);
       else {
         path.remove();
-        done();
+        if (done) done();
       }
     }
     requestAnimationFrame(tick);
@@ -164,8 +169,10 @@
     }
     if (i >= 3) {
       pushRamp(pts, prev, -50, 12);
-      pushRamp(pts, -50, 32, 5);
-      pushRamp(pts, 32, -64, 7);
+    }
+    if (i >= 4) {
+      pushRamp(pts, -50, 32, 6);
+      pushRamp(pts, 32, -64, 8);
       prev = -64;
     }
     if (i >= 5) pushRamp(pts, prev, -70, 14);
@@ -180,15 +187,16 @@
   function drawScope() {
     var w = canvas.clientWidth;
     var h = canvas.clientHeight;
+    if (!w || !h) return;
     var dpr = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = Math.max(1, Math.floor(w * dpr));
     canvas.height = Math.max(1, Math.floor(h * dpr));
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    var top = 40;
-    var bot = -80;
+    var top = 42;
+    var bot = -78;
     function yOf(v) {
-      return 8 + ((top - v) / (top - bot)) * (h - 16);
+      return 7 + ((top - v) / (top - bot)) * (h - 14);
     }
     ctx.strokeStyle = "rgba(20,19,17,0.18)";
     ctx.lineWidth = 1;
@@ -200,32 +208,49 @@
       ctx.stroke();
     });
     ctx.setLineDash([]);
-    var n = Math.max(1, Math.floor(reveal));
-    var count = Math.min(goal.length, n);
-    if (count < 2) return;
-    function strokeRange(pred, color) {
+
+    var total = FULL_TRACE.length;
+    var count = Math.max(2, Math.min(total, Math.round(reveal)));
+    function xOf(idx) {
+      return (idx / (total - 1)) * (w - 12) + 6;
+    }
+
+    ctx.beginPath();
+    for (var i = 0; i < count; i++) {
+      var x = xOf(i);
+      var y = yOf(FULL_TRACE[i]);
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = "#141311";
+    ctx.lineWidth = 1.65;
+    ctx.lineJoin = "round";
+    ctx.stroke();
+
+    // Highlight suprathreshold action potential segment in spike red
+    var spikeStart = TRACE_STOP[2] - 1;
+    var spikeEnd = Math.min(count - 1, TRACE_STOP[4] - 1);
+    if (spikeEnd > spikeStart) {
       ctx.beginPath();
-      var drawing = false;
-      for (var i = 0; i < count; i++) {
-        var x = (i / (goal.length - 1)) * (w - 8) + 4;
-        var y = yOf(goal[i]);
-        if (pred(goal[i])) {
-          if (!drawing) {
-            ctx.moveTo(x, y);
-            drawing = true;
-          } else ctx.lineTo(x, y);
-        } else if (drawing) {
-          ctx.lineTo(x, y);
-          drawing = false;
-        }
+      for (var s = spikeStart; s <= spikeEnd; s++) {
+        var sx = xOf(s);
+        var sy = yOf(FULL_TRACE[s]);
+        if (s === spikeStart) ctx.moveTo(sx, sy);
+        else ctx.lineTo(sx, sy);
       }
-      ctx.strokeStyle = color;
-      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = "#b42318";
+      ctx.lineWidth = 2;
       ctx.stroke();
     }
-    strokeRange(function (v) { return v < -20; }, "#141311");
-    strokeRange(function (v) { return v >= -20; }, "#b42318");
-    var last = goal[count - 1];
+
+    var headX = xOf(count - 1);
+    var headY = yOf(FULL_TRACE[count - 1]);
+    ctx.beginPath();
+    ctx.arc(headX, headY, 2.8, 0, Math.PI * 2);
+    ctx.fillStyle = "#b42318";
+    ctx.fill();
+
+    var last = FULL_TRACE[count - 1];
     vread.textContent = formatMv(last);
     canvas.setAttribute(
       "aria-label",
@@ -234,10 +259,10 @@
   }
 
   function setTrace(i) {
-    goal = buildTrace(i);
+    var target = TRACE_STOP[i];
     var my = ++traceToken;
-    if (reduce.matches || reveal >= goal.length) {
-      reveal = goal.length;
+    if (reduce.matches || Math.abs(reveal - target) < 0.5) {
+      reveal = target;
       drawScope();
       return;
     }
@@ -245,8 +270,9 @@
     var t0 = performance.now();
     function step(now) {
       if (my !== traceToken) return;
-      var t = Math.min(1, (now - t0) / 520);
-      reveal = start + (goal.length - start) * (1 - Math.pow(1 - t, 2));
+      var t = Math.min(1, (now - t0) / 460);
+      var ease = 1 - Math.pow(1 - t, 3);
+      reveal = start + (target - start) * ease;
       drawScope();
       if (t < 1) requestAnimationFrame(step);
     }
@@ -259,10 +285,8 @@
     var from = index;
     index = i;
     frame(i);
-    if (!reduce.matches) {
-      sections.querySelectorAll("section").forEach(function (s) { s.classList.remove("is-on"); });
-    }
-    travel(from, i, function () { show(i); });
+    show(i);
+    travel(from, i);
     setTrace(i);
     sections.scrollTop = 0;
   }
@@ -271,7 +295,7 @@
     NAMES.forEach(function (name, i) {
       var btn = document.createElement("button");
       btn.type = "button";
-      btn.textContent = name;
+      btn.textContent = "0" + (i + 1) + " " + name;
       btn.addEventListener("click", function () { go(i); });
       minimap.appendChild(btn);
     });
@@ -318,7 +342,15 @@
   buildMinimap();
 
   document.querySelectorAll(".hotspot").forEach(function (btn) {
-    btn.addEventListener("click", function () { go(Number(btn.dataset.i)); });
+    var idx = Number(btn.dataset.i);
+    var sym = document.getElementById("sym-" + idx);
+    btn.addEventListener("click", function () { go(idx); });
+    if (sym) {
+      btn.addEventListener("mouseenter", function () { sym.classList.add("is-hover"); });
+      btn.addEventListener("mouseleave", function () { sym.classList.remove("is-hover"); });
+      btn.addEventListener("focus", function () { sym.classList.add("is-hover"); });
+      btn.addEventListener("blur", function () { sym.classList.remove("is-hover"); });
+    }
   });
   prevBtn.addEventListener("click", function () { go(index - 1); });
   nextBtn.addEventListener("click", function () { go(index + 1); });
@@ -353,8 +385,6 @@
   placeSpike(MAP[index]);
   frame(index);
   show(index);
-  reveal = 0;
-  setTrace(index);
-  if (reduce.matches) reveal = goal.length;
+  reveal = TRACE_STOP[index];
   drawScope();
 })();
