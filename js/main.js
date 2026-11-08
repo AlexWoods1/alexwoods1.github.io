@@ -405,6 +405,9 @@
       btn.addEventListener("mouseleave", function () { sym.classList.remove("is-hover"); });
       btn.addEventListener("focus", function () { sym.classList.add("is-hover"); });
       btn.addEventListener("blur", function () { sym.classList.remove("is-hover"); });
+      sym.addEventListener("click", function () { go(idx); });
+      sym.addEventListener("mouseenter", function () { sym.classList.add("is-hover"); });
+      sym.addEventListener("mouseleave", function () { sym.classList.remove("is-hover"); });
     }
   });
 
@@ -414,6 +417,9 @@
     resetBtn.addEventListener("mouseleave", function () { symReset.classList.remove("is-hover"); });
     resetBtn.addEventListener("focus", function () { symReset.classList.add("is-hover"); });
     resetBtn.addEventListener("blur", function () { symReset.classList.remove("is-hover"); });
+    symReset.addEventListener("click", resetMembrane);
+    symReset.addEventListener("mouseenter", function () { symReset.classList.add("is-hover"); });
+    symReset.addEventListener("mouseleave", function () { symReset.classList.remove("is-hover"); });
   }
 
   prevBtn.addEventListener("click", function () { go(index - 1); });
