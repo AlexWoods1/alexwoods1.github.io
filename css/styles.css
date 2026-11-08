@@ -135,7 +135,7 @@ a:hover {
   height: 740px;
   transform-origin: 0 0;
   color: var(--ink);
-  transition: transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 880ms cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 
@@ -191,7 +191,7 @@ a:hover {
   stroke-width: 2.5;
   stroke-dasharray: 2 10;
   stroke-linecap: butt;
-  animation: march 0.7s linear infinite;
+  animation: march 1.25s linear infinite;
 }
 @keyframes march { to { stroke-dashoffset: -24; } }
 
@@ -259,7 +259,7 @@ a:hover {
 
 .circuit-on #sections section.is-on {
   display: block;
-  animation: panelFade 240ms cubic-bezier(0.22, 1, 0.36, 1);
+  animation: panelFade 420ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 @keyframes panelFade {

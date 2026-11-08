@@ -136,7 +136,7 @@
       if (done) done();
       return;
     }
-    var dur = Math.max(260, Math.min(680, 220 + Math.abs(to - from) * 140));
+    var dur = Math.max(580, Math.min(1150, 440 + Math.abs(to - from) * 180));
     var t0 = performance.now();
     function tick(now) {
       if (my !== trip) {
@@ -144,7 +144,7 @@
         return;
       }
       var t = Math.min(1, (now - t0) / dur);
-      var e = 1 - Math.pow(1 - t, 3);
+      var e = 0.5 - 0.5 * Math.cos(Math.PI * t);
       var pt = path.getPointAtLength(Math.max(0, Math.min(len, len * e)));
       spike.style.left = pt.x + "px";
       spike.style.top = pt.y + "px";
@@ -299,8 +299,8 @@
     var t0 = performance.now();
     function step(now) {
       if (my !== traceToken) return;
-      var t = Math.min(1, (now - t0) / 460);
-      var ease = 1 - Math.pow(1 - t, 3);
+      var t = Math.min(1, (now - t0) / 760);
+      var ease = 0.5 - 0.5 * Math.cos(Math.PI * t);
       reveal = start + (target - start) * ease;
       drawScope();
       if (t < 1) requestAnimationFrame(step);
@@ -316,7 +316,7 @@
     resetTimer = setTimeout(function () {
       symReset.classList.remove("is-hot");
       resetBlade.setAttribute("d", "M442 462 L460 496");
-    }, 450);
+    }, 650);
   }
 
   function resetMembrane() {
@@ -365,9 +365,9 @@
     e.preventDefault();
     if (performance.now() < wheelLock) return;
     wheelAcc += e.deltaY;
-    if (Math.abs(wheelAcc) < 70) return;
+    if (Math.abs(wheelAcc) < 85) return;
     wheelAcc = 0;
-    wheelLock = performance.now() + 420;
+    wheelLock = performance.now() + 680;
     go(index + (e.deltaY > 0 ? 1 : -1));
   }
 
