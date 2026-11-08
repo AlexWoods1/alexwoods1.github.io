@@ -82,13 +82,13 @@
     var mobile = vw <= 860;
     var nwp = CAM[i];
     var scale = mobile
-      ? Math.max(0.76, Math.min(1.08, vw / 460))
+      ? Math.max(0.44, Math.min(0.62, vw / 720))
       : Math.min(1.22, Math.max(0.86, (vw - 400) / 860));
     var panelW = mobile ? 0 : Math.min(384, vw - 40) + 20;
     var ax = mobile ? 0.5 : Math.max(0.28, ((vw - panelW) * 0.52) / vw);
-    var ay = mobile ? 0.27 : 0.44;
-    var cx = mobile ? nwp[0] : nwp[0] * 0.78 + 560 * 0.22;
-    var cy = mobile ? nwp[1] : nwp[1] * 0.82 + 390 * 0.18;
+    var ay = mobile ? 0.28 : 0.44;
+    var cx = mobile ? nwp[0] * 0.65 + 560 * 0.35 : nwp[0] * 0.78 + 560 * 0.22;
+    var cy = mobile ? nwp[1] * 0.65 + 370 * 0.35 : nwp[1] * 0.82 + 390 * 0.18;
     var tx = vw * ax - cx * scale;
     var ty = vh * ay - cy * scale;
     stage.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(3) + ")";
@@ -373,51 +373,126 @@
     go(index + (e.deltaY > 0 ? 1 : -1));
   }
 
+  var touchX = null;
   var touchY = null;
+  var lastTapTime = 0;
+
   function onTouchStart(e) {
     if (e.touches.length !== 1) return;
+    touchX = e.touches[0].clientX;
     touchY = e.touches[0].clientY;
   }
+
+  function handleStageTap(clientX, clientY) {
+    var rect = stage.getBoundingClientRect();
+    if (!rect.width || !rect.height) return false;
+    var sx = ((clientX - rect.left) / rect.width) * 1200;
+    var sy = ((clientY - rect.top) / rect.height) * 740;
+
+    // Check reset switch region first (around x: 420..525, y: 445..590)
+    var rdx = sx - 462;
+    var rdy = sy - 512;
+    var resetDist = Math.sqrt(rdx * rdx + rdy * rdy);
+
+    var bestIdx = -1;
+    var bestDist = 125;
+    for (var i = 0; i < CAM.length; i++) {
+      var dx = sx - CAM[i][0];
+      var dy = sy - CAM[i][1];
+      var d = Math.sqrt(dx * dx + dy * dy);
+      if (d < bestDist) {
+        bestDist = d;
+        bestIdx = i;
+      }
+    }
+
+    if (resetDist < 95 && resetDist <= bestDist) {
+      lastTapTime = performance.now();
+      resetMembrane();
+      return true;
+    }
+    if (bestIdx >= 0) {
+      lastTapTime = performance.now();
+      go(bestIdx);
+      return true;
+    }
+    return false;
+  }
+
   function onTouchEnd(e) {
-    if (touchY == null) return;
+    if (touchY == null || touchX == null) return;
+    var x = e.changedTouches[0].clientX;
     var y = e.changedTouches[0].clientY;
+    var dx = touchX - x;
     var dy = touchY - y;
+    touchX = null;
     touchY = null;
-    if (Math.abs(dy) < 48) return;
+
+    var viewport = document.getElementById("viewport");
+    if (Math.abs(dx) < 22 && Math.abs(dy) < 22) {
+      if (viewport && viewport.contains(e.target)) {
+        handleStageTap(x, y);
+      }
+      return;
+    }
+
+    if (Math.abs(dy) < 42 && Math.abs(dx) < 42) return;
     if (sections.contains(e.target) && sections.scrollHeight > sections.clientHeight + 4) {
       var atTop = sections.scrollTop <= 0;
       var atBot = sections.scrollTop + sections.clientHeight >= sections.scrollHeight - 2;
       if ((dy < 0 && !atTop) || (dy > 0 && !atBot)) return;
     }
-    go(index + (dy > 0 ? 1 : -1));
+    var delta = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+    go(index + (delta > 0 ? 1 : -1));
   }
 
   app.hidden = false;
   document.body.classList.add("circuit-on");
   buildMinimap();
 
+  var persistTitle = document.querySelector(".persist");
+  if (persistTitle) {
+    persistTitle.style.cursor = "pointer";
+    persistTitle.addEventListener("click", function () {
+      if (performance.now() - lastTapTime < 350) return;
+      resetMembrane();
+    });
+  }
+
   document.querySelectorAll(".hotspot[data-i]").forEach(function (btn) {
     var idx = Number(btn.dataset.i);
     var sym = document.getElementById("sym-" + idx);
-    btn.addEventListener("click", function () { go(idx); });
+    btn.addEventListener("click", function () {
+      if (performance.now() - lastTapTime < 350) return;
+      go(idx);
+    });
     if (sym) {
       btn.addEventListener("mouseenter", function () { sym.classList.add("is-hover"); });
       btn.addEventListener("mouseleave", function () { sym.classList.remove("is-hover"); });
       btn.addEventListener("focus", function () { sym.classList.add("is-hover"); });
       btn.addEventListener("blur", function () { sym.classList.remove("is-hover"); });
-      sym.addEventListener("click", function () { go(idx); });
+      sym.addEventListener("click", function () {
+        if (performance.now() - lastTapTime < 350) return;
+        go(idx);
+      });
       sym.addEventListener("mouseenter", function () { sym.classList.add("is-hover"); });
       sym.addEventListener("mouseleave", function () { sym.classList.remove("is-hover"); });
     }
   });
 
   if (resetBtn && symReset) {
-    resetBtn.addEventListener("click", resetMembrane);
+    resetBtn.addEventListener("click", function () {
+      if (performance.now() - lastTapTime < 350) return;
+      resetMembrane();
+    });
     resetBtn.addEventListener("mouseenter", function () { symReset.classList.add("is-hover"); });
     resetBtn.addEventListener("mouseleave", function () { symReset.classList.remove("is-hover"); });
     resetBtn.addEventListener("focus", function () { symReset.classList.add("is-hover"); });
     resetBtn.addEventListener("blur", function () { symReset.classList.remove("is-hover"); });
-    symReset.addEventListener("click", resetMembrane);
+    symReset.addEventListener("click", function () {
+      if (performance.now() - lastTapTime < 350) return;
+      resetMembrane();
+    });
     symReset.addEventListener("mouseenter", function () { symReset.classList.add("is-hover"); });
     symReset.addEventListener("mouseleave", function () { symReset.classList.remove("is-hover"); });
   }
