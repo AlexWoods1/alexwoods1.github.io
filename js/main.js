@@ -25,8 +25,8 @@
     [812, 385],
     [1070, 390]
   ];
-  var NAMES = ["About", "Experience", "Skills", "Projects", "Highlights", "Contact"];
-  var HASH = ["about", "experience", "skills", "projects", "highlights", "contact"];
+  var NAMES = ["About", "Experience", "Skills", "Projects", "Honors", "Contact"];
+  var HASH = ["about", "experience", "skills", "projects", "honors", "contact"];
 
   var app = document.getElementById("app");
   var stage = document.getElementById("stage");
@@ -527,9 +527,10 @@
   });
 
   var rawHash = (location.hash || "").replace("#", "");
-  var LEGACY_HASH = ["current", "charge", "leak", "threshold", "spike", "synapse"];
+  var LEGACY_HASH = ["current", "charge", "leak", "threshold", "spike", "synapse", "highlights"];
   var start = HASH.indexOf(rawHash);
-  if (start < 0) start = LEGACY_HASH.indexOf(rawHash);
+  if (start < 0) start = Math.min(5, LEGACY_HASH.indexOf(rawHash));
+  if (rawHash === "highlights") start = 4;
   if (start < 0) start = 0;
   index = start;
   placeSpike(MAP[index]);
