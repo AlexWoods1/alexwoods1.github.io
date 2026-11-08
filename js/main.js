@@ -82,13 +82,15 @@
     var mobile = vw <= 860;
     var nwp = CAM[i];
     var scale = mobile
-      ? Math.max(0.85, Math.min(1.25, vw / 420))
-      : Math.min(1.55, Math.max(1.05, (vw - 400) / 720));
+      ? Math.max(0.76, Math.min(1.08, vw / 460))
+      : Math.min(1.22, Math.max(0.86, (vw - 400) / 860));
     var panelW = mobile ? 0 : Math.min(384, vw - 40) + 20;
     var ax = mobile ? 0.5 : Math.max(0.28, ((vw - panelW) * 0.52) / vw);
     var ay = mobile ? 0.27 : 0.44;
-    var tx = vw * ax - nwp[0] * scale;
-    var ty = vh * ay - nwp[1] * scale;
+    var cx = mobile ? nwp[0] : nwp[0] * 0.78 + 560 * 0.22;
+    var cy = mobile ? nwp[1] : nwp[1] * 0.82 + 390 * 0.18;
+    var tx = vw * ax - cx * scale;
+    var ty = vh * ay - cy * scale;
     stage.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(3) + ")";
   }
 
