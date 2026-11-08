@@ -42,10 +42,9 @@
   var ctx = canvas.getContext("2d");
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var FULL_TRACE = buildTrace(5);
-  var TRACE_STOP = [0, 1, 2, 3, 4, 5].map(function (i) {
-    return buildTrace(i).length;
-  });
+  var TRACE_DATA = buildTraces();
+  var FULL_TRACE = TRACE_DATA.pts;
+  var TRACE_STOP = TRACE_DATA.stops;
 
   var index = 0;
   var trip = 0;
@@ -154,34 +153,52 @@
     requestAnimationFrame(tick);
   }
 
-  function pushRamp(pts, a, b, n) {
-    for (var i = 1; i <= n; i++) pts.push(a + (b - a) * (i / n));
+  function pushCurve(pts, a, b, n, pow) {
+    var p = pow || 1;
+    for (var i = 1; i <= n; i++) {
+      var t = i / n;
+      var eased = p > 0 ? 1 - Math.pow(1 - t, p) : Math.pow(t, -p);
+      pts.push(a + (b - a) * eased);
+    }
   }
 
-  function buildTrace(i) {
+  function buildTraces() {
     var pts = [-65];
-    var levels = [-62, -56, -53];
-    var prev = -65;
-    var last = Math.min(i, 2);
-    for (var k = 0; k <= last; k++) {
-      pushRamp(pts, prev, levels[k], 16);
-      prev = levels[k];
-    }
-    if (i >= 3) {
-      pushRamp(pts, prev, -50, 12);
-    }
-    if (i >= 4) {
-      pushRamp(pts, -50, 32, 6);
-      pushRamp(pts, 32, -64, 8);
-      prev = -64;
-    }
-    if (i >= 5) pushRamp(pts, prev, -70, 14);
-    return pts;
+    var stops = [];
+
+    // 01 · Current (I(t)): Resting membrane potential V_rest = -65 mV
+    pushCurve(pts, -65, -65, 12, 1);
+    stops.push(pts.length);
+
+    // 02 · Charge (C): Exponential RC charging toward -55 mV
+    pushCurve(pts, -65, -55, 18, 2.2);
+    stops.push(pts.length);
+
+    // 03 · Leak (R): Subthreshold leak decay toward V_rest (-58 mV)
+    pushCurve(pts, -55, -58, 14, 1.8);
+    stops.push(pts.length);
+
+    // 04 · Threshold (V >= V_th): Depolarization reaches threshold V_th = -50 mV
+    pushCurve(pts, -58, -50, 14, 1.5);
+    stops.push(pts.length);
+
+    // 05 · Spike: Rapid action potential upstroke to +30 mV peak
+    pushCurve(pts, -50, 30, 8, -2.2);
+    stops.push(pts.length);
+
+    // 06 · Synapse: Repolarization & reset to V_reset = -70 mV
+    pushCurve(pts, 30, -72, 9, 1.6);
+    pushCurve(pts, -72, -70, 9, 1.5);
+    stops.push(pts.length);
+
+    return { pts: pts, stops: stops };
   }
 
   function formatMv(v) {
-    var sign = v < 0 ? "−" : "";
-    return sign + Math.abs(v).toFixed(0) + " mV";
+    var rounded = Math.round(v);
+    if (rounded < 0) return "−" + Math.abs(rounded) + " mV";
+    if (rounded > 0) return "+" + rounded + " mV";
+    return "0 mV";
   }
 
   function drawScope() {
@@ -194,7 +211,7 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
     var top = 42;
-    var bot = -78;
+    var bot = -80;
     function yOf(v) {
       return 7 + ((top - v) / (top - bot)) * (h - 14);
     }
@@ -212,7 +229,7 @@
     var total = FULL_TRACE.length;
     var count = Math.max(2, Math.min(total, Math.round(reveal)));
     function xOf(idx) {
-      return (idx / (total - 1)) * (w - 12) + 6;
+      return (idx / (total - 1)) * (w - 14) + 7;
     }
 
     ctx.beginPath();
@@ -227,9 +244,16 @@
     ctx.lineJoin = "round";
     ctx.stroke();
 
-    // Highlight suprathreshold action potential segment in spike red
-    var spikeStart = TRACE_STOP[2] - 1;
-    var spikeEnd = Math.min(count - 1, TRACE_STOP[4] - 1);
+    // Highlight suprathreshold action potential segment (V >= -50 mV) in spike red
+    var spikeStart = TRACE_STOP[3] - 1;
+    var spikeEnd = -1;
+    for (var k = spikeStart; k < count; k++) {
+      if (FULL_TRACE[k] >= -50) spikeEnd = k;
+      else if (spikeEnd >= spikeStart) {
+        spikeEnd = k;
+        break;
+      }
+    }
     if (spikeEnd > spikeStart) {
       ctx.beginPath();
       for (var s = spikeStart; s <= spikeEnd; s++) {
@@ -239,18 +263,19 @@
         else ctx.lineTo(sx, sy);
       }
       ctx.strokeStyle = "#b42318";
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.1;
+      ctx.lineJoin = "round";
       ctx.stroke();
     }
 
+    var last = FULL_TRACE[count - 1];
     var headX = xOf(count - 1);
-    var headY = yOf(FULL_TRACE[count - 1]);
+    var headY = yOf(last);
     ctx.beginPath();
     ctx.arc(headX, headY, 2.8, 0, Math.PI * 2);
-    ctx.fillStyle = "#b42318";
+    ctx.fillStyle = last >= -50 ? "#b42318" : "#141311";
     ctx.fill();
 
-    var last = FULL_TRACE[count - 1];
     vread.textContent = formatMv(last);
     canvas.setAttribute(
       "aria-label",
