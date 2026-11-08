@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#07110f">
-  <title>Alexander Woods · Computational neuroscience and machine learning</title>
-  <meta name="description" content="Alexander Woods is a UC San Diego student in cognitive science and mathematics. Portfolio of work in machine learning, spiking neural networks, EEG, and hackathon products.">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#f3f0e8">
+  <title>Alexander Woods</title>
+  <meta name="description" content="Alexander Woods. Machine learning, spiking networks, and EEG. UC San Diego, class of 2027.">
   <link rel="canonical" href="https://alexwoods1.github.io/">
   <meta property="og:title" content="Alexander Woods">
-  <meta property="og:description" content="Machine learning, spiking neural networks, EEG, and hackathon products. UC San Diego, class of 2027.">
+  <meta property="og:description" content="Machine learning, spiking networks, and EEG. UC San Diego, class of 2027.">
   <meta property="og:url" content="https://alexwoods1.github.io/">
   <meta property="og:type" content="website">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Serif:ital@0;1&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,400;0,500;0,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
   <script type="application/ld+json">
   {
@@ -34,475 +34,178 @@
     ]
   }
   </script>
-  <script>document.documentElement.classList.remove("no-js");</script>
+  <script>document.documentElement.classList.add("js");</script>
 </head>
 <body>
-  <a class="skip" href="#content">Skip to content</a>
-  <div class="board">
-    <span class="hole" aria-hidden="true"></span>
-    <span class="hole" aria-hidden="true"></span>
-    <span class="hole" aria-hidden="true"></span>
-    <span class="hole" aria-hidden="true"></span>
+  <a class="skip" href="#terminals">Skip to terminals</a>
+  <main class="plate" id="plate">
+    <svg id="circuit" class="circuit" aria-hidden="true" focusable="false"></svg>
 
-    <header class="site-header">
-      <div class="header-inner">
-        <a class="brand" href="#about">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span class="brand-text">
-            <span class="brand-id">AW-01</span>
-            <span class="brand-sub">Membrane board</span>
-          </span>
-        </a>
-        <nav class="site-nav" aria-label="Primary">
-          <ol>
-            <li><a href="#about"><span class="node" aria-hidden="true"></span><span>About</span></a></li>
-            <li><a href="#work"><span class="node" aria-hidden="true"></span><span>Work</span></a></li>
-            <li><a href="#projects"><span class="node" aria-hidden="true"></span><span>Projects</span></a></li>
-            <li><a href="#skills"><span class="node" aria-hidden="true"></span><span>Skills</span></a></li>
-            <li><a href="#contact"><span class="node" aria-hidden="true"></span><span>Contact</span></a></li>
-          </ol>
-        </nav>
-      </div>
+    <header class="soma">
+      <h1>Alexander<br>Woods</h1>
+      <p class="lede">I work on machine learning, spiking networks, and EEG.</p>
+      <p class="lede">B.S. Cognitive Science, ML and Neural Computation. B.S. Mathematics–Applied Science. Minor in Philosophy. UC San Diego, class of 2027.</p>
+      <p class="eq">
+        <span class="sr-only">Leaky integrate-and-fire. Tau sub m dV dt equals minus the quantity V minus V rest, plus R I. Tau sub m is 20 milliseconds. R is 10 megaohms. C is 2 nanofarads. V rest is minus 65 millivolts. V threshold is minus 50 millivolts. V reset is minus 70 millivolts.</span>
+        <span aria-hidden="true">τ<sub>m</sub> dV/dt = −(V − V<sub>rest</sub>) + RI<br>τ<sub>m</sub> = 20 ms · R = 10 MΩ · C = 2 nF<br>V<sub>rest</sub> = −65 mV · V<sub>th</sub> = −50 mV · V<sub>reset</sub> = −70 mV</span>
+      </p>
     </header>
 
-    <div class="shell">
-      <div class="spine" aria-hidden="true"></div>
-      <main id="content">
-        <section class="hero" id="about" aria-labelledby="about-title">
-          <div class="hero-copy">
-            <p class="eyebrow anchor"><span class="via" aria-hidden="true"></span>UC San Diego · Class of 2027</p>
-            <h1 id="about-title">Alexander<br>Woods</h1>
-            <p class="lede">I'm interested in machine learning, computational neuroscience — spiking neural networks and EEG — and shipping AI products at hackathons.</p>
-
-            <h2 class="spec-title" id="edu-title">Education</h2>
-            <dl class="spec">
-              <div>
-                <dt>Cognitive science</dt>
-                <dd>B.S., specialization in Machine Learning and Neural Computation</dd>
-              </div>
-              <div>
-                <dt>Mathematics</dt>
-                <dd>B.S., Applied Science</dd>
-              </div>
-              <div>
-                <dt>Philosophy</dt>
-                <dd>Minor</dd>
-              </div>
-              <div>
-                <dt>Campus</dt>
-                <dd>University of California, San Diego · La Jolla, CA</dd>
-              </div>
-              <div>
-                <dt>Dates</dt>
-                <dd>Sep 2023 – May 2027</dd>
-              </div>
-            </dl>
-
-            <p class="hero-actions">
-              <a class="btn" href="#projects">View projects</a>
-              <a class="btn btn-quiet" href="mailto:a5woods@ucsd.edu">Email</a>
-            </p>
-          </div>
-
-          <div class="instrument" aria-labelledby="scope-label">
-            <div class="instrument-chrome">
-              <p class="instrument-label" id="scope-label">CH1 · membrane</p>
-              <p class="instrument-scales"><span>20 mV/div</span><span>20 ms/div</span></p>
-            </div>
-            <div class="crt">
-              <svg class="scope-fallback" id="scope-fallback" viewBox="0 0 640 400" role="img" aria-label="Reference leaky integrate-and-fire sweep. Voltage rises toward threshold, spikes, and resets to rest.">
-                <title>Reference membrane sweep</title>
-                <rect width="640" height="400" fill="#03110d"/>
-                <g stroke="rgba(140,186,166,0.18)" stroke-width="1">
-                  <path d="M48 30H620M48 90H620M48 150H620M48 210H620M48 270H620M48 330H620"/>
-                  <path d="M48 20V340M162 20V340M276 20V340M390 20V340M504 20V340M620 20V340"/>
-                </g>
-                <path d="M48 248H620" stroke="rgba(215,230,220,0.4)" stroke-dasharray="4 4"/>
-                <path d="M48 188H620" stroke="#ffc14d" stroke-dasharray="4 4"/>
-                <path d="M48 248 C 80 248, 90 246, 120 230 S 170 190, 200 188 L 200 70 L 206 248 C 280 250, 340 248, 400 248 C 430 248, 450 240, 490 220 S 560 188, 590 188 L 590 70 L 596 260" fill="none" stroke="#d8fff4" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-                <text x="56" y="180" fill="#ffc14d" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="13">V_th</text>
-                <text x="56" y="240" fill="#d5e4da" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="13">V_rest</text>
-              </svg>
-              <canvas id="scope" aria-hidden="true"></canvas>
-            </div>
-            <div class="instrument-foot">
-              <p class="readout">
-                <span>V<sub>mem</sub> <strong id="v-read">−65.0 mV</strong></span>
-                <span>Spikes <strong id="spike-read">0</strong></span>
-                <span class="lamp" id="lamp"><span class="led" aria-hidden="true"></span><span id="lamp-label">Integrating</span></span>
-              </p>
-              <button type="button" class="btn" id="inject" aria-describedby="stim-note">Inject current</button>
-            </div>
-            <p class="stim" id="stim-note">Stimulus 2.5 nA for 20 ms, every 100 ms. R = 10 MΩ. Forward Euler, Δt = 0.05 ms. Inject current adds a 4.5 nA pulse.</p>
-            <noscript>
-              <p class="stim">JavaScript is off, so the trace above is a reference sweep rather than a live integration. The equation and the rest of the page are still here.</p>
-            </noscript>
-          </div>
-
-          <div class="rail rail-hero" data-rail="hero" aria-hidden="true"></div>
-
-          <figure class="lif-note">
-            <div class="sch-scroll" role="region" aria-label="Schematic of a leaky integrate-and-fire neuron. Current I of t feeds membrane node V. Leak resistor R returns to V rest, capacitor C to ground, a reset switch to V reset, and a comparator emits a spike when V reaches V threshold.">
-              <svg viewBox="0 0 720 300" aria-hidden="true" focusable="false">
-                <title>Leaky integrate-and-fire circuit</title>
-                <defs>
-                  <marker id="i-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
-                    <path d="M1 1.5 8 5 1 8.5" fill="none" stroke="#e8c48a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </marker>
-                </defs>
-                <g fill="none" stroke="#e8c48a" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="58" cy="150" r="22"/>
-                  <path d="M44 150 H70" marker-end="url(#i-arrow)"/>
-                  <path d="M80 150 H168"/>
-                  <path d="M168 150 V58"/>
-                  <path d="M168 58 h12 l6 -10 12 20 12 -20 12 20 12 -20 6 10 h14"/>
-                  <path d="M254 58 H312"/>
-                  <circle cx="312" cy="58" r="3.5"/>
-                  <path d="M168 150 V198"/>
-                  <path d="M150 198 H186"/>
-                  <path d="M150 210 H186"/>
-                  <path d="M168 210 V238"/>
-                  <path d="M150 238 H186 M156 245 H180 M162 252 H174"/>
-                  <path d="M168 150 H470"/>
-                  <path d="M248 150 V196"/>
-                  <circle cx="248" cy="196" r="3.2" fill="#e8c48a" stroke="none"/>
-                  <path d="M248 196 L272 176" stroke="#8af6d4"/>
-                  <circle cx="248" cy="216" r="3.2" fill="#07110f"/>
-                  <path d="M248 216 V252"/>
-                  <path d="M430 116 L430 184 L496 150 Z"/>
-                  <path d="M496 150 H545"/>
-                  <path d="M545 150 H562 L572 108 L584 176 L594 150 H650" stroke="#8af6d4"/>
-                </g>
-                <circle cx="168" cy="150" r="4.5" fill="#e8c48a"/>
-                <g fill="#e7f2ea" font-family="IBM Plex Mono, ui-monospace, monospace" font-size="16">
-                  <text x="58" y="196" text-anchor="middle">I(t)</text>
-                  <text x="168" y="140" text-anchor="middle" fill="#8af6d4">V</text>
-                  <text x="322" y="63">V<tspan baseline-shift="sub" font-size="11">rest</tspan></text>
-                  <text x="196" y="210">C</text>
-                  <text x="248" y="272" text-anchor="middle">V<tspan baseline-shift="sub" font-size="11">reset</tspan></text>
-                  <text x="286" y="188" fill="#a3c0b2" font-size="13">reset</text>
-                  <text x="444" y="138" font-size="13">+</text>
-                  <text x="444" y="172" font-size="13">−</text>
-                  <text x="448" y="200" fill="#ffc14d" font-size="13">V<tspan baseline-shift="sub" font-size="11">th</tspan></text>
-                  <text x="150" y="268" fill="#a3c0b2" font-size="12">GND</text>
-                  <text x="600" y="100" text-anchor="middle" fill="#8af6d4">spike</text>
-                </g>
-              </svg>
-            </div>
-            <figcaption class="callout">
-              <p class="kicker">Annotation · leaky integrate-and-fire</p>
-              <p class="eq" aria-label="tau sub m, d V d t, equals minus open parenthesis V minus V rest close parenthesis, plus R I">
-                <span>τ<sub>m</sub> dV/dt = −(V − V<sub>rest</sub>) + R I</span>
-              </p>
-              <p class="eq-sub">τ<sub>m</sub> = R C</p>
-              <p>The membrane is a parallel RC circuit. Synaptic current charges capacitor C, and leak resistor R pulls the voltage back toward V<sub>rest</sub>. A comparator fires when V crosses V<sub>th</sub>, and the reset switch returns the capacitor to V<sub>reset</sub>. With R in MΩ and I in nA, the term R I is in mV.</p>
-              <dl class="params">
-                <div><dt>τ<sub>m</sub></dt><dd>20 ms</dd></div>
-                <div><dt>R</dt><dd>10 MΩ</dd></div>
-                <div><dt>C</dt><dd>2 nF</dd></div>
-                <div><dt>V<sub>rest</sub></dt><dd>−65 mV</dd></div>
-                <div><dt>V<sub>th</sub></dt><dd>−50 mV</dd></div>
-                <div><dt>V<sub>reset</sub></dt><dd>−70 mV</dd></div>
-                <div><dt>t<sub>ref</sub></dt><dd>2 ms</dd></div>
-              </dl>
-            </figcaption>
-          </figure>
-        </section>
-
-        <section class="block" id="work" aria-labelledby="work-title">
-          <h2 class="anchor" id="work-title"><span class="via" aria-hidden="true"></span>Experience</h2>
+    <div class="field" id="terminals">
+      <div class="branch" data-branch="work">
+        <button type="button" class="terminal" id="work-btn" aria-expanded="false" aria-controls="work-trace">
+          <span class="node" data-node="work" aria-hidden="true"></span>
+          <span class="label">Work</span>
+        </button>
+        <div id="work-trace" class="trace-body" role="region" aria-labelledby="work-btn">
           <ol class="roles">
-            <li>
-              <article class="role">
-                <p class="when"><time datetime="2026-06">Jun 2026</time> – Present</p>
-                <h3>Data Annotator – Software Engineering</h3>
-                <p class="org">DataAnnotation.tech · Remote</p>
-                <ul>
-                  <li>Apply reinforcement learning from human feedback (RLHF) to fine-tune large language models, improving response quality, safety, and task alignment.</li>
-                  <li>Author detailed model feedback based on safety, helpfulness, and task alignment criteria, helping improve the quality and reliability of large language model responses.</li>
-                  <li>Identify and fix bugs in open-source libraries with assistance from AI agents, improving library reliability and software quality.</li>
-                </ul>
-              </article>
+            <li class="role">
+              <p class="role-title">Data Annotator, Software Engineering</p>
+              <p class="role-meta">DataAnnotation.tech · Remote<br>Jun 2026–Present</p>
+              <p>RLHF for language models. Bug fixes in open-source libraries.</p>
             </li>
-            <li>
-              <article class="role">
-                <p class="when"><time datetime="2026-05">May 2026</time> – <time datetime="2026-06">Jun 2026</time></p>
-                <h3>AI Brain Science Programmer – Student</h3>
-                <p class="org">UC San Diego · La Jolla, CA</p>
-                <ul>
-                  <li>Extended existing NEMAR EEG datasets through a TUI-based workflow that added richer dataset information, using Git and Cursor to support consistent updates.</li>
-                  <li>Delivered dataset contributions following an Agile methodology coordinated in Jira.</li>
-                </ul>
-              </article>
+            <li class="role">
+              <p class="role-title">AI Brain Science Programmer</p>
+              <p class="role-meta">UC San Diego · La Jolla<br>May 2026–Jun 2026</p>
+              <p>NEMAR EEG datasets via a TUI workflow. Git, Cursor, Agile/Jira.</p>
             </li>
-            <li>
-              <article class="role">
-                <p class="when"><time datetime="2023-12">Dec 2023</time> – <time datetime="2025-12">Dec 2025</time></p>
-                <h3>Undergraduate Research Assistant</h3>
-                <p class="org">UC San Diego · San Diego, CA</p>
-                <ul>
-                  <li>Designed a statistical pipeline to identify depression measures for 100+ patients.</li>
-                  <li>Fixed bugs in the MATLAB pipeline and custom EEGLAB implementation to support accurate patient EEG data analysis.</li>
-                </ul>
-              </article>
+            <li class="role">
+              <p class="role-title">Undergraduate Research Assistant</p>
+              <p class="role-meta">UC San Diego<br>Dec 2023–Dec 2025</p>
+              <p>Depression measures for 100+ patients. MATLAB and EEGLAB pipeline.</p>
             </li>
-            <li>
-              <article class="role">
-                <p class="when"><time datetime="2024-09">Sep 2024</time> – <time datetime="2024-12">Dec 2024</time></p>
-                <h3>Instructional Assistant</h3>
-                <p class="org">UC San Diego · La Jolla, CA</p>
-                <ul>
-                  <li>Assisted in an introduction to Python lab, helping 60+ students a week.</li>
-                  <li>Supported students in developing independent final projects in Python, using libraries such as NumPy, pandas, and scikit-learn.</li>
-                  <li>Provided timely feedback on student work and answered Python-related questions, helping students resolve issues and make progress on lab and project assignments.</li>
-                </ul>
-              </article>
+            <li class="role">
+              <p class="role-title">Instructional Assistant</p>
+              <p class="role-meta">UC San Diego<br>Sep 2024–Dec 2024</p>
+              <p>Intro Python lab, 60+ students a week. NumPy, pandas, scikit-learn.</p>
             </li>
           </ol>
-        </section>
+        </div>
+      </div>
 
-        <section class="block" id="projects" aria-labelledby="projects-title">
-          <h2 class="anchor" id="projects-title"><span class="via" data-fire-rail="projects" aria-hidden="true"></span>Projects</h2>
-          <p class="section-lede">Hover a project, or move keyboard focus onto it, and that node takes a current pulse. The featured network is the same kind of neuron running in the scope above.</p>
+      <div class="branch" data-branch="projects">
+        <button type="button" class="terminal" id="projects-btn" aria-expanded="false" aria-controls="projects-trace">
+          <span class="node" data-node="projects" aria-hidden="true"></span>
+          <span class="label">Projects</span>
+        </button>
+        <div id="projects-trace" class="trace-body" role="region" aria-labelledby="projects-btn">
+          <ol class="synapses">
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-snn-btn" aria-expanded="false" aria-controls="syn-snn">
+                <span class="node" data-node="syn-snn" aria-hidden="true"></span>
+                <span class="label">Spiking Neural Network</span>
+              </button>
+              <div id="syn-snn" class="synapse-note">
+                <p>LIF neurons and surrogate gradients. NumPy and JAX.</p>
+                <p class="links"><a href="https://github.com/AlexWoods1/Spiking-Neural-Network" target="_blank" rel="noopener noreferrer">Repository<span class="sr-only"> (opens in a new tab)</span></a></p>
+              </div>
+            </li>
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-head-btn" aria-expanded="false" aria-controls="syn-head">
+                <span class="node" data-node="syn-head" aria-hidden="true"></span>
+                <span class="label">Headcount</span>
+              </button>
+              <div id="syn-head" class="synapse-note">
+                <p>Winner, AIC Hack for Humanity, Nov 2026. Calls every older adult in an evacuation zone, in their language, until everyone is accounted for.</p>
+                <p class="links"><a href="https://headcount-demo.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo<span class="sr-only"> (opens in a new tab)</span></a></p>
+              </div>
+            </li>
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-spoken-btn" aria-expanded="false" aria-controls="syn-spoken">
+                <span class="node" data-node="syn-spoken" aria-hidden="true"></span>
+                <span class="label">Spoken</span>
+              </button>
+              <div id="syn-spoken" class="synapse-note">
+                <p>Voice language tutor. Q-learning rewards, Gemini, Whisper.</p>
+                <p class="links">
+                  <a href="https://github.com/AlexWoods1/QLearningHackathon" target="_blank" rel="noopener noreferrer">Repository<span class="sr-only"> (opens in a new tab)</span></a>
+                  <a href="https://qlearninghackathon.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo<span class="sr-only"> (opens in a new tab)</span></a>
+                </p>
+              </div>
+            </li>
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-conceiva-btn" aria-expanded="false" aria-controls="syn-conceiva">
+                <span class="node" data-node="syn-conceiva" aria-hidden="true"></span>
+                <span class="label">Conceiva</span>
+              </button>
+              <div id="syn-conceiva" class="synapse-note">
+                <p>48-hour donor-matching platform. FastAPI, AWS, Vercel, Gemini, motility risk tool.</p>
+                <p class="links">
+                  <a href="https://github.com/AlexWoods1/Conceiva" target="_blank" rel="noopener noreferrer">Repository<span class="sr-only"> (opens in a new tab)</span></a>
+                  <a href="https://conceiva.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo<span class="sr-only"> (opens in a new tab)</span></a>
+                </p>
+              </div>
+            </li>
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-ssm-btn" aria-expanded="false" aria-controls="syn-ssm">
+                <span class="node" data-node="syn-ssm" aria-hidden="true"></span>
+                <span class="label">SuperSmallModel</span>
+              </button>
+              <div id="syn-ssm" class="synapse-note">
+                <p>A ~1M-parameter GPT, from scratch in PyTorch.</p>
+                <p class="links"><a href="https://github.com/AlexWoods1/SuperSmallModel" target="_blank" rel="noopener noreferrer">Repository<span class="sr-only"> (opens in a new tab)</span></a></p>
+              </div>
+            </li>
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-eeg-btn" aria-expanded="false" aria-controls="syn-eeg">
+                <span class="node" data-node="syn-eeg" aria-hidden="true"></span>
+                <span class="label">EEG Lie Detection</span>
+              </button>
+              <div id="syn-eeg" class="synapse-note">
+                <p>Group project. Real-time EEG under 100 ms. Eight channels, 75% accuracy.</p>
+                <p class="links"><a href="https://github.com/AlexWoods1/Cogs_189_Project" target="_blank" rel="noopener noreferrer">Repository<span class="sr-only"> (opens in a new tab)</span></a></p>
+              </div>
+            </li>
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-emg-btn" aria-expanded="false" aria-controls="syn-emg">
+                <span class="node" data-node="syn-emg" aria-hidden="true"></span>
+                <span class="label">EMG Flappy Bird</span>
+              </button>
+              <div id="syn-emg" class="synapse-note">
+                <p>UCSD BENG 152. Two-player, muscle-controlled Flappy Bird.</p>
+                <p class="links"><a href="https://github.com/AlexWoods1/EMGflappybird" target="_blank" rel="noopener noreferrer">Repository<span class="sr-only"> (opens in a new tab)</span></a></p>
+              </div>
+            </li>
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-wing-btn" aria-expanded="false" aria-controls="syn-wing">
+                <span class="node" data-node="syn-wing" aria-hidden="true"></span>
+                <span class="label">Wingman</span>
+              </button>
+              <div id="syn-wing" class="synapse-note">
+                <p>Smart-glasses presentation coach. DS3 Hacktoberfest.</p>
+                <p class="links"><a href="https://github.com/draande/DS3-Hacktoberfest-Project" target="_blank" rel="noopener noreferrer">Repository<span class="sr-only"> (opens in a new tab)</span></a></p>
+              </div>
+            </li>
+            <li class="synapse-item">
+              <button type="button" class="synapse" id="syn-triton-btn" aria-expanded="false" aria-controls="syn-triton">
+                <span class="node" data-node="syn-triton" aria-hidden="true"></span>
+                <span class="label">TritonDefense</span>
+              </button>
+              <div id="syn-triton" class="synapse-note">
+                <p>C++ and Python robot car. Live camera, person detection, IR driving.</p>
+                <p class="links"><a href="https://github.com/AlexWoods1/TritonDefense" target="_blank" rel="noopener noreferrer">Repository<span class="sr-only"> (opens in a new tab)</span></a></p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
 
-          <aside class="award">
-            <p class="kicker">Nov 2026 · UC San Diego</p>
-            <p class="award-title">Winner, AIC Hack for Humanity</p>
-            <p>Headcount calls every older adult in an evacuation zone, in their language, until everyone is accounted for.</p>
-            <a href="https://headcount-demo.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-          </aside>
-
-          <div class="rail rail-projects" data-rail="projects" aria-hidden="true"></div>
-          <ul class="project-grid">
-            <li class="feature">
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U1 · featured</p>
-                <h3>Spiking Neural Network</h3>
-                <p class="slug">AlexWoods1/Spiking-Neural-Network</p>
-                <p>A biologically inspired network of leaky integrate-and-fire neurons. I designed the LIF from contemporary research, rederived classical computational-neuroscience models, and derived surrogate gradient descent. Built with NumPy and JAX.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>Python</li><li>NumPy</li><li>JAX</li><li>LIF</li><li>Surrogate gradients</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://github.com/AlexWoods1/Spiking-Neural-Network" target="_blank" rel="noopener noreferrer">Repository<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-                <svg class="spark" viewBox="0 0 220 72" aria-hidden="true" focusable="false">
-                  <path d="M4 50 H40 C52 50 58 48 70 36 S92 16 104 16 L104 8 L110 58 H150 C162 58 170 50 184 36 S206 16 216 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                </svg>
-              </article>
-            </li>
-            <li>
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U2 · Nov 2026</p>
-                <h3>Headcount</h3>
-                <p class="slug">AIC Hack for Humanity</p>
-                <p>Calls every older adult in an evacuation zone, in their language, until everyone is accounted for. Winner of AIC Hack for Humanity at UC San Diego.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>Hackathon</li><li>Hack for Humanity</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://headcount-demo.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U3</p>
-                <h3>Spoken</h3>
-                <p class="slug">AlexWoods1/QLearningHackathon</p>
-                <p>A voice language tutor. Gemini asks questions and grades answers; tabular Q-learning raises or eases difficulty from those rewards. Whisper listens in the Python tutor.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>Gemini</li><li>Whisper</li><li>Q-learning</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://github.com/AlexWoods1/QLearningHackathon" target="_blank" rel="noopener noreferrer">Repository<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                  <a href="https://qlearninghackathon.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U4 · 48 hours</p>
-                <h3>Conceiva</h3>
-                <p class="slug">AlexWoods1/Conceiva</p>
-                <p>Hackathon telehealth platform for couples, genetic counselors, and fertility clinics. I designed the database and frontend within a day on FastAPI, AWS, and Vercel, and integrated Gemini with a sperm-motility risk tool.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>FastAPI</li><li>AWS</li><li>Vercel</li><li>Gemini</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://github.com/AlexWoods1/Conceiva" target="_blank" rel="noopener noreferrer">Repository<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                  <a href="https://conceiva.vercel.app/" target="_blank" rel="noopener noreferrer">Live demo<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U5</p>
-                <h3>SuperSmallModel</h3>
-                <p class="slug">AlexWoods1/SuperSmallModel</p>
-                <p>A ~1M-parameter GPT built from scratch in PyTorch.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>PyTorch</li><li>Python</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://github.com/AlexWoods1/SuperSmallModel" target="_blank" rel="noopener noreferrer">Repository<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U6 · Cogs 189</p>
-                <h3>EEG Lie Detection</h3>
-                <p class="slug">AlexWoods1/Cogs_189_Project</p>
-                <p>Group project. We recorded EEG and predicted when someone lied. Real-time EEG GUI and stream under 100 ms of delay end to end, and a machine-learning pipeline that classified eight-channel EEG at 75% accuracy.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>Python</li><li>scikit-learn</li><li>EEG</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://github.com/AlexWoods1/Cogs_189_Project" target="_blank" rel="noopener noreferrer">Repository<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U7 · BENG 152</p>
-                <h3>EMG Flappy Bird</h3>
-                <p class="slug">AlexWoods1/EMGflappybird</p>
-                <p>UCSD BENG 152. A two-player Flappy Bird controlled by electromyography: each player's muscle activity is read from electrodes and mapped to their bird.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>Python</li><li>EMG</li><li>Arduino</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://github.com/AlexWoods1/EMGflappybird" target="_blank" rel="noopener noreferrer">Repository<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U8 · DS3 Hacktoberfest</p>
-                <h3>Wingman</h3>
-                <p class="slug">draande/DS3-Hacktoberfest-Project</p>
-                <p>Smart-glasses presentation coach. It watches posture, gaze, audience expressions, and speaking pace, then shows a short cue on a heads-up display.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>Python</li><li>Hackathon</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://github.com/draande/DS3-Hacktoberfest-Project" target="_blank" rel="noopener noreferrer">Repository<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-              </article>
-            </li>
-            <li>
-              <article class="card" data-synapse>
-                <span class="pad" aria-hidden="true"></span>
-                <p class="designator">U9</p>
-                <h3>TritonDefense</h3>
-                <p class="slug">AlexWoods1/TritonDefense</p>
-                <p>C++ and Python, from an autonomous-vehicle hackathon. A robot car with live camera video, person detection, and IR-remote driving.</p>
-                <ul class="tags" aria-label="Technologies">
-                  <li>C++</li><li>Python</li>
-                </ul>
-                <p class="card-links">
-                  <a href="https://github.com/AlexWoods1/TritonDefense" target="_blank" rel="noopener noreferrer">Repository<svg class="ext" aria-hidden="true"><use href="#ext"/></svg><span class="sr-only"> (opens in a new tab)</span></a>
-                </p>
-              </article>
-            </li>
+      <div class="branch" data-branch="contact">
+        <button type="button" class="terminal" id="contact-btn" aria-expanded="false" aria-controls="contact-trace">
+          <span class="node" data-node="contact" aria-hidden="true"></span>
+          <span class="label">Contact</span>
+        </button>
+        <div id="contact-trace" class="trace-body" role="region" aria-labelledby="contact-btn">
+          <ul class="contact-links">
+            <li><a href="mailto:a5woods@ucsd.edu">a5woods@ucsd.edu</a></li>
+            <li><a href="https://www.linkedin.com/in/alexjwoods/" target="_blank" rel="me noopener noreferrer">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
+            <li><a href="https://github.com/AlexWoods1" target="_blank" rel="me noopener noreferrer">GitHub<span class="sr-only"> (opens in a new tab)</span></a></li>
           </ul>
-        </section>
-
-        <section class="block" id="skills" aria-labelledby="skills-title">
-          <h2 class="anchor" id="skills-title"><span class="via" aria-hidden="true"></span>Skills</h2>
-          <div class="skill-groups">
-            <div>
-              <h3>Languages</h3>
-              <ul class="skill-list">
-                <li>Python</li>
-                <li>Java</li>
-                <li>MATLAB</li>
-                <li>HTML/CSS</li>
-                <li>Bash</li>
-                <li>PowerShell</li>
-              </ul>
-            </div>
-            <div>
-              <h3>Libraries</h3>
-              <ul class="skill-list">
-                <li>PyTorch</li>
-                <li>JAX</li>
-                <li>NumPy</li>
-                <li>pandas</li>
-                <li>scikit-learn</li>
-                <li>Keras</li>
-                <li>Matplotlib</li>
-                <li>seaborn</li>
-                <li>EEGLAB</li>
-                <li>FastAPI</li>
-              </ul>
-            </div>
-            <div>
-              <h3>Tools</h3>
-              <ul class="skill-list">
-                <li>Git</li>
-                <li>Docker</li>
-                <li>AWS</li>
-                <li>Vercel</li>
-                <li>Cursor</li>
-                <li>Pytest</li>
-                <li>WSL/Ubuntu</li>
-              </ul>
-            </div>
-          </div>
-        </section>
-
-        <section class="block" id="contact" aria-labelledby="contact-title">
-          <h2 class="anchor" id="contact-title"><span class="via" aria-hidden="true"></span>Contact</h2>
-          <p class="section-lede">Email, LinkedIn, or GitHub.</p>
-          <ul class="contact-list">
-            <li>
-              <a href="mailto:a5woods@ucsd.edu">
-                <span class="tp" aria-hidden="true">@</span>
-                <span class="tp-label">Email</span>
-                <span class="tp-value">a5woods@ucsd.edu</span>
-              </a>
-            </li>
-            <li>
-              <a href="https://www.linkedin.com/in/alexjwoods/" target="_blank" rel="me noopener noreferrer">
-                <span class="tp" aria-hidden="true">in</span>
-                <span class="tp-label">LinkedIn</span>
-                <span class="tp-value">alexjwoods<span class="sr-only"> (opens in a new tab)</span></span>
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/AlexWoods1" target="_blank" rel="me noopener noreferrer">
-                <span class="tp" aria-hidden="true">gh</span>
-                <span class="tp-label">GitHub</span>
-                <span class="tp-value">AlexWoods1<span class="sr-only"> (opens in a new tab)</span></span>
-              </a>
-            </li>
-          </ul>
-        </section>
-      </main>
+          <p class="skills">Python, Java, MATLAB, HTML/CSS, Bash, PowerShell. PyTorch, JAX, NumPy, pandas, scikit-learn, Keras, Matplotlib, seaborn, EEGLAB, FastAPI. Git, Docker, AWS, Vercel, Cursor, Pytest, WSL/Ubuntu.</p>
+        </div>
+      </div>
     </div>
-
-    <footer class="site-footer">
-      <p>Alexander Woods · UC San Diego · Class of 2027</p>
-      <p class="footer-meta">AW-01 · rev A · static page for GitHub Pages</p>
-    </footer>
-  </div>
-
-  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
-    <symbol id="ext" viewBox="0 0 12 12">
-      <path d="M3.2 1.6H10.4V8.8" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-      <path d="M10.2 1.8 1.8 10.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-    </symbol>
-  </svg>
+  </main>
   <script src="js/main.js" defer></script>
 </body>
 </html>
