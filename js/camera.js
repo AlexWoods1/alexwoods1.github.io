@@ -110,8 +110,7 @@ window.PortfolioCamera = function (stage, persistTitle) {
     root.setProperty("--inset-w", box.width + "px");
     root.setProperty("--inset-gap", box.gap + "px");
     if (box.mobile) {
-      var h = persistTitle ? persistTitle.offsetHeight : 64;
-      root.setProperty("--page-top", h + "px");
+      root.setProperty("--page-top", "0px");
       root.setProperty("--inset-stack", (box.height + box.gap + box.safe + 8) + "px");
     } else {
       root.removeProperty("--page-top");

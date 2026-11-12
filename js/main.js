@@ -199,6 +199,11 @@
     cam.layoutPage(box || insetBox());
   }
 
+  function clearChromeMotionStyles() {
+    sections.style.transform = "";
+    sections.style.opacity = "";
+  }
+
   function cancelMorph() {
     if (!morphLock && !viewport.classList.contains("is-animating")) return;
     if (animTimer) {
@@ -323,6 +328,7 @@
         cam.snapStage(function () { cam.fitStage(next); });
         layoutPage(next);
         document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
+        clearChromeMotionStyles();
       });
     } else {
       cam.snapStage(function () {
@@ -373,6 +379,7 @@
         "page-chrome-exit"
       );
       document.documentElement.classList.remove("chrome-instant");
+      clearChromeMotionStyles();
       cam.clearPageVars();
       syncSkip();
     }
