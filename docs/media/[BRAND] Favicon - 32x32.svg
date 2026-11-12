@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" id="[BRAND] Favicon - 32x32">
+  <rect x="1" y="1" width="30" height="30" rx="5" fill="#f3f0e8" stroke="#141311" stroke-width="2"/>
+  <line x1="4" y1="15" x2="28" y2="15" stroke="#141311" stroke-width="1" stroke-dasharray="2 2" opacity="0.35"/>
+  <path d="M4 21 H9.5 L11.5 18" fill="none" stroke="#141311" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M20.5 19 H28" fill="none" stroke="#141311" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M11.5 18 L14.5 6 L18 25.5 L20.5 19" fill="none" stroke="#b42318" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="14.5" cy="6" r="2.2" fill="#b42318"/>
+</svg>

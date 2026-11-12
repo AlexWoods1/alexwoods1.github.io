@@ -1,36 +1,53 @@
 /* Full-circuit framing and inset map layout. */
 window.PortfolioCamera = function (stage, persistTitle) {
   "use strict";
-  var CAM = window.PortfolioCircuit.CAM;
 
-  function frame(i, vw, vh) {
-    var mobile = vw <= 860;
-    var nwp = CAM[i];
-    var scale;
+  var CFG = window.PortfolioCircuit;
+  var CAM = CFG.CAM;
+  var BP = CFG.BREAKPOINTS;
+  var SCHEM = CFG.SCHEMATIC;
+  var INS = CFG.INSET;
+
+  function calcMobileFrame(nwp, vw, vh) {
+    var scale = Math.max(0.44, Math.min(0.62, vw / 720));
+    var cx = nwp[0] * 0.65 + 560 * 0.35;
+    var cy = nwp[1] * 0.65 + 370 * 0.35;
+    return {
+      scale: scale,
+      tx: vw * 0.5 - cx * scale,
+      ty: vh * 0.42 - cy * scale
+    };
+  }
+
+  function calcDesktopFrame(nwp, vw, vh) {
     var margin = 6;
     var chromeBottom = 52;
     var chromeTop = 34;
-    if (mobile) {
-      scale = Math.max(0.44, Math.min(0.62, vw / 720));
-    } else {
-      scale = Math.min((vw - margin * 2) / 1200, (vh - chromeTop - chromeBottom) / 740, 1.65);
-      if (vw >= 1100) scale = Math.max(1.12, scale);
+    var scale = Math.min((vw - margin * 2) / SCHEM.WIDTH, (vh - chromeTop - chromeBottom) / SCHEM.HEIGHT, 1.65);
+    if (vh >= BP.SHORT_DESKTOP_VH) {
+      if (vw >= BP.WIDE_DESKTOP_VW) scale = Math.max(1.12, scale);
       else scale = Math.max(1.02, scale);
     }
-    var ax = 0.5;
-    var ay = mobile ? 0.42 : 0.49;
-    var cx = mobile ? nwp[0] * 0.65 + 560 * 0.35 : nwp[0] * 0.6 + 600 * 0.4;
-    var cy = mobile ? nwp[1] * 0.65 + 370 * 0.35 : nwp[1] * 0.74 + 370 * 0.26;
-    var tx = vw * ax - cx * scale;
-    var ty = vh * ay - cy * scale;
-    if (!mobile) {
-      var sw = 1200 * scale;
-      var sh = 740 * scale;
-      tx = Math.max(vw - margin - sw, Math.min(margin, tx));
-      ty = Math.max(vh - chromeBottom - sh, Math.min(chromeTop, ty));
-    }
+    var cx = nwp[0] * 0.6 + 600 * 0.4;
+    var cy = nwp[1] * 0.74 + 370 * 0.26;
+    var tx = vw * 0.5 - cx * scale;
+    var ty = vh * 0.49 - cy * scale;
+    var sw = SCHEM.WIDTH * scale;
+    var sh = SCHEM.HEIGHT * scale;
+    tx = Math.max(vw - margin - sw, Math.min(margin, tx));
+    ty = Math.max(vh - chromeBottom - sh, Math.min(chromeTop, ty));
+    return {
+      scale: scale,
+      tx: tx,
+      ty: ty
+    };
+  }
+
+  function frame(i, vw, vh) {
+    var mobile = vw <= BP.MOBILE_WIDTH;
+    var f = mobile ? calcMobileFrame(CAM[i], vw, vh) : calcDesktopFrame(CAM[i], vw, vh);
     stage.style.transform =
-      "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(3) + ")";
+      "translate(" + f.tx.toFixed(1) + "px," + f.ty.toFixed(1) + "px) scale(" + f.scale.toFixed(3) + ")";
   }
 
   function safeBottom() {
@@ -43,29 +60,58 @@ window.PortfolioCamera = function (stage, persistTitle) {
     return h;
   }
 
-  function insetBox(vw, vh) {
-    var mobile = vw <= 860;
-    var gap = mobile ? 10 : 24;
-    var width;
+  function calcMobileInset(vw, vh, gap) {
+    var width = Math.max(160, vw - gap * 2);
     var height;
-    if (mobile) {
-      width = Math.max(160, vw - gap * 2);
-      height = vh < 520 ? 156 : 184;
+    var header;
+    var footer;
+    if (vh < BP.ULTRA_SHORT_MOBILE_VH) {
+      header = INS.HEADER_ULTRA_SHORT;
+      footer = INS.FOOTER_ULTRA_SHORT;
+      height = Math.max(154, Math.min(188, Math.round(vh * 0.44)));
+    } else if (vh < BP.SHORT_MOBILE_VH) {
+      header = INS.HEADER_SHORT_MOBILE;
+      footer = INS.FOOTER_SHORT_MOBILE;
+      height = Math.min(220, Math.max(198, Math.round(vh * 0.39)));
     } else {
-      width = Math.min(560, Math.max(460, Math.round(vw * 0.36)));
-      height = Math.round(width * 0.66);
+      header = INS.HEADER_DEFAULT;
+      footer = INS.FOOTER_MOBILE;
+      height = Math.min(256, Math.max(220, Math.round(vh * 0.29)));
     }
+    return {
+      width: width,
+      height: height,
+      header: header,
+      footer: footer
+    };
+  }
+
+  function calcDesktopInset(vw) {
+    var width = Math.min(640, Math.max(440, Math.round(vw * 0.40)));
+    var height = Math.round(width * 0.58);
+    return {
+      width: width,
+      height: height,
+      header: INS.HEADER_DEFAULT,
+      footer: INS.FOOTER_DESKTOP
+    };
+  }
+
+  function insetBox(vw, vh) {
+    var mobile = vw <= BP.MOBILE_WIDTH;
+    var gap = mobile ? INS.GAP_MOBILE : INS.GAP_DESKTOP;
+    var metrics = mobile ? calcMobileInset(vw, vh, gap) : calcDesktopInset(vw);
     var safe = mobile ? safeBottom() : 0;
     return {
       mobile: mobile,
       gap: gap,
       safe: safe,
-      top: Math.max(0, Math.round(vh - height - gap - safe)),
-      left: Math.max(gap, Math.round(vw - width - gap)),
-      width: width,
-      height: height,
-      header: 32,
-      footer: mobile ? 44 : 0
+      top: Math.max(0, Math.round(vh - metrics.height - gap - safe)),
+      left: Math.max(gap, Math.round(vw - metrics.width - gap)),
+      width: metrics.width,
+      height: metrics.height,
+      header: metrics.header,
+      footer: metrics.footer
     };
   }
 
@@ -77,14 +123,15 @@ window.PortfolioCamera = function (stage, persistTitle) {
   }
 
   function fitStage(box) {
-    var pad = 10;
-    var innerW = box.width - pad * 2;
-    var innerH = box.height - box.header - box.footer - pad;
-    if (innerW < 40 || innerH < 40) return;
-    var scale = Math.min(innerW / 1200, innerH / 740);
-    var tx = (box.width - 1200 * scale) / 2;
+    var padX = box.mobile ? (box.width < 360 ? INS.PAD_X_MOBILE_NARROW : INS.PAD_X_MOBILE) : INS.PAD_X_DESKTOP;
+    var padY = box.mobile ? (box.height < 210 ? INS.PAD_Y_MOBILE_SHORT : INS.PAD_Y_MOBILE) : INS.PAD_Y_DESKTOP;
+    var innerW = box.width - padX * 2;
     var availH = box.height - box.header - box.footer;
-    var ty = box.header + Math.max(0, (availH - 740 * scale) / 2);
+    var innerH = availH - padY * 2;
+    if (innerW < 40 || innerH < 40) return;
+    var scale = Math.min(innerW / SCHEM.BOUNDS_W, innerH / SCHEM.BOUNDS_H);
+    var tx = box.width * 0.5 - SCHEM.CENTER_X * scale;
+    var ty = box.header + availH * 0.5 - SCHEM.CENTER_Y * scale;
     stage.style.transform =
       "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(4) + ")";
   }
@@ -105,10 +152,19 @@ window.PortfolioCamera = function (stage, persistTitle) {
     viewport.style.height = "100%";
   }
 
+  function applyFullPx(viewport, vw, vh) {
+    viewport.style.top = "0px";
+    viewport.style.left = "0px";
+    viewport.style.width = vw + "px";
+    viewport.style.height = vh + "px";
+  }
+
   function layoutPage(box) {
     var root = document.documentElement.style;
     root.setProperty("--inset-w", box.width + "px");
     root.setProperty("--inset-gap", box.gap + "px");
+    root.setProperty("--inset-header", box.header + "px");
+    root.setProperty("--inset-footer", box.footer + "px");
     if (box.mobile) {
       root.setProperty("--page-top", "0px");
       root.setProperty("--inset-stack", (box.height + box.gap + box.safe + 8) + "px");
@@ -124,6 +180,8 @@ window.PortfolioCamera = function (stage, persistTitle) {
     root.removeProperty("--inset-stack");
     root.removeProperty("--inset-w");
     root.removeProperty("--inset-gap");
+    root.removeProperty("--inset-header");
+    root.removeProperty("--inset-footer");
   }
 
   return {
@@ -134,6 +192,7 @@ window.PortfolioCamera = function (stage, persistTitle) {
     snapStage: snapStage,
     layoutPage: layoutPage,
     clearPageVars: clearPageVars,
-    applyFull: applyFull
+    applyFull: applyFull,
+    applyFullPx: applyFullPx
   };
 };

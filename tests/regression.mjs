@@ -1,44 +1,40 @@
 /**
- * Browser regression checks for circuit zoom and mobile page stability.
- * Usage: SITE_URL=http://127.0.0.1:8010 node tests/regression.mjs
+ * tests/regression.mjs
+ *
+ * Browser regression checks for circuit controls, zoom restore,
+ * membrane reset firing, and mobile section stability.
+ *
+ * Can be run standalone: node tests/regression.mjs
+ * Or with custom URL: SITE_URL=http://127.0.0.1:8010 node tests/regression.mjs
  */
-import { chromium, devices } from "playwright";
-
-const BASE = process.env.SITE_URL || "http://127.0.0.1:8010";
-const CACHE = process.env.CACHE_BUST || "23";
-
-function assert(cond, msg) {
-  if (!cond) throw new Error(msg);
-}
-
-async function stageScale(page) {
-  return page.evaluate(() => {
-    var stage = document.getElementById("stage");
-    if (!stage) return 0;
-    var t = stage.style.transform || "";
-    var m = t.match(/scale\(([\d.]+)\)/);
-    return m ? parseFloat(m[1]) : 0;
-  });
-}
+import {
+  runSuite,
+  devices,
+  assert,
+  saveScreenshot,
+  getStageScale,
+  waitForCircuit,
+  waitForPageMode
+} from "./harness.mjs";
 
 async function activePanel(page) {
   return page.evaluate(() => {
-    var on = document.querySelector("#sections section.is-on");
+    const on = document.querySelector("#sections section.is-on");
     return on ? on.getAttribute("data-panel") : null;
   });
 }
 
-async function waitCircuit(page) {
-  await page.waitForFunction(() => document.body.classList.contains("circuit-on"));
-}
-
-async function testDesktopControlsInPageMode(browser) {
+/**
+ * Test 1: Desktop controls rail in page mode.
+ */
+async function testDesktopControlsInPageMode({ browser, baseUrl }) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  await page.goto(`${BASE}/?v=${CACHE}`, { waitUntil: "networkidle" });
+  await page.goto(`${baseUrl}/?v=reg`, { waitUntil: "networkidle" });
   await page.locator('.hotspot[data-i="0"]').click();
-  await page.waitForFunction(() => document.body.classList.contains("page-mode"));
+  await waitForPageMode(page);
+
   const visible = await page.evaluate(() => {
-    var bar = document.querySelector(".controls");
+    const bar = document.querySelector(".controls");
     if (!bar) return false;
     return window.getComputedStyle(bar).display !== "none";
   });
@@ -46,22 +42,26 @@ async function testDesktopControlsInPageMode(browser) {
   await page.close();
 }
 
-async function testDesktopZoomAfterInset(browser) {
+/**
+ * Test 2: Desktop zoom restore after closing inset minimap.
+ */
+async function testDesktopZoomAfterInset({ browser, baseUrl }) {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  await page.goto(`${BASE}/?v=${CACHE}`, { waitUntil: "networkidle" });
-  await waitCircuit(page);
-  const fullScale = await stageScale(page);
+  await page.goto(`${baseUrl}/?v=reg`, { waitUntil: "networkidle" });
+  await waitForCircuit(page);
+
+  const fullScale = await getStageScale(page);
   assert(fullScale > 1, `Expected full-circuit scale > 1, got ${fullScale}`);
 
   await page.locator('.hotspot[data-i="1"]').click();
-  await page.waitForFunction(() => document.body.classList.contains("page-mode"));
+  await waitForPageMode(page);
   await page.waitForTimeout(780);
 
   await page.locator("#inset-home").click();
-  await waitCircuit(page);
+  await waitForCircuit(page);
   await page.waitForTimeout(780);
 
-  const afterScale = await stageScale(page);
+  const afterScale = await getStageScale(page);
   assert(
     afterScale >= fullScale * 0.92,
     `Circuit should fully zoom after closing inset: ${afterScale} vs ${fullScale}`
@@ -69,15 +69,80 @@ async function testDesktopZoomAfterInset(browser) {
   await page.close();
 }
 
-async function testMobileSectionStable(browser) {
+/**
+ * Test 3: Membrane firing and reset switch activation.
+ */
+async function testMembraneFiring({ browser, baseUrl }) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(`${baseUrl}/?v=reg`, { waitUntil: "networkidle" });
+  await waitForCircuit(page);
+
+  // Navigate to section 3 first so voltage accumulates
+  await page.evaluate(() => {
+    const nextBtn = document.getElementById("next");
+    if (nextBtn) {
+      nextBtn.click();
+      nextBtn.click();
+    }
+  });
+  await page.waitForTimeout(400);
+
+  // Trigger membrane reset switch via #reset-btn
+  const resetBtn = page.locator("#reset-btn");
+  assert((await resetBtn.count()) > 0, "Reset button #reset-btn not found");
+  await resetBtn.click();
+
+  // Verify switch closes immediately and #sym-reset gets .is-hot
+  const activeState = await page.evaluate(() => {
+    const sym = document.getElementById("sym-reset");
+    const blade = document.getElementById("reset-blade");
+    return {
+      isHot: sym ? sym.classList.contains("is-hot") : false,
+      bladeD: blade ? blade.getAttribute("d") : null
+    };
+  });
+
+  assert(activeState.isHot, "Expected #sym-reset to have class 'is-hot' during membrane reset");
+  assert(
+    activeState.bladeD === "M442 462 L442 500",
+    `Expected reset blade closed path "M442 462 L442 500", got "${activeState.bladeD}"`
+  );
+
+  await saveScreenshot(page, "regression_membrane_firing_closed.png");
+
+  // Wait 750ms for switch to open back up
+  await page.waitForTimeout(750);
+
+  const releasedState = await page.evaluate(() => {
+    const sym = document.getElementById("sym-reset");
+    const blade = document.getElementById("reset-blade");
+    return {
+      isHot: sym ? sym.classList.contains("is-hot") : false,
+      bladeD: blade ? blade.getAttribute("d") : null
+    };
+  });
+
+  assert(!releasedState.isHot, "Expected #sym-reset to remove 'is-hot' after timeout");
+  assert(
+    releasedState.bladeD === "M442 462 L460 496",
+    `Expected reset blade open path "M442 462 L460 496", got "${releasedState.bladeD}"`
+  );
+
+  await page.close();
+}
+
+/**
+ * Test 4: Mobile section stability (no accidental flip during animation).
+ */
+async function testMobileSectionStable({ browser, baseUrl }) {
   const iphone = devices["iPhone 13"];
   const page = await browser.newPage({
     ...iphone,
     viewport: iphone.viewport
   });
-  await page.goto(`${BASE}/?v=${CACHE}`, { waitUntil: "networkidle" });
+  await page.goto(`${baseUrl}/?v=reg`, { waitUntil: "networkidle" });
   await page.locator('.hotspot[data-i="0"]').click();
-  await page.waitForFunction(() => document.body.classList.contains("page-mode"));
+  await waitForPageMode(page);
   await page.waitForTimeout(400);
 
   const first = await activePanel(page);
@@ -95,10 +160,13 @@ async function testMobileSectionStable(browser) {
   await page.close();
 }
 
-async function testMobileScrollDoesNotFlipSection(browser) {
+/**
+ * Test 5: Mobile scrolling inside sections does not flip active section.
+ */
+async function testMobileScrollDoesNotFlipSection({ browser, baseUrl }) {
   const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-  await page.goto(`${BASE}/?v=${CACHE}#experience`, { waitUntil: "networkidle" });
-  await page.waitForFunction(() => document.body.classList.contains("page-mode"));
+  await page.goto(`${baseUrl}/?v=reg#experience`, { waitUntil: "networkidle" });
+  await waitForPageMode(page);
   await page.waitForTimeout(350);
 
   const before = await activePanel(page);
@@ -118,29 +186,22 @@ async function testMobileScrollDoesNotFlipSection(browser) {
   await page.close();
 }
 
-async function main() {
-  const browser = await chromium.launch({ headless: true });
-  const tests = [
-    ["desktop controls in page mode", () => testDesktopControlsInPageMode(browser)],
-    ["desktop zoom after inset", () => testDesktopZoomAfterInset(browser)],
-    ["mobile section stable", () => testMobileSectionStable(browser)],
-    ["mobile scroll no flip", () => testMobileScrollDoesNotFlipSection(browser)]
-  ];
-  let failed = 0;
-  for (const [name, fn] of tests) {
-    try {
-      await fn();
-      console.log(`ok  ${name}`);
-    } catch (e) {
-      failed++;
-      console.error(`fail ${name}: ${e.message}`);
-    }
-  }
-  await browser.close();
-  process.exit(failed ? 1 : 0);
-}
+export const tests = [
+  ["desktop controls in page mode", testDesktopControlsInPageMode],
+  ["desktop zoom after inset", testDesktopZoomAfterInset],
+  ["membrane firing & reset switch", testMembraneFiring],
+  ["mobile section stable", testMobileSectionStable],
+  ["mobile scroll no flip", testMobileScrollDoesNotFlipSection]
+];
 
-main().catch((e) => {
-  console.error(e);
-  process.exit(1);
-});
+// CLI execution support
+if (process.argv[1] && process.argv[1].endsWith("regression.mjs")) {
+  runSuite("Regression Suite", tests)
+    .then((res) => {
+      process.exit(res.failed > 0 ? 1 : 0);
+    })
+    .catch((err) => {
+      console.error(err);
+      process.exit(1);
+    });
+}

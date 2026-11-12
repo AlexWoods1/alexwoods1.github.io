@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" id="[PROJECTS] Conceiva Telehealth Platform - 600x400">
+  <defs>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+</style>
+    
+    <pattern id="conceiva-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(20, 19, 17, 0.035)" stroke-width="1"/>
+    </pattern>
+  
+    <marker id="cv-arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 1 2 L 7 5 L 1 8" fill="none" stroke="#141311" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background Base Canvas -->
+  <rect width="600" height="400" fill="#f3f0e8"/>
+  <rect width="600" height="400" fill="url(#conceiva-grid)"/>
+
+  <!-- Minimal Outer Frame -->
+  
+    <!-- Subtle drop shadow -->
+    <rect x="23" y="23" width="560" height="360" fill="#141311" rx="0" />
+    <!-- Paper background frame -->
+    <rect x="20" y="20" width="560" height="360" fill="#f3f0e8" stroke="#141311" stroke-width="1.75" rx="0" />
+  
+
+  <!-- Header -->
+  
+    <g transform="translate(40, 48)">
+      <text x="0" y="0" class="font-mono" font-size="10.5" font-weight="500" fill="#b42318" letter-spacing="0.12em">04 · PROJECTS // CLINICAL MACHINE LEARNING</text>
+      <text x="0" y="32" class="font-brand" font-size="22" font-weight="600" fill="#141311" letter-spacing="-0.02em">Conceiva: Telehealth</text>
+      <text x="0" y="52" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.6)">48-hour telehealth platform with a sperm-motility risk model to reduce genetic testing costs.</text>
+    </g>
+  
+
+  <!-- Clinical Pipeline Layout -->
+  <g transform="translate(40, 130)">
+    <rect x="0" y="0" width="520" height="225" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="16" y="24" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">CLINICAL RISK MODELING &amp; DONOR MATCHING PIPELINE</text>
+
+    <!-- Step 1: Patient Intake -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="140" height="100" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <text x="12" y="22" class="font-mono" font-size="8" font-weight="600" fill="#141311">01 · INTAKE</text>
+      <text x="12" y="42" class="font-brand" font-size="12" font-weight="600" fill="#141311">Clinical Profile</text>
+      <text x="12" y="60" class="font-sans" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">EHR &amp; health records</text>
+      <text x="12" y="74" class="font-sans" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Family history intake</text>
+      <text x="12" y="90" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.6)">FastAPI intake</text>
+    </g>
+
+    <path d="M 160 95 H 190" stroke="#141311" stroke-width="1.5" marker-end="url(#cv-arr)" />
+
+    <!-- Step 2: Motility Risk Model (Crimson Highlight) -->
+    <g transform="translate(190, 45)">
+      <rect x="0" y="0" width="140" height="100" fill="rgba(180, 35, 24, 0.05)" stroke="#b42318" stroke-width="1.5" />
+      <text x="12" y="22" class="font-mono" font-size="8" font-weight="600" fill="#b42318">02 · MOTILITY</text>
+      <text x="12" y="42" class="font-brand" font-size="12" font-weight="600" fill="#b42318">Risk Estimator</text>
+      <text x="12" y="60" class="font-sans" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Progressive velocity ML</text>
+      <text x="12" y="74" class="font-sans" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Risk score evaluation</text>
+      <text x="12" y="90" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318">Cost reduction</text>
+    </g>
+
+    <path d="M 330 95 H 360" stroke="#141311" stroke-width="1.5" marker-end="url(#cv-arr)" />
+
+    <!-- Step 3: Biometric Donor Matching -->
+    <g transform="translate(360, 45)">
+      <rect x="0" y="0" width="140" height="100" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <text x="12" y="22" class="font-mono" font-size="8" font-weight="600" fill="#141311">03 · MATCHING</text>
+      <text x="12" y="42" class="font-brand" font-size="12" font-weight="600" fill="#141311">Donor Matrix</text>
+      <text x="12" y="60" class="font-sans" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Multi-criteria match</text>
+      <text x="12" y="74" class="font-sans" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Compatible profiles</text>
+      <text x="12" y="90" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.6)">Gemini validation</text>
+    </g>
+
+    <!-- Footer Bar -->
+    <rect x="20" y="165" width="480" height="42" fill="#ffffff" stroke="#141311" stroke-width="0.8" />
+    <text x="32" y="184" class="font-mono" font-size="8" font-weight="600" fill="#141311">INFRASTRUCTURE ARCHITECTURE:</text>
+    <text x="32" y="198" class="font-mono" font-size="8" fill="rgba(20, 19, 17, 0.75)">FastAPI Core  ·  AWS Cloud Compute  ·  Vercel Frontend  ·  Gemini API</text>
+  </g>
+</svg>

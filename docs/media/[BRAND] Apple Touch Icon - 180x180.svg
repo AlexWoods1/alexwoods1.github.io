@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180" id="[BRAND] Apple Touch Icon - 180x180">
+  <rect x="6" y="6" width="168" height="168" rx="28" fill="#f3f0e8" stroke="#141311" stroke-width="10"/>
+  <line x1="22" y1="84" x2="158" y2="84" stroke="#141311" stroke-width="4.5" stroke-dasharray="8 8" opacity="0.35"/>
+  <path d="M22 118 H53 L65 101" fill="none" stroke="#141311" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M115 107 H158" fill="none" stroke="#141311" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M65 101 L82 34 L101 143 L115 107" fill="none" stroke="#b42318" stroke-width="12.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="82" cy="34" r="12" fill="#b42318"/>
+</svg>

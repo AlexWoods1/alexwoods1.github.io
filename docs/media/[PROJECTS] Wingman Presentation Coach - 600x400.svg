@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" id="[PROJECTS] Wingman Presentation Coach - 600x400">
+  <defs>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+</style>
+    
+    <pattern id="wingman-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(20, 19, 17, 0.035)" stroke-width="1"/>
+    </pattern>
+  
+  </defs>
+
+  <!-- Background Base Canvas -->
+  <rect width="600" height="400" fill="#f3f0e8"/>
+  <rect width="600" height="400" fill="url(#wingman-grid)"/>
+
+  <!-- Minimal Outer Frame -->
+  
+    <!-- Subtle drop shadow -->
+    <rect x="23" y="23" width="560" height="360" fill="#141311" rx="0" />
+    <!-- Paper background frame -->
+    <rect x="20" y="20" width="560" height="360" fill="#f3f0e8" stroke="#141311" stroke-width="1.75" rx="0" />
+  
+
+  <!-- Header -->
+  
+    <g transform="translate(40, 48)">
+      <text x="0" y="0" class="font-mono" font-size="10.5" font-weight="500" fill="#b42318" letter-spacing="0.12em">04 · PROJECTS // WEARABLE HUD · DS3 HACKTOBERFEST</text>
+      <text x="0" y="32" class="font-brand" font-size="22" font-weight="600" fill="#141311" letter-spacing="-0.02em">Wingman: Presentation Coach</text>
+      <text x="0" y="52" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.6)">Smart-glasses presentation coach delivering live pacing and speaking cues.</text>
+    </g>
+  
+
+  <!-- HUD Interface Display -->
+  <g transform="translate(40, 130)">
+    <rect x="0" y="0" width="520" height="225" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="16" y="24" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">SMART-GLASSES HEADS-UP DISPLAY (HUD) WIREFRAME</text>
+
+    <!-- Eyewear Optics Wireframe -->
+    <g transform="translate(20, 36)">
+      <!-- Left Lens (Inactive) -->
+      <rect x="0" y="0" width="225" height="120" rx="10" fill="#ffffff" stroke="#141311" stroke-width="1" stroke-dasharray="3 2" />
+      <text x="15" y="24" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.4)">LEFT OPTIC (PASS-THROUGH)</text>
+      
+      <!-- Right Lens (HUD Display Active) -->
+      <rect x="255" y="0" width="225" height="120" rx="10" fill="#ffffff" stroke="#141311" stroke-width="1.5" />
+      
+      <!-- HUD Elements -->
+      <!-- Pacing Gauge -->
+      <text x="270" y="25" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318">SPEAKING PACE (WPM)</text>
+      <!-- Gauge Bar -->
+      <rect x="270" y="32" width="140" height="10" fill="rgba(20, 19, 17, 0.1)" />
+      <rect x="270" y="32" width="95" height="10" fill="#b42318" />
+      <line x1="365" y1="28" x2="365" y2="46" stroke="#141311" stroke-width="1.5" />
+      <text x="420" y="41" class="font-mono" font-size="8" font-weight="600" fill="#141311">138 WPM</text>
+
+      <!-- Contextual Slide Cues -->
+      <rect x="270" y="52" width="195" height="38" fill="rgba(180, 35, 24, 0.05)" stroke="#b42318" stroke-width="0.8" />
+      <text x="278" y="66" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318">NEXT KEY POINT (Slide 04):</text>
+      <text x="278" y="80" class="font-mono" font-size="7.5" fill="#141311">Explain surrogate gradient formulation</text>
+
+      <!-- Timing Indicator -->
+      <text x="270" y="108" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Time elapsed: 04:12 / 10:00</text>
+    </g>
+
+    <!-- Footer Note -->
+    <rect x="20" y="172" width="480" height="36" fill="#ffffff" stroke="#141311" stroke-width="0.8" />
+    <text x="32" y="194" class="font-mono" font-size="8" fill="#141311">DS3 Hacktoberfest Hackathon Project  ·  Real-time Speech Audio Stream &amp; Vision Glance Guidance</text>
+  </g>
+</svg>

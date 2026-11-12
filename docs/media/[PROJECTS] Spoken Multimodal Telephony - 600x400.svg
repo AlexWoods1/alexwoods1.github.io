@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" id="[PROJECTS] Spoken Multimodal Telephony - 600x400">
+  <defs>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+</style>
+    
+    <pattern id="spoken-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(20, 19, 17, 0.035)" stroke-width="1"/>
+    </pattern>
+  
+    <marker id="sp-arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 1 2 L 7 5 L 1 8" fill="none" stroke="#141311" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background Base Canvas -->
+  <rect width="600" height="400" fill="#f3f0e8"/>
+  <rect width="600" height="400" fill="url(#spoken-grid)"/>
+
+  <!-- Minimal Outer Frame -->
+  
+    <!-- Subtle drop shadow -->
+    <rect x="23" y="23" width="560" height="360" fill="#141311" rx="0" />
+    <!-- Paper background frame -->
+    <rect x="20" y="20" width="560" height="360" fill="#f3f0e8" stroke="#141311" stroke-width="1.75" rx="0" />
+  
+
+  <!-- Header -->
+  
+    <g transform="translate(40, 48)">
+      <text x="0" y="0" class="font-mono" font-size="10.5" font-weight="500" fill="#b42318" letter-spacing="0.12em">04 · PROJECTS // REINFORCEMENT LEARNING</text>
+      <text x="0" y="32" class="font-brand" font-size="22" font-weight="600" fill="#141311" letter-spacing="-0.02em">Spoken: Voice Tutor</text>
+      <text x="0" y="52" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.6)">Voice tutor adapting prompt difficulty via Q-learning over Whisper &amp; Gemini.</text>
+    </g>
+  
+
+  <!-- Q-Learning Adaptive Architecture Flow -->
+  <g transform="translate(40, 130)">
+    <rect x="0" y="0" width="520" height="225" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="16" y="24" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">REINFORCEMENT LEARNING ADAPTATION LOOP</text>
+
+    <!-- Node 1: Audio Input & Whisper STT -->
+    <g transform="translate(20, 45)">
+      <rect x="0" y="0" width="130" height="90" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <text x="10" y="20" class="font-mono" font-size="8" font-weight="600" fill="#141311">VOICE INPUT</text>
+      <text x="10" y="38" class="font-brand" font-size="12" font-weight="600" fill="#141311">Whisper STT</text>
+      <text x="10" y="56" class="font-sans" font-size="8" fill="rgba(20, 19, 17, 0.7)">Speech-to-text audio input</text>
+      <text x="10" y="76" class="font-mono" font-size="7.5" fill="#b42318">Grammar analysis</text>
+    </g>
+
+    <path d="M 150 90 H 185" stroke="#141311" stroke-width="1.5" marker-end="url(#sp-arr)" />
+
+    <!-- Node 2: Q-Learning Agent (Crimson Highlight) -->
+    <g transform="translate(185, 45)">
+      <rect x="0" y="0" width="150" height="90" fill="rgba(180, 35, 24, 0.05)" stroke="#b42318" stroke-width="1.5" />
+      <text x="10" y="20" class="font-mono" font-size="8" font-weight="600" fill="#b42318">Q-LEARNING POLICY</text>
+      <text x="10" y="38" class="font-brand" font-size="12" font-weight="600" fill="#b42318">Q(s, a) Matrix</text>
+      <text x="10" y="56" class="font-sans" font-size="8" fill="rgba(20, 19, 17, 0.7)">Reward: Fluency &amp; accuracy</text>
+      <text x="10" y="76" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318">Adaptive difficulty</text>
+    </g>
+
+    <path d="M 335 90 H 370" stroke="#141311" stroke-width="1.5" marker-end="url(#sp-arr)" />
+
+    <!-- Node 3: Gemini Prompt Engine -->
+    <g transform="translate(370, 45)">
+      <rect x="0" y="0" width="130" height="90" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <text x="10" y="20" class="font-mono" font-size="8" font-weight="600" fill="#141311">PROMPT ENGINE</text>
+      <text x="10" y="38" class="font-brand" font-size="12" font-weight="600" fill="#141311">Gemini AI</text>
+      <text x="10" y="56" class="font-sans" font-size="8" fill="rgba(20, 19, 17, 0.7)">Adaptive language prompts</text>
+      <text x="10" y="76" class="font-mono" font-size="7.5" fill="#141311">Audio feedback</text>
+    </g>
+
+    <!-- Feedback Loop Return -->
+    <path d="M 435 135 V 158 H 85 V 135" fill="none" stroke="#b42318" stroke-width="1.2" stroke-dasharray="3 3" />
+    <text x="260" y="172" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318" text-anchor="middle">Reward Feedback Loop: r(t) = Accuracy - Latency Penalty</text>
+
+    <!-- Formula Footer -->
+    <rect x="20" y="184" width="480" height="26" fill="#ffffff" stroke="#141311" stroke-width="0.8" />
+    <text x="30" y="201" class="font-mono" font-size="8" fill="#141311">Q(s, a) ← Q(s, a) + α · [r + γ · max Q(s', a') - Q(s, a)]</text>
+  </g>
+</svg>

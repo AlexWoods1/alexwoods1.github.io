@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200" id="[DOCS] Gap Analysis &amp; Technical Design Plan">
+  <defs>
+    <style>
+      
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+    </style>
+    <pattern id="f2-grid-minor" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(20, 19, 17, 0.03)" stroke-width="1"/>
+    </pattern>
+    <pattern id="f2-grid-major" width="120" height="120" patternUnits="userSpaceOnUse">
+      <rect width="120" height="120" fill="url(#f2-grid-minor)"/>
+      <path d="M 120 0 L 0 0 0 120" fill="none" stroke="rgba(20, 19, 17, 0.06)" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Base Canvas & Grid -->
+  <rect width="1600" height="1200" fill="#f3f0e8"/>
+  <rect width="1600" height="1200" fill="url(#f2-grid-major)"/>
+
+  <!-- Minimal Hairline Structural Border -->
+  <rect x="36" y="36" width="1528" height="1128" fill="none" stroke="#141311" stroke-width="1.5"/>
+
+  <!-- ========================================================================= -->
+  <!-- HEADER: MINIMAL LAB NOTEBOOK BANNER                                       -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 75)">
+    <text x="0" y="20" class="font-mono" font-size="13" font-weight="600" fill="#b42318" letter-spacing="0.14em">LAB NOTEBOOK // ARCHITECTURAL SPECIFICATION 02</text>
+    <text x="0" y="65" class="font-brand" font-size="40" font-weight="600" fill="#141311" letter-spacing="-0.03em">Gap Analysis &amp; Technical Design Plan</text>
+    <text x="0" y="98" class="font-mono" font-size="14" fill="rgba(20, 19, 17, 0.7)">Visual Media Audit, Production Allocation Matrix &amp; Code Refactoring Roadmap</text>
+    <line x1="0" y1="120" x2="1440" y2="120" stroke="rgba(20, 19, 17, 0.18)" stroke-width="1"/>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 1: SITE GAP AUDIT (Y: 230 to 450)                                 -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 230)">
+    <text x="0" y="20" class="font-mono" font-size="12" font-weight="600" fill="#b42318" letter-spacing="0.12em">01 / IDENTIFIED SITE DESIGN &amp; VISUAL MEDIA GAPS</text>
+    <text x="0" y="44" class="font-sans" font-size="18" font-weight="600" fill="#141311">Empirical Deficiencies Identified During Portfolio Review</text>
+
+    <g transform="translate(0, 68)">
+      <rect x="0" y="0" width="1440" height="125" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+
+      <g transform="translate(30, 28)">
+        <text x="0" y="0" class="font-mono" font-size="12.5" font-weight="600" fill="#141311">PAUCITY OF REPOSITORY MEDIA:</text>
+        <text x="0" y="20" class="font-sans" font-size="13.5" fill="rgba(20, 19, 17, 0.8)">Only favicon.svg and og-image.png existed initially; no project graphics or system schematics.</text>
+        <text x="0" y="48" class="font-mono" font-size="12.5" font-weight="600" fill="#141311">MISSING WEB APPLICATION SUITE:</text>
+        <text x="0" y="68" class="font-sans" font-size="13.5" fill="rgba(20, 19, 17, 0.8)">Missing Apple Touch Icon (180x180), Android PWA Launcher (512x512), and square social unfurler (1:1).</text>
+      </g>
+
+      <g transform="translate(740, 28)">
+        <text x="0" y="0" class="font-mono" font-size="12.5" font-weight="600" fill="#141311">UNADORNED TECHNICAL PROJECTS:</text>
+        <text x="0" y="20" class="font-sans" font-size="13.5" fill="rgba(20, 19, 17, 0.8)">All 9 projects in #threshold were plain text without data pipelines or mathematical diagrams.</text>
+        <text x="0" y="48" class="font-mono" font-size="12.5" font-weight="600" fill="#141311">RECOGNITIONS LACKED PROOF:</text>
+        <text x="0" y="68" class="font-sans" font-size="13.5" fill="rgba(20, 19, 17, 0.8)">1st Place win at AIC Hack for Humanity (Headcount) was buried in plain bullet text.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 2: PRODUCTION MEDIA ALLOCATION MATRIX (Y: 460 to 710)             -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 460)">
+    <line x1="0" y1="0" x2="1440" y2="0" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1"/>
+    <text x="0" y="30" class="font-mono" font-size="12" font-weight="600" fill="#b42318" letter-spacing="0.12em">02 / PRODUCTION MEDIA ASSET ALLOCATION MATRIX</text>
+    <text x="0" y="56" class="font-sans" font-size="18" font-weight="600" fill="#141311">Structured Production Deliverables Across 4 Categories</text>
+
+    <g transform="translate(0, 80)">
+      <!-- 4 Columns for Categories A, B, C, D -->
+      <!-- Category A -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="340" height="135" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+        <text x="16" y="24" class="font-mono" font-size="12" font-weight="600" fill="#b42318">CAT A · BRAND &amp; SOCIAL (6)</text>
+        <text x="16" y="48" class="font-mono" font-size="11" fill="#141311">• OG Master - 1200x630</text>
+        <text x="16" y="68" class="font-mono" font-size="11" fill="#141311">• OG Retina 2x - 2400x1260</text>
+        <text x="16" y="88" class="font-mono" font-size="11" fill="#141311">• OG Square - 1200x1200</text>
+        <text x="16" y="108" class="font-mono" font-size="11" fill="#141311">• Apple Touch, PWA, Favicon</text>
+      </g>
+
+      <!-- Category B -->
+      <g transform="translate(365, 0)">
+        <rect x="0" y="0" width="340" height="135" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+        <text x="16" y="24" class="font-mono" font-size="12" font-weight="600" fill="#b42318">CAT B · HERO &amp; IDENTITY (2)</text>
+        <text x="16" y="48" class="font-mono" font-size="11" fill="#141311">• Architectural Banner - 1200x500</text>
+        <text x="16" y="68" class="font-mono" font-size="11" fill="#141311">• Technical Circuit Seal - 400x400</text>
+        <text x="16" y="96" class="font-sans" font-size="10.5" fill="rgba(20, 19, 17, 0.65)">Zero initials / lettermarks. Clean calibration seal &amp; banner.</text>
+      </g>
+
+      <!-- Category C -->
+      <g transform="translate(730, 0)">
+        <rect x="0" y="0" width="340" height="135" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+        <text x="16" y="24" class="font-mono" font-size="12" font-weight="600" fill="#b42318">CAT C · FLAGSHIP SCHEMATICS (4)</text>
+        <text x="16" y="48" class="font-mono" font-size="11" fill="#141311">• Spiking Neural Network (LIF)</text>
+        <text x="16" y="68" class="font-mono" font-size="11" fill="#141311">• Headcount (AIC 1st Place)</text>
+        <text x="16" y="88" class="font-mono" font-size="11" fill="#141311">• SuperSmallModel (~1M GPT)</text>
+        <text x="16" y="108" class="font-mono" font-size="11" fill="#141311">• Real-Time EEG Lie Detection</text>
+      </g>
+
+      <!-- Category D -->
+      <g transform="translate(1095, 0)">
+        <rect x="0" y="0" width="345" height="135" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+        <text x="16" y="24" class="font-mono" font-size="12" font-weight="600" fill="#b42318">CAT D · DOCS &amp; SYSTEMS (2)</text>
+        <text x="16" y="48" class="font-mono" font-size="11" fill="#141311">• Design System Foundations</text>
+        <text x="16" y="68" class="font-mono" font-size="11" fill="#141311">• Gap Analysis &amp; Design Plan</text>
+        <text x="16" y="96" class="font-sans" font-size="10.5" fill="rgba(20, 19, 17, 0.65)">Clean minimal lab notebook sheets with generous whitespace.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 3: CODE REFACTORING & INTEGRATION STEP (Y: 740 to 970)            -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 740)">
+    <line x1="0" y1="0" x2="1440" y2="0" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1"/>
+    <text x="0" y="30" class="font-mono" font-size="12" font-weight="600" fill="#b42318" letter-spacing="0.12em">03 / CODE REFACTORING &amp; MODULAR INTEGRATION ROADMAP</text>
+    <text x="0" y="56" class="font-sans" font-size="18" font-weight="600" fill="#141311">Minimalist, Modular Code Architecture &amp; Bloat Elimination</text>
+
+    <g transform="translate(0, 80)">
+      <rect x="0" y="0" width="1440" height="120" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+
+      <g transform="translate(30, 26)">
+        <text x="0" y="0" class="font-mono" font-size="12" font-weight="600" fill="#141311">1. RESPONSIVE MEDIA INTEGRATION:</text>
+        <text x="0" y="20" class="font-sans" font-size="13" fill="rgba(20, 19, 17, 0.8)">Clean &lt;picture&gt; / &lt;img&gt; elements with srcset (1x/2x) for project schematics in index.html.</text>
+        <text x="0" y="44" class="font-sans" font-size="13" fill="rgba(20, 19, 17, 0.8)">Metadata integration: apple-touch-icon, manifest.json, multi-res favicons, and Open Graph tags.</text>
+      </g>
+
+      <g transform="translate(560, 26)">
+        <text x="0" y="0" class="font-mono" font-size="12" font-weight="600" fill="#141311">2. CSS TOKEN FORMALIZATION:</text>
+        <text x="0" y="20" class="font-sans" font-size="13" fill="rgba(20, 19, 17, 0.8)">Formalize custom properties in styles.css: --grid-major, --grid-minor, --shadow-hard.</text>
+        <text x="0" y="44" class="font-sans" font-size="13" fill="rgba(20, 19, 17, 0.8)">Eliminate redundant selectors &amp; duplicate media queries across breakpoints.</text>
+      </g>
+
+      <g transform="translate(1060, 26)">
+        <text x="0" y="0" class="font-mono" font-size="12" font-weight="600" fill="#141311">3. MODULARITY &amp; TESTING:</text>
+        <text x="0" y="20" class="font-sans" font-size="13" fill="rgba(20, 19, 17, 0.8)">Lean, pure JavaScript state transitions without bloat.</text>
+        <text x="0" y="44" class="font-sans" font-size="13" fill="rgba(20, 19, 17, 0.8)">100% automated test pass via node scripts/run_all_tests.mjs.</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 4: RESUME FACTUALITY & INTEGRITY COMPLIANCE (Y: 1000 to 1130)      -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 1000)">
+    <line x1="0" y1="0" x2="1440" y2="0" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1"/>
+    <text x="0" y="30" class="font-mono" font-size="12" font-weight="600" fill="#b42318" letter-spacing="0.12em">04 / RESUME FACTUALITY &amp; INTEGRITY COMPLIANCE</text>
+    <text x="0" y="58" class="font-sans" font-size="15" fill="#141311">
+      • Resume factuality: 100% faithful to Alexander_Woods_Resume.pdf. Every degree, date, project, and skill is genuine.
+    </text>
+    <text x="0" y="82" class="font-sans" font-size="15" fill="#141311">
+      • Zero initials: absolute elimination of lettermarks, initials, or initial badges across all canvas frames.
+    </text>
+    <text x="0" y="106" class="font-sans" font-size="15" fill="#141311">
+      • Zero fake telemetry: NO made-up metrics, NO fabricated sub-diagrams, and NO artificial stamps.
+    </text>
+  </g>
+</svg>

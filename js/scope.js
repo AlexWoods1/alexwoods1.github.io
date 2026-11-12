@@ -1,8 +1,11 @@
 /* Membrane oscilloscope trace (τ_m dV/dt = −(V − V_rest) + R·I). */
 window.PortfolioScope = function (canvas, vread, reduce) {
   "use strict";
+
   var ctx = canvas.getContext("2d");
-  var LIF = window.PortfolioCircuit.LIF;
+  var CFG = window.PortfolioCircuit;
+  var LIF = CFG.LIF;
+  var SCP = CFG.SCOPE;
 
   function pushCurve(pts, a, b, n, pow) {
     var p = pow || 1;
@@ -45,21 +48,16 @@ window.PortfolioScope = function (canvas, vread, reduce) {
     return "0 mV";
   }
 
-  function draw() {
-    var w = canvas.clientWidth;
-    var h = canvas.clientHeight;
-    if (!w || !h) return;
+  function setupCanvas(w, h) {
     var dpr = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = Math.max(1, Math.floor(w * dpr));
     canvas.height = Math.max(1, Math.floor(h * dpr));
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
-    var top = 42;
-    var bot = -80;
-    function yOf(v) {
-      return 7 + ((top - v) / (top - bot)) * (h - 14);
-    }
-    ctx.strokeStyle = "rgba(20,19,17,0.18)";
+  }
+
+  function drawGrid(w, yOf) {
+    ctx.strokeStyle = SCP.GRID_STROKE;
     ctx.lineWidth = 1;
     ctx.setLineDash([3, 3]);
     [LIF.V_th_mV, LIF.V_rest_mV].forEach(function (v) {
@@ -69,11 +67,9 @@ window.PortfolioScope = function (canvas, vread, reduce) {
       ctx.stroke();
     });
     ctx.setLineDash([]);
-    var total = FULL_TRACE.length;
-    var count = Math.max(2, Math.min(total, Math.round(reveal)));
-    function xOf(idx) {
-      return (idx / (total - 1)) * (w - 14) + 7;
-    }
+  }
+
+  function drawSubthresholdTrace(count, xOf, yOf) {
     ctx.beginPath();
     for (var i = 0; i < count; i++) {
       var x = xOf(i);
@@ -81,10 +77,13 @@ window.PortfolioScope = function (canvas, vread, reduce) {
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     }
-    ctx.strokeStyle = "#141311";
-    ctx.lineWidth = 1.65;
+    ctx.strokeStyle = SCP.TRACE_STROKE;
+    ctx.lineWidth = SCP.TRACE_WIDTH;
     ctx.lineJoin = "round";
     ctx.stroke();
+  }
+
+  function drawSpikeOverlay(count, xOf, yOf) {
     var spikeStart = TRACE_STOP[3] - 1;
     var spikeEnd = -1;
     for (var k = spikeStart; k < count; k++) {
@@ -102,22 +101,51 @@ window.PortfolioScope = function (canvas, vread, reduce) {
         if (s === spikeStart) ctx.moveTo(sx, sy);
         else ctx.lineTo(sx, sy);
       }
-      ctx.strokeStyle = "#b42318";
-      ctx.lineWidth = 2.1;
+      ctx.strokeStyle = SCP.SPIKE_STROKE;
+      ctx.lineWidth = SCP.SPIKE_WIDTH;
       ctx.lineJoin = "round";
       ctx.stroke();
     }
-    var last = FULL_TRACE[count - 1];
+  }
+
+  function drawHeadDot(last, count, xOf, yOf) {
     ctx.beginPath();
-    ctx.arc(xOf(count - 1), yOf(last), 2.8, 0, Math.PI * 2);
-    ctx.fillStyle = last >= LIF.V_th_mV ? "#b42318" : "#141311";
+    ctx.arc(xOf(count - 1), yOf(last), SCP.DOT_RADIUS, 0, Math.PI * 2);
+    ctx.fillStyle = last >= LIF.V_th_mV ? SCP.SPIKE_STROKE : SCP.TRACE_STROKE;
     ctx.fill();
-    vread.textContent = formatMv(last);
+  }
+
+  function updateReadout(last) {
+    var formatted = formatMv(last);
+    vread.textContent = formatted;
     canvas.setAttribute(
       "aria-label",
-      "Membrane voltage trace, currently " + formatMv(last) +
+      "Membrane voltage trace, currently " + formatted +
         (last >= LIF.V_th_mV ? ", at or above threshold" : ", below threshold")
     );
+  }
+
+  function draw() {
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+    if (!w || !h) return;
+    setupCanvas(w, h);
+
+    function yOf(v) {
+      return SCP.PAD_Y + ((SCP.V_TOP - v) / (SCP.V_TOP - SCP.V_BOT)) * (h - SCP.PAD_Y * 2);
+    }
+    function xOf(idx) {
+      return (idx / (FULL_TRACE.length - 1)) * (w - SCP.PAD_X * 2) + SCP.PAD_X;
+    }
+
+    drawGrid(w, yOf);
+    var count = Math.max(2, Math.min(FULL_TRACE.length, Math.round(reveal)));
+    drawSubthresholdTrace(count, xOf, yOf);
+    drawSpikeOverlay(count, xOf, yOf);
+
+    var last = FULL_TRACE[count - 1];
+    drawHeadDot(last, count, xOf, yOf);
+    updateReadout(last);
   }
 
   function setTrace(i) {
@@ -132,7 +160,7 @@ window.PortfolioScope = function (canvas, vread, reduce) {
     var t0 = performance.now();
     function step(now) {
       if (my !== traceToken) return;
-      var t = Math.min(1, (now - t0) / 760);
+      var t = Math.min(1, (now - t0) / CFG.TIMING.SCOPE_ANIM_MS);
       var ease = 0.5 - 0.5 * Math.cos(Math.PI * t);
       reveal = start + (target - start) * ease;
       draw();
