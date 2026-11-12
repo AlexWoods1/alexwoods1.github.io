@@ -121,10 +121,32 @@ a:hover {
 
 .viewport {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   touch-action: manipulation;
   z-index: 1;
+  background-color: transparent;
+  box-shadow: 0 0 0 0 transparent;
+}
+
+.viewport.is-animating {
+  transition:
+    top 880ms cubic-bezier(0.4, 0, 0.2, 1),
+    left 880ms cubic-bezier(0.4, 0, 0.2, 1),
+    width 880ms cubic-bezier(0.4, 0, 0.2, 1),
+    height 880ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 880ms cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 880ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.page-mode .viewport {
+  z-index: 8;
+  background-color: var(--paper);
+  box-shadow: 0 0 0 1.5px var(--ink), 4px 4px 0 var(--ink);
+  cursor: pointer;
 }
 
 .viewport::after {
@@ -160,6 +182,12 @@ a:hover {
     linear-gradient(to bottom, rgba(20, 19, 17, 0.032) 1px, transparent 1px);
   background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
   background-position: 0 0;
+  transition: opacity 880ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.page-mode .stage::before,
+body.page-mode .viewport::after {
+  opacity: 0;
 }
 
 .schematic {
@@ -273,34 +301,165 @@ a:hover {
   outline: none;
 }
 
-.circuit-on #sections {
-  position: fixed;
-  z-index: 5;
-  top: 1rem;
-  right: 1.25rem;
-  width: min(24rem, calc(100vw - 2.5rem));
-  max-height: calc(100dvh - 5.5rem);
-  overflow-y: auto;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 1.25rem 1.35rem 1.4rem;
-  background: var(--paper-glass);
-  backdrop-filter: blur(8px);
-  border: 1.5px solid var(--ink);
-  box-shadow: 4px 4px 0 var(--ink);
-  touch-action: pan-y;
-  scrollbar-width: thin;
-  scrollbar-color: var(--ink) transparent;
-}
-
-.circuit-on #sections section {
+.inset-bar,
+.inset-jumps {
   display: none;
-  margin-top: 0;
 }
 
-.circuit-on #sections section.is-on {
+.inset-bar {
+  position: absolute;
+  z-index: 6;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  align-items: stretch;
+  background: var(--paper);
+  border-bottom: 1px solid var(--ink);
+}
+
+body.page-mode .inset-bar {
+  display: flex;
+}
+
+.inset-home {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  height: 100%;
+  padding: 0 0.65rem;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.inset-caption {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.inset-action {
+  flex: none;
+  color: var(--spike);
+}
+
+.inset-home:hover .inset-caption,
+.inset-home:hover .inset-action {
+  color: var(--spike);
+}
+
+.inset-home:focus-visible {
+  outline-offset: -3px;
+}
+
+.inset-jumps {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 44px;
+  align-items: center;
+  gap: 0.15rem;
+  padding: 0 0.35rem;
+  background: var(--paper);
+  border-top: 1px solid var(--ink);
+}
+
+.inset-jumps button {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 32px;
+  padding: 0;
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  border-radius: 2px;
+}
+
+.inset-jumps button:hover {
+  background: rgba(20, 19, 17, 0.07);
+}
+
+.inset-jumps button[aria-current="true"] {
+  color: var(--paper);
+  background: var(--spike);
+  font-weight: 500;
+}
+
+body.page-mode .sym text,
+body.page-mode .ink text {
+  display: none;
+}
+
+body.page-mode .wires path,
+body.page-mode .sym path,
+body.page-mode .sym circle,
+body.page-mode .sym line,
+body.page-mode .ink path,
+body.page-mode .ink circle,
+body.page-mode .flow {
+  vector-effect: non-scaling-stroke;
+  stroke-width: 1.35px;
+}
+
+body.page-mode .sym.is-hot path,
+body.page-mode .sym.is-hot circle:not(.fill),
+body.page-mode .sym.is-hover path,
+body.page-mode .sym.is-hover circle:not(.fill),
+body.page-mode .sym.is-hover line {
+  stroke-width: 2.4px;
+}
+
+body.page-mode .spike {
+  width: 34px;
+  height: 34px;
+  margin-left: -17px;
+  margin-top: -17px;
+}
+
+body.page-mode .hotspot-reset {
+  display: none;
+}
+
+body.page-mode .scope,
+body.page-mode .controls,
+body.page-mode .hint {
+  display: none;
+}
+
+.circuit-on #sections {
+  display: none;
+}
+
+body.page-mode {
+  overflow-x: hidden;
+}
+
+body.page-mode #sections {
+  overflow-wrap: break-word;
+}
+
+body.page-mode #sections section {
+  display: none;
+  margin-top: 0.35rem;
+}
+
+body.page-mode #sections section.is-on {
   display: block;
   animation: panelFade 420ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+@media (min-width: 861px) {
+  body.page-mode .persist,
+  body.page-mode #sections {
+    max-width: min(42rem, calc(100% - var(--inset-w, 360px) - var(--inset-gap, 20px) - 3.5rem));
+  }
 }
 
 @keyframes panelFade {
@@ -615,16 +774,40 @@ p:last-child { margin-bottom: 0; }
 
   .scope canvas { height: 42px; }
 
-  .circuit-on #sections {
-    top: auto;
-    left: 0.65rem;
-    right: 0.65rem;
-    bottom: 3.45rem;
+  body.page-mode {
+    overflow: hidden;
+    height: 100dvh;
+    width: 100%;
+  }
+
+  body.page-mode .persist {
+    position: relative;
+    z-index: 2;
+    max-width: none;
+    background: var(--paper);
+    padding: 0.85rem 0.9rem 0.35rem;
+  }
+
+  body.page-mode #sections {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    top: var(--page-top, 4.6rem);
+    bottom: var(--inset-stack, 12.4rem);
+    max-width: none;
     width: auto;
-    max-height: 36dvh;
-    padding: 0.8rem 0.95rem 0.9rem;
-    border: 1.5px solid var(--ink);
-    box-shadow: 3px 3px 0 var(--ink);
+    margin: 0;
+    padding: 0 0.9rem 1rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ink) transparent;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  body.page-mode .inset-jumps {
+    display: flex;
   }
 
   h2 { font-size: 1.65rem; }
@@ -649,6 +832,9 @@ p:last-child { margin-bottom: 0; }
     transform: none;
     font-size: 0.6rem;
     padding: 0.2rem 0.45rem;
+    max-width: calc(100vw - min(200px, 48vw) - 1.8rem);
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .hint.is-hidden {
@@ -659,22 +845,40 @@ p:last-child { margin-bottom: 0; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .flow { animation: none; }
-  .stage { transition: none; }
-  .circuit-on #sections section.is-on { animation: none; }
+  .stage,
+  .stage::before,
+  .viewport.is-animating { transition: none; }
+  body.page-mode #sections section.is-on { animation: none; }
 }
 
 @media print {
   #app { display: none !important; }
-  .persist { position: static; width: auto; height: auto; clip: auto; border: 0; padding: 1rem 0; }
-  .circuit-on #sections,
-  #sections {
+  .persist {
     position: static;
     width: auto;
+    height: auto;
+    max-width: none;
+    clip: auto;
+    border: 0;
+    padding: 1rem 0;
+  }
+  .circuit-on #sections,
+  body.page-mode,
+  body.page-mode #sections,
+  #sections {
+    display: block !important;
+    position: static;
+    width: auto;
+    max-width: none;
+    height: auto;
     max-height: none;
+    overflow: visible;
     border: 0;
     box-shadow: none;
     padding: 0;
+    top: auto;
+    bottom: auto;
   }
-  .circuit-on #sections section,
+  body.page-mode #sections section,
   #sections section { display: block !important; margin-top: 1.5rem; }
 }
