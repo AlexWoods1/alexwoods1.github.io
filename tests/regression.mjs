@@ -5,7 +5,7 @@
 import { chromium, devices } from "playwright";
 
 const BASE = process.env.SITE_URL || "http://127.0.0.1:8010";
-const CACHE = process.env.CACHE_BUST || "22";
+const CACHE = process.env.CACHE_BUST || "23";
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
@@ -30,6 +30,20 @@ async function activePanel(page) {
 
 async function waitCircuit(page) {
   await page.waitForFunction(() => document.body.classList.contains("circuit-on"));
+}
+
+async function testDesktopControlsInPageMode(browser) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(`${BASE}/?v=${CACHE}`, { waitUntil: "networkidle" });
+  await page.locator('.hotspot[data-i="0"]').click();
+  await page.waitForFunction(() => document.body.classList.contains("page-mode"));
+  const visible = await page.evaluate(() => {
+    var bar = document.querySelector(".controls");
+    if (!bar) return false;
+    return window.getComputedStyle(bar).display !== "none";
+  });
+  assert(visible, "Desktop page mode should show the bottom controls bar");
+  await page.close();
 }
 
 async function testDesktopZoomAfterInset(browser) {
@@ -107,6 +121,7 @@ async function testMobileScrollDoesNotFlipSection(browser) {
 async function main() {
   const browser = await chromium.launch({ headless: true });
   const tests = [
+    ["desktop controls in page mode", () => testDesktopControlsInPageMode(browser)],
     ["desktop zoom after inset", () => testDesktopZoomAfterInset(browser)],
     ["mobile section stable", () => testMobileSectionStable(browser)],
     ["mobile scroll no flip", () => testMobileScrollDoesNotFlipSection(browser)]

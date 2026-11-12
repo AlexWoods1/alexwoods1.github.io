@@ -433,7 +433,6 @@ body.page-mode .hotspot-reset {
 }
 
 body.page-mode .scope,
-body.page-mode .controls,
 body.page-mode .hint {
   display: none;
 }
@@ -572,6 +571,12 @@ body.page-mode:not(.page-chrome-enter):not(.page-chrome-exit) #sections section.
 }
 
 @media (min-width: 861px) {
+  body.page-mode .controls {
+    display: flex;
+    z-index: 9;
+    right: calc(var(--inset-w, 500px) + var(--inset-gap, 24px) + 1.5rem);
+  }
+
   body.page-mode #sections {
     box-sizing: border-box;
     width: min(42rem, calc(100% - var(--inset-w, 500px) - var(--inset-gap, 24px) - 3.5rem));
@@ -580,6 +585,7 @@ body.page-mode:not(.page-chrome-enter):not(.page-chrome-exit) #sections section.
     margin-right: auto;
     padding-left: 0;
     padding-right: 1.25rem;
+    padding-bottom: 5.5rem;
   }
 }
 
@@ -921,6 +927,10 @@ p:last-child { margin-bottom: 0; }
 
   body.page-mode .inset-jumps {
     display: flex;
+  }
+
+  body.page-mode .controls {
+    display: none;
   }
 
   h2 { font-size: 1.65rem; }
