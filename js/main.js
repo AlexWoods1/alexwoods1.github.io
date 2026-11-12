@@ -97,6 +97,16 @@
     var cy = mobile ? nwp[1] * 0.65 + 370 * 0.35 : nwp[1] * 0.82 + 390 * 0.18;
     var tx = vw * ax - cx * scale;
     var ty = vh * ay - cy * scale;
+    if (!mobile) {
+      var sw = 1200 * scale;
+      var sh = 740 * scale;
+      var minTx = vw - 14 - sw;
+      var maxTx = 14;
+      var minTy = vh - chromeBottom - sh;
+      var maxTy = chromeTop;
+      tx = Math.max(minTx, Math.min(maxTx, tx));
+      ty = Math.max(minTy, Math.min(maxTy, ty));
+    }
     stage.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(3) + ")";
   }
 
@@ -213,6 +223,20 @@
       root.removeProperty("--page-top");
       root.removeProperty("--inset-stack");
     }
+    requestAnimationFrame(function () { drawScope(); });
+    var hot = document.querySelector('.hotspot[data-i="' + index + '"]');
+    focusIfLost(hot);
+  }
+
+  function resolveHash(hash) {
+    var raw = (hash || "").replace(/^#/, "");
+    if (!raw || raw === "circuit") return -1;
+    var legacy = ["current", "charge", "leak", "threshold", "spike", "synapse", "highlights"];
+    var start = HASH.indexOf(raw);
+    if (start < 0) start = Math.min(5, legacy.indexOf(raw));
+    if (raw === "highlights") start = 4;
+    if (start < 0 || start > 5) return -1;
+    return start;
   }
 
   function clearPageVars() {
