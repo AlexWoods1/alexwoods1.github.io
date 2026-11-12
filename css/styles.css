@@ -442,29 +442,52 @@ body.page-mode .hint {
   display: none;
 }
 
-.persist,
 #sections {
+  will-change: transform, opacity;
+}
+
+body.page-chrome-enter:not(.page-chrome-visible) #sections {
+  transform: translate3d(-18vw, 0, 0);
+  opacity: 0;
+  transition: none;
+}
+
+body.page-chrome-enter.page-chrome-visible #sections {
+  transform: none;
+  opacity: 1;
   transition:
     transform 720ms cubic-bezier(0.32, 0.72, 0, 1),
     opacity 520ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
-body.page-chrome-enter .persist,
-body.page-chrome-enter #sections {
-  transform: translate3d(-22vw, 0, 0);
+body.page-chrome-exit #sections {
+  transform: translate3d(-18vw, 0, 0);
   opacity: 0;
-}
-
-body.page-chrome-enter.page-chrome-visible .persist,
-body.page-chrome-enter.page-chrome-visible #sections {
-  transform: none;
-  opacity: 1;
+  transition:
+    transform 720ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 520ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 body.page-chrome-exit .persist,
-body.page-chrome-exit #sections {
-  transform: translate3d(-22vw, 0, 0);
+body.page-chrome-enter .persist {
+  transition: opacity 520ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+body.page-chrome-enter:not(.page-chrome-visible) .persist {
   opacity: 0;
+}
+
+body.page-chrome-enter.page-chrome-visible .persist {
+  opacity: 1;
+}
+
+body.page-chrome-exit .persist {
+  opacity: 0;
+}
+
+html.chrome-instant #sections,
+html.chrome-instant .persist {
+  transition: none !important;
 }
 
 body.page-mode {
@@ -495,10 +518,17 @@ body.page-mode #sections section.is-panel-active {
   right: 0;
   top: 0;
   margin-top: 0;
+  z-index: 0;
+}
+
+body.page-mode #sections section.is-panel-active.panel-motion {
   transition:
     transform 520ms cubic-bezier(0.32, 0.72, 0, 1),
     opacity 420ms cubic-bezier(0.32, 0.72, 0, 1);
-  z-index: 0;
+}
+
+body.page-mode #sections section.is-panel-active.panel-pre-enter {
+  transition: none !important;
 }
 
 body.page-mode #sections section.is-panel-active.is-on {
@@ -527,7 +557,7 @@ body.page-mode #sections section.is-on:not(.panel-enter-right):not(.panel-enter-
   transform: none;
 }
 
-body.page-mode #sections section.is-on:not(.is-panel-active) {
+body.page-mode:not(.page-chrome-enter):not(.page-chrome-exit) #sections section.is-on:not(.is-panel-active) {
   animation: panelFade 420ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -925,7 +955,6 @@ p:last-child { margin-bottom: 0; }
   .stage::before,
   .viewport.is-animating { transition: none; }
   body.page-mode #sections section.is-on { animation: none; }
-  .persist,
   #sections,
   body.page-mode #sections section.is-panel-active { transition: none; }
 }

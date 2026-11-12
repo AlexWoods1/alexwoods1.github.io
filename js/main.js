@@ -64,14 +64,30 @@
     spike.style.top = WAY[wp][1] + "px";
   }
 
+  function isMobileViewport() {
+    return (document.documentElement.clientWidth || window.innerWidth) <= 860;
+  }
+
+  function allowChromeMotion(animate) {
+    return !!animate && !reduce.matches && !isMobileViewport();
+  }
+
+  function allowPanelSwap(animate) {
+    return !!animate && !reduce.matches && !isMobileViewport();
+  }
+
   function frame(i) {
-    cam.frame(i, window.innerWidth, window.innerHeight);
+    var vw = viewport.clientWidth || document.documentElement.clientWidth || window.innerWidth;
+    var vh = viewport.clientHeight || window.innerHeight;
+    cam.frame(i, vw, vh);
   }
 
   function clearPanelMotion() {
     var panels = sections.querySelectorAll("section");
     var clear = [
       "is-panel-active",
+      "panel-motion",
+      "panel-pre-enter",
       "panel-exit-left",
       "panel-exit-right",
       "panel-enter-left",
@@ -93,8 +109,7 @@
     }
     var swap =
       pageMode &&
-      opts.animate &&
-      !reduce.matches &&
+      allowPanelSwap(opts.animate) &&
       typeof opts.from === "number" &&
       prevIdx >= 0 &&
       prevIdx !== i;
@@ -104,17 +119,21 @@
       var next = panels[i];
       clearPanelMotion();
       prev.classList.remove("is-on");
-      prev.classList.add("is-panel-active", dir > 0 ? "panel-exit-left" : "panel-exit-right");
-      next.classList.add("is-on", "is-panel-active", dir > 0 ? "panel-enter-right" : "panel-enter-left");
+      var exitCls = dir > 0 ? "panel-exit-left" : "panel-exit-right";
+      var enterCls = dir > 0 ? "panel-enter-right" : "panel-enter-left";
+      prev.classList.add("is-panel-active", "panel-motion", exitCls);
+      next.classList.add("is-on", "is-panel-active", "panel-pre-enter", enterCls);
       sections.style.minHeight = Math.max(prev.offsetHeight, next.offsetHeight) + "px";
       void next.offsetWidth;
-      next.classList.remove(dir > 0 ? "panel-enter-right" : "panel-enter-left");
+      next.classList.remove("panel-pre-enter", enterCls);
+      next.classList.add("panel-motion");
       var ended = false;
       function settle() {
         if (ended) return;
         ended = true;
         sections.style.minHeight = "";
-        clearPanelMotion();
+        prev.classList.remove("is-panel-active", "panel-motion", exitCls);
+        next.classList.remove("panel-motion");
       }
       prev.addEventListener("transitionend", function (e) {
         if (e.target === prev && (e.propertyName === "transform" || e.propertyName === "opacity")) settle();
@@ -283,7 +302,7 @@
     pageMode = true;
     document.body.classList.remove("circuit-on");
     document.body.classList.add("page-mode");
-    if (animate && !reduce.matches) {
+    if (allowChromeMotion(animate)) {
       document.body.classList.add("page-chrome-enter");
     } else {
       document.body.classList.add("page-chrome-visible");
@@ -303,6 +322,7 @@
         var next = insetBox();
         cam.snapStage(function () { cam.fitStage(next); });
         layoutPage(next);
+        document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
       });
     } else {
       cam.snapStage(function () {
@@ -312,12 +332,11 @@
     }
     layoutPage(box);
     show(i, { animate: false, from: from });
+    void sections.offsetWidth;
     if (motion) {
       requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          if (!pageMode) return;
-          document.body.classList.add("page-chrome-visible");
-        });
+        if (!pageMode) return;
+        document.body.classList.add("page-chrome-visible");
       });
     }
     if (writeHistory !== false) writeHash(HASH[i], !!animate);
@@ -345,6 +364,7 @@
     var motion = !!animate && !reduce.matches;
     function leavePageMode() {
       pageMode = false;
+      document.documentElement.classList.add("chrome-instant");
       document.body.classList.add("circuit-on");
       document.body.classList.remove(
         "page-mode",
@@ -352,23 +372,31 @@
         "page-chrome-visible",
         "page-chrome-exit"
       );
+      document.documentElement.classList.remove("chrome-instant");
       cam.clearPageVars();
       syncSkip();
     }
     if (motion) {
       morphLock = true;
       if (animTimer) clearTimeout(animTimer);
-      document.body.classList.add("page-chrome-exit");
-      document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
+      if (allowChromeMotion(animate)) {
+        document.body.classList.add("page-chrome-exit");
+        document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
+      }
       viewport.classList.remove("is-animating");
-      cam.snapStage(function () { frame(index); });
+      var inset = insetBox();
+      cam.snapStage(function () { cam.fitStage(inset); });
       viewport.classList.add("is-animating");
       void viewport.offsetWidth;
       cam.applyFull(viewport);
       settleAnim(function () {
         leavePageMode();
-        cam.snapStage(function () { frame(index); });
-        scope.draw();
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            cam.snapStage(function () { frame(index); });
+            scope.draw();
+          });
+        });
       });
     } else {
       leavePageMode();
@@ -590,6 +618,7 @@
     touchTarget = null;
 
     if (pageMode) {
+      if (startEl && startEl.closest && startEl.closest("#sections, .persist, .inset-jumps")) return;
       if (!startEl || !viewport.contains(startEl)) return;
       if (Math.abs(dx) > 22 || Math.abs(dy) > 22) return;
       if (startEl.closest && startEl.closest(".inset-home, .inset-jump, .hotspot")) return;

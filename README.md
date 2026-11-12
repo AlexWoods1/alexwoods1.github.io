@@ -27,3 +27,13 @@ python3 -m http.server 8000
 ```
 
 Then open [http://localhost:8000](http://localhost:8000).
+
+## Regression tests
+
+With the site served locally (or set `SITE_URL`):
+
+```bash
+bash scripts/run_regression_tests.sh
+```
+
+Checks full-circuit zoom after closing the inset map (desktop) and that mobile section panels stay stable when idle, when using jump buttons, and when scrolling content.
