@@ -1,0 +1,42 @@
+{
+  "model": "Leaky integrate-and-fire (LIF) equivalent circuit — matches alexwoods1.github.io",
+  "membrane": {
+    "C_pF": 200,
+    "R_Mohm": 100,
+    "tau_ms": 20,
+    "equation": "τ_m dV/dt = −(V − V_rest) + R·I"
+  },
+  "voltages_mV": {
+    "V_rest": -65,
+    "V_th": -50,
+    "V_reset": -70,
+    "V_spike_peak": 30
+  },
+  "comparator": {
+    "role": "Threshold detector (V ≥ V_th triggers spike output)",
+    "part": "Texas Instruments TLV1701DBVR",
+    "package": "SOT-23-5",
+    "specs": {
+      "supply_V": "2.2 to 36 (use ±9 V dual supply for headroom)",
+      "input_offset_max_mV": 0.55,
+      "propagation_delay_ns_typ": 260,
+      "output": "Push-pull, rail-to-rail near supply",
+      "threshold_behavior": "Non-inverting input = V_membrane; inverting input = V_th reference"
+    }
+  },
+  "parts": [
+    { "ref": "R1", "value": "100 MΩ", "description": "Leak resistor (membrane)", "example": "Ohmite HVC0805T1005MJE or 100 MΩ 1% film (series if needed)" },
+    { "ref": "C1", "value": "200 pF", "description": "Membrane capacitance", "example": "Murata GRM1885C1H221JA01D (220 pF NP0) or 200 pF C0G 1%" },
+    { "ref": "U1", "value": "TLV1701", "description": "Comparator / threshold", "example": "TI TLV1701DBVR" },
+    { "ref": "U2", "value": "OP07", "description": "Precision buffer for V_rest reference", "example": "TI OP07CDR" },
+    { "ref": "U3", "value": "OPA2333", "description": "Howland-style current source for I(t)", "example": "TI OPA2333AIDGKR" },
+    { "ref": "SW1", "value": "SPST", "description": "Reset switch (pull V to V_reset)", "example": "C&K OS102011MA1Q1 or tactile NO" },
+    { "ref": "V_rest", "value": "−65 mV", "description": "Rest reference", "example": "Precision divider from −9 V using OP07 buffer (scale per bench calibration)" },
+    { "ref": "V_th", "value": "−50 mV", "description": "Threshold reference", "example": "Trimmer + precision divider into TLV1701 inverting input" },
+    { "ref": "V_reset", "value": "−70 mV", "description": "Reset level", "example": "SPST network to reset node when spike ends" }
+  ],
+  "spike_output": {
+    "shape": "Piecewise linear pulse (site uses symbolic +30 mV peak)",
+    "note": "Physical breadboard version: TLV1701 output drives astable or logic-level pulse; portfolio spike path is decorative"
+  }
+}
