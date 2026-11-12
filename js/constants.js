@@ -25,7 +25,6 @@ window.PortfolioCircuit = {
   /* Centralized Timing Constants (ms) */
   TIMING: {
     MORPH_MS: 720,
-    CHROME_TIMEOUT_MS: 530,
     PANEL_MS: 540,
     SETTLE_BUFFER_MS: 120,
     PANEL_SETTLE_BUFFER_MS: 80,

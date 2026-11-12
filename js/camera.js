@@ -132,6 +132,8 @@ window.PortfolioCamera = function (stage, persistTitle) {
     var scale = Math.min(innerW / SCHEM.BOUNDS_W, innerH / SCHEM.BOUNDS_H);
     var tx = box.width * 0.5 - SCHEM.CENTER_X * scale;
     var ty = box.header + availH * 0.5 - SCHEM.CENTER_Y * scale;
+    stage.style.setProperty("--minimap-stroke", (1.35 / scale).toFixed(3) + "px");
+    stage.style.setProperty("--minimap-hot-stroke", (2.4 / scale).toFixed(3) + "px");
     stage.style.transform =
       "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(4) + ")";
   }
@@ -140,9 +142,8 @@ window.PortfolioCamera = function (stage, persistTitle) {
     stage.classList.add("is-morphing");
     fn();
     void stage.offsetWidth;
-    requestAnimationFrame(function () {
-      stage.classList.remove("is-morphing");
-    });
+    stage.classList.remove("is-morphing");
+    void stage.offsetWidth;
   }
 
   function applyFull(viewport) {

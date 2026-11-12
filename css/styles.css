@@ -308,6 +308,15 @@ p:last-child {
   width: 100vw;
 }
 
+@keyframes circuitHudIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .circuit-on .persist {
   position: fixed;
   top: 1rem;
@@ -322,6 +331,7 @@ p:last-child {
   backdrop-filter: blur(6px);
   border: 1.5px solid var(--ink);
   pointer-events: auto;
+  animation: circuitHudIn 220ms var(--ease-smooth);
 }
 
 .circuit-on #sections {
@@ -337,18 +347,33 @@ p:last-child {
   overflow: hidden;
   touch-action: manipulation;
   z-index: 1;
-  background-color: transparent;
-  box-shadow: 0 0 0 0 transparent;
+  background-color: rgba(243, 240, 232, 0);
+  box-shadow: 0 0 0 1.5px rgba(20, 19, 17, 0), 4px 4px 0px 0px rgba(20, 19, 17, 0);
+}
+
+.viewport.is-unclipped {
+  overflow: visible;
 }
 
 .viewport.is-animating {
+  z-index: 8;
   transition:
     top var(--dur-morph) var(--ease-spring),
     left var(--dur-morph) var(--ease-spring),
     width var(--dur-morph) var(--ease-spring),
     height var(--dur-morph) var(--ease-spring),
-    background-color var(--dur-morph) var(--ease-spring),
-    box-shadow var(--dur-morph) var(--ease-spring);
+    background-color 240ms var(--ease-smooth) 35ms,
+    box-shadow 240ms var(--ease-smooth) 35ms;
+}
+
+body.page-chrome-exit .viewport.is-animating {
+  transition:
+    top var(--dur-morph) var(--ease-spring),
+    left var(--dur-morph) var(--ease-spring),
+    width var(--dur-morph) var(--ease-spring),
+    height var(--dur-morph) var(--ease-spring),
+    background-color 65ms cubic-bezier(0, 0, 0.2, 1),
+    box-shadow 65ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .viewport.is-animating .stage {
@@ -366,6 +391,7 @@ p:last-child {
   pointer-events: none;
   background: radial-gradient(circle at 42% 46%, transparent 52%, var(--vignette-outer) 100%);
   z-index: 2;
+  transition: opacity 260ms var(--ease-smooth) 360ms;
 }
 
 .stage {
@@ -392,7 +418,7 @@ p:last-child {
     linear-gradient(to bottom, var(--grid-minor) 1px, transparent 1px);
   background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
   background-position: 0 0;
-  transition: opacity var(--dur-stage) var(--ease-smooth);
+  transition: opacity 280ms var(--ease-smooth) 150ms;
 }
 
 .schematic {
@@ -408,6 +434,10 @@ p:last-child {
   color: var(--ink);
 }
 
+.wires path {
+  stroke-width: 1.75px;
+}
+
 .sym {
   color: var(--ink);
   cursor: pointer;
@@ -419,7 +449,7 @@ p:last-child {
 .sym line {
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.75;
+  stroke-width: 1.75px;
   transition: stroke 0.22s ease, fill 0.22s ease, stroke-width 0.22s ease;
 }
 
@@ -427,14 +457,14 @@ p:last-child {
   fill: currentColor;
   stroke: none;
   font-family: var(--mono);
-  font-size: 13.5px;
+  font-size: 14px;
   opacity: 0.78;
   transition: fill 0.22s ease, opacity 0.22s ease;
 }
 
 .sym .node-tag {
   font-family: var(--sans);
-  font-size: 17.5px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: -0.025em;
   opacity: 1;
@@ -458,7 +488,7 @@ p:last-child {
 .sym.is-hover path,
 .sym.is-hover circle:not(.fill),
 .sym.is-hover line {
-  stroke-width: 2.2;
+  stroke-width: 2.2px;
 }
 
 .ink {
@@ -478,7 +508,7 @@ p:last-child {
 .ink path,
 .ink circle {
   stroke: var(--ink);
-  stroke-width: 1.75;
+  stroke-width: 1.75px;
   fill: none;
 }
 
@@ -490,10 +520,20 @@ p:last-child {
 .flow {
   fill: none;
   stroke: var(--spike);
-  stroke-width: 2.5;
+  stroke-width: 2.5px;
   stroke-dasharray: 2 10;
   stroke-linecap: butt;
   animation: march 1.25s linear infinite;
+}
+
+.viewport.is-animating .wires path,
+.viewport.is-animating .sym path,
+.viewport.is-animating .sym circle,
+.viewport.is-animating .sym line,
+.viewport.is-animating .ink path,
+.viewport.is-animating .ink circle,
+.viewport.is-animating .flow {
+  transition: stroke 0.22s ease, fill 0.22s ease, stroke-width var(--dur-morph) var(--ease-spring);
 }
 
 @keyframes march {
@@ -513,6 +553,11 @@ p:last-child {
   box-shadow: 0 0 0 7px var(--spike-glow), 0 0 18px var(--phosphor-glow);
   z-index: 3;
   pointer-events: none;
+  transition:
+    width var(--dur-morph) var(--ease-spring),
+    height var(--dur-morph) var(--ease-spring),
+    margin-left var(--dur-morph) var(--ease-spring),
+    margin-top var(--dur-morph) var(--ease-spring);
 }
 
 .hotspot {
@@ -542,17 +587,21 @@ p:last-child {
 /* --------------------------------------------------------------------------
    5. Page Mode & Inset Minimap Container
    -------------------------------------------------------------------------- */
-body.page-mode .viewport,
-.viewport.is-animating {
-  z-index: 10;
-  background-color: var(--paper);
-  box-shadow: 0 0 0 1.5px var(--ink), 4px 4px 0 var(--ink);
+body.page-mode .viewport {
+  z-index: 8;
   cursor: pointer;
 }
 
-body.page-mode .stage::before,
-body.page-mode .viewport::after {
+body.page-mode:not(.page-chrome-enter):not(.page-chrome-exit) .viewport,
+body.page-mode.page-chrome-enter.page-chrome-visible:not(.page-chrome-exit) .viewport {
+  background-color: var(--paper);
+  box-shadow: 0 0 0 1.5px var(--ink), 4px 4px 0px 0px var(--ink);
+}
+
+body.page-mode:not(.page-chrome-exit) .stage::before,
+body.page-mode:not(.page-chrome-exit) .viewport::after {
   opacity: 0;
+  transition: opacity 110ms var(--ease-smooth);
 }
 
 /* Maintain M3 fix: prevent duplicate static heading during enterPage transitions */
@@ -564,7 +613,6 @@ body.page-mode .persist {
 .inset-jumps {
   display: none;
   opacity: 0;
-  transition: opacity var(--dur-quick) var(--ease-spring);
 }
 
 .inset-bar {
@@ -588,9 +636,15 @@ body.page-chrome-enter.page-chrome-visible .inset-bar {
   opacity: 1;
 }
 
+body.page-chrome-enter.page-chrome-visible .inset-bar,
+body.page-chrome-enter.page-chrome-visible .inset-jumps {
+  transition: opacity 240ms var(--ease-smooth) 140ms;
+}
+
 body.page-chrome-exit .inset-bar {
   opacity: 0;
   pointer-events: none;
+  transition: opacity 55ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .inset-home {
@@ -664,7 +718,7 @@ body.page-chrome-exit .inset-bar {
 }
 
 /* Maintain M1 fix: Keep schematic node tags and key labels visible and legible in minimap */
-body.page-mode .sym text {
+body.page-mode:not(.page-chrome-exit) .sym text {
   display: block;
   fill: currentColor;
   font-family: var(--mono);
@@ -672,7 +726,7 @@ body.page-mode .sym text {
   opacity: 0.85;
 }
 
-body.page-mode .ink text {
+body.page-mode:not(.page-chrome-exit) .ink text {
   display: block;
   fill: var(--ink);
   font-family: var(--mono);
@@ -680,7 +734,7 @@ body.page-mode .ink text {
   opacity: 0.85;
 }
 
-body.page-mode .sym .node-tag {
+body.page-mode:not(.page-chrome-exit) .sym .node-tag {
   font-family: var(--sans);
   font-size: 18px;
   font-weight: 600;
@@ -688,32 +742,31 @@ body.page-mode .sym .node-tag {
   opacity: 0.95;
 }
 
-body.page-mode .sym.is-hot text,
-body.page-mode .sym.is-hover text {
+body.page-mode:not(.page-chrome-exit) .sym.is-hot text,
+body.page-mode:not(.page-chrome-exit) .sym.is-hover text {
   opacity: 1;
   fill: var(--spike);
 }
 
-body.page-mode .wires path,
-body.page-mode .sym path,
-body.page-mode .sym circle,
-body.page-mode .sym line,
-body.page-mode .ink path,
-body.page-mode .ink circle,
-body.page-mode .flow {
-  vector-effect: non-scaling-stroke;
-  stroke-width: 1.35px;
+body.page-mode:not(.page-chrome-exit) .wires path,
+body.page-mode:not(.page-chrome-exit) .sym path,
+body.page-mode:not(.page-chrome-exit) .sym circle,
+body.page-mode:not(.page-chrome-exit) .sym line,
+body.page-mode:not(.page-chrome-exit) .ink path,
+body.page-mode:not(.page-chrome-exit) .ink circle,
+body.page-mode:not(.page-chrome-exit) .flow {
+  stroke-width: var(--minimap-stroke, 2.8px);
 }
 
-body.page-mode .sym.is-hot path,
-body.page-mode .sym.is-hot circle:not(.fill),
-body.page-mode .sym.is-hover path,
-body.page-mode .sym.is-hover circle:not(.fill),
-body.page-mode .sym.is-hover line {
-  stroke-width: 2.4px;
+body.page-mode:not(.page-chrome-exit) .sym.is-hot path,
+body.page-mode:not(.page-chrome-exit) .sym.is-hot circle:not(.fill),
+body.page-mode:not(.page-chrome-exit) .sym.is-hover path,
+body.page-mode:not(.page-chrome-exit) .sym.is-hover circle:not(.fill),
+body.page-mode:not(.page-chrome-exit) .sym.is-hover line {
+  stroke-width: var(--minimap-hot-stroke, 5px);
 }
 
-body.page-mode .spike {
+body.page-mode:not(.page-chrome-exit) .spike {
   width: 34px;
   height: 34px;
   margin-left: -17px;
@@ -775,38 +828,44 @@ body.page-chrome-enter.page-chrome-visible #sections {
   transform: none;
   opacity: 1;
   transition:
-    transform var(--dur-morph) var(--ease-spring),
-    opacity var(--dur-fade) var(--ease-spring);
+    transform 520ms var(--ease-spring) 165ms,
+    opacity 380ms var(--ease-smooth) 165ms;
 }
 
 body.page-chrome-exit #sections {
-  transform: translate3d(0, -10px, 0);
+  transform: translate3d(0, 10px, 0);
   opacity: 0;
+  pointer-events: none;
   transition:
-    transform var(--dur-morph) var(--ease-spring),
-    opacity var(--dur-fade) var(--ease-spring);
-}
-
-body.page-chrome-exit .persist,
-body.page-chrome-enter .persist {
-  transition: opacity var(--dur-fade) var(--ease-spring);
-}
-
-body.page-chrome-enter:not(.page-chrome-visible) .persist {
-  opacity: 0;
-}
-
-body.page-chrome-enter.page-chrome-visible .persist {
-  opacity: 1;
-}
-
-body.page-chrome-exit .persist {
-  opacity: 0;
+    transform 170ms var(--ease-smooth),
+    opacity 130ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 html.chrome-instant #sections,
-html.chrome-instant .persist {
+html.chrome-instant .persist,
+html.chrome-instant .scope,
+html.chrome-instant .controls,
+html.chrome-instant .spike,
+html.chrome-instant .inset-bar,
+html.chrome-instant .inset-jumps,
+html.chrome-instant .viewport,
+html.chrome-instant .stage,
+html.chrome-instant .stage::before,
+html.chrome-instant .viewport::after,
+html.chrome-instant .wires path,
+html.chrome-instant .sym path,
+html.chrome-instant .sym circle,
+html.chrome-instant .sym line,
+html.chrome-instant .ink path,
+html.chrome-instant .ink circle,
+html.chrome-instant .flow {
   transition: none !important;
+}
+
+html.chrome-instant .persist,
+html.chrome-instant .scope,
+html.chrome-instant .controls {
+  animation: none !important;
 }
 
 /* Maintain M3 fix: Constant margin-top 0 to eliminate 5.65px panel jump cut */
@@ -875,7 +934,7 @@ body.page-mode #sections section.is-on {
    -------------------------------------------------------------------------- */
 .controls {
   position: fixed;
-  z-index: 6;
+  z-index: 9;
   left: 1.25rem;
   right: 1.25rem;
   bottom: 1rem;
@@ -892,7 +951,14 @@ body.page-mode #sections section.is-on {
   transition:
     right var(--dur-morph) var(--ease-spring),
     bottom var(--dur-morph) var(--ease-spring),
-    opacity 300ms ease;
+    opacity 260ms ease;
+}
+
+body.page-chrome-exit .controls {
+  transition:
+    right 580ms var(--ease-spring) 55ms,
+    bottom 580ms var(--ease-spring) 55ms,
+    opacity 260ms ease;
 }
 
 .controls > button {
@@ -979,6 +1045,10 @@ body.page-mode #sections section.is-on {
   box-shadow: 3px 3px 0 var(--ink);
 }
 
+.circuit-on .scope {
+  animation: circuitHudIn 220ms var(--ease-smooth);
+}
+
 .scope-read {
   display: flex;
   justify-content: space-between;
@@ -1045,12 +1115,30 @@ body.page-mode #sections section.is-on {
 
 /* Desktop viewports (>= 861px): consolidated controls, layout clearances, and step visibility */
 @media (min-width: 861px) {
-  body.page-mode .controls,
+  html.page-gutter {
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  body.page-mode:not(.page-chrome-exit) {
+    overflow: visible;
+  }
+
+  body.page-chrome-exit {
+    overflow: hidden;
+    height: 100dvh;
+  }
+
   body.page-mode:not(.page-chrome-exit) .controls {
     display: flex;
-    z-index: 8;
+    z-index: 9;
     bottom: var(--inset-gap, 24px);
     right: calc(var(--inset-w, 500px) + var(--inset-gap, 24px) + 1.5rem);
+    transition:
+      right 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      bottom 340ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 260ms ease;
   }
 
   body.page-mode #sections {
@@ -1165,6 +1253,7 @@ body.page-mode #sections section.is-on {
   body.page-chrome-exit .inset-jumps {
     opacity: 0;
     pointer-events: none;
+    transition: opacity 55ms cubic-bezier(0, 0, 0.2, 1);
   }
 
   body.page-mode .controls {
@@ -1190,6 +1279,10 @@ body.page-mode #sections section.is-on {
     background: var(--paper-glass);
   }
 
+  .circuit-on .controls {
+    animation: circuitHudIn 220ms var(--ease-smooth);
+  }
+
   .hint {
     left: calc(0.65rem + env(safe-area-inset-left, 0px));
     bottom: auto;
@@ -1213,13 +1306,26 @@ body.page-mode #sections section.is-on {
     scroll-behavior: auto;
   }
 
-  .flow {
+  .flow,
+  .circuit-on .persist,
+  .circuit-on .scope,
+  .circuit-on .controls {
     animation: none;
   }
 
   .stage,
   .stage::before,
-  .viewport.is-animating {
+  .viewport::after,
+  .spike,
+  .viewport.is-animating,
+  body.page-chrome-exit .viewport.is-animating,
+  .viewport.is-animating .wires path,
+  .viewport.is-animating .sym path,
+  .viewport.is-animating .sym circle,
+  .viewport.is-animating .sym line,
+  .viewport.is-animating .ink path,
+  .viewport.is-animating .ink circle,
+  .viewport.is-animating .flow {
     transition: none;
   }
 
@@ -1230,6 +1336,8 @@ body.page-mode #sections section.is-on {
   #sections,
   .persist,
   .controls,
+  body.page-mode:not(.page-chrome-exit) .controls,
+  body.page-chrome-exit .controls,
   .inset-bar,
   .inset-jumps,
   body.page-mode #sections section.is-panel-active {
@@ -1246,11 +1354,6 @@ body.page-mode #sections section.is-on {
 
 .schematic-card--hero {
   margin-top: 1.15rem;
-}
-
-.schematic-card--seal {
-  margin-top: 1.35rem;
-  max-width: 176px;
 }
 
 .schematic-zoom {
