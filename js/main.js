@@ -88,13 +88,20 @@
     var vh = window.innerHeight;
     var mobile = vw <= 860;
     var nwp = CAM[i];
-    var scale = mobile
-      ? Math.max(0.44, Math.min(0.62, vw / 720))
-      : Math.min(1.22, Math.max(0.86, (vw - 400) / 860));
-    var ax = mobile ? 0.5 : 0.52;
-    var ay = mobile ? 0.42 : 0.44;
-    var cx = mobile ? nwp[0] * 0.65 + 560 * 0.35 : nwp[0] * 0.78 + 560 * 0.22;
-    var cy = mobile ? nwp[1] * 0.65 + 370 * 0.35 : nwp[1] * 0.82 + 390 * 0.18;
+    var scale;
+    if (mobile) {
+      scale = Math.max(0.44, Math.min(0.62, vw / 720));
+    } else {
+      var margin = 12;
+      var chromeBottom = 68;
+      var chromeTop = 44;
+      scale = Math.min((vw - margin * 2) / 1200, (vh - chromeTop - chromeBottom) / 740, 1.48);
+      scale = Math.max(1, scale);
+    }
+    var ax = mobile ? 0.5 : 0.5;
+    var ay = mobile ? 0.42 : 0.47;
+    var cx = mobile ? nwp[0] * 0.65 + 560 * 0.35 : nwp[0] * 0.68 + 600 * 0.32;
+    var cy = mobile ? nwp[1] * 0.65 + 370 * 0.35 : nwp[1] * 0.78 + 370 * 0.22;
     var tx = vw * ax - cx * scale;
     var ty = vh * ay - cy * scale;
     if (!mobile) {
@@ -166,9 +173,16 @@
     var vw = document.documentElement.clientWidth || window.innerWidth;
     var vh = window.innerHeight;
     var mobile = vw <= 860;
-    var gap = mobile ? 10 : 20;
-    var width = mobile ? Math.max(160, vw - gap * 2) : 360;
-    var height = mobile ? (vh < 520 ? 150 : 178) : 250;
+    var gap = mobile ? 10 : 24;
+    var width;
+    var height;
+    if (mobile) {
+      width = Math.max(160, vw - gap * 2);
+      height = vh < 520 ? 156 : 184;
+    } else {
+      width = Math.min(480, Math.max(400, Math.round(vw * 0.33)));
+      height = Math.round(width * 0.64);
+    }
     var safe = mobile ? safeBottom() : 0;
     return {
       mobile: mobile,
@@ -223,20 +237,6 @@
       root.removeProperty("--page-top");
       root.removeProperty("--inset-stack");
     }
-    requestAnimationFrame(function () { drawScope(); });
-    var hot = document.querySelector('.hotspot[data-i="' + index + '"]');
-    focusIfLost(hot);
-  }
-
-  function resolveHash(hash) {
-    var raw = (hash || "").replace(/^#/, "");
-    if (!raw || raw === "circuit") return -1;
-    var legacy = ["current", "charge", "leak", "threshold", "spike", "synapse", "highlights"];
-    var start = HASH.indexOf(raw);
-    if (start < 0) start = Math.min(5, legacy.indexOf(raw));
-    if (raw === "highlights") start = 4;
-    if (start < 0 || start > 5) return -1;
-    return start;
   }
 
   function clearPageVars() {
