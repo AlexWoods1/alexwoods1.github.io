@@ -1,32 +1,13 @@
 (function () {
   "use strict";
 
-  var WAY = [
-    [150, 390],
-    [380, 390],
-    [380, 500],
-    [380, 390],
-    [380, 330],
-    [380, 390],
-    [530, 390],
-    [640, 390],
-    [770, 390],
-    [798, 300],
-    [826, 470],
-    [854, 390],
-    [1020, 390]
-  ];
-  var MAP = [0, 2, 4, 7, 9, 12];
-  var CAM = [
-    [150, 390],
-    [380, 520],
-    [390, 235],
-    [585, 390],
-    [812, 385],
-    [1070, 390]
-  ];
-  var NAMES = ["About", "Experience", "Skills", "Projects", "Honors", "Contact"];
-  var HASH = ["about", "experience", "skills", "projects", "honors", "contact"];
+  var CFG = window.PortfolioCircuit;
+  var WAY = CFG.WAY;
+  var MAP = CFG.MAP;
+  var CAM = CFG.CAM;
+  var NAMES = CFG.NAMES;
+  var HASH = CFG.HASH;
+  var MORPH_MS = CFG.MORPH_MS;
 
   var app = document.getElementById("app");
   var stage = document.getElementById("stage");
@@ -46,20 +27,19 @@
   var resetBtn = document.getElementById("reset-btn");
   var symReset = document.getElementById("sym-reset");
   var resetBlade = document.getElementById("reset-blade");
-  var ctx = canvas.getContext("2d");
+  var persistTitle = document.querySelector(".persist");
 
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-  var TRACE_DATA = buildTraces();
-  var FULL_TRACE = TRACE_DATA.pts;
-  var TRACE_STOP = TRACE_DATA.stops;
+  var scope = window.PortfolioScope(canvas, vread, reduce);
+  var cam = window.PortfolioCamera(stage, persistTitle);
+  var TRACE_STOP = scope.TRACE_STOP;
 
   var index = 0;
   var pageMode = false;
   var trip = 0;
   var animTimer = null;
-  var cachedSafe = null;
-  var reveal = TRACE_STOP[0];
-  var traceToken = 0;
+  var morphLock = false;
+  var settleEnd = null;
   var wheelAcc = 0;
   var wheelLock = 0;
   var resetTimer = null;
@@ -84,38 +64,7 @@
   }
 
   function frame(i) {
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
-    var mobile = vw <= 860;
-    var nwp = CAM[i];
-    var scale;
-    if (mobile) {
-      scale = Math.max(0.44, Math.min(0.62, vw / 720));
-    } else {
-      var margin = 6;
-      var chromeBottom = 52;
-      var chromeTop = 34;
-      scale = Math.min((vw - margin * 2) / 1200, (vh - chromeTop - chromeBottom) / 740, 1.65);
-      if (vw >= 1100) scale = Math.max(1.12, scale);
-      else scale = Math.max(1.02, scale);
-    }
-    var ax = mobile ? 0.5 : 0.5;
-    var ay = mobile ? 0.42 : 0.49;
-    var cx = mobile ? nwp[0] * 0.65 + 560 * 0.35 : nwp[0] * 0.6 + 600 * 0.4;
-    var cy = mobile ? nwp[1] * 0.65 + 370 * 0.35 : nwp[1] * 0.74 + 370 * 0.26;
-    var tx = vw * ax - cx * scale;
-    var ty = vh * ay - cy * scale;
-    if (!mobile) {
-      var sw = 1200 * scale;
-      var sh = 740 * scale;
-      var minTx = vw - margin - sw;
-      var maxTx = margin;
-      var minTy = vh - chromeBottom - sh;
-      var maxTy = chromeTop;
-      tx = Math.max(minTx, Math.min(maxTx, tx));
-      ty = Math.max(minTy, Math.min(maxTy, ty));
-    }
-    stage.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(3) + ")";
+    cam.frame(i, window.innerWidth, window.innerHeight);
   }
 
   function show(i) {
@@ -160,100 +109,61 @@
     insetCaption.textContent = "0" + (i + 1) + " · " + NAMES[i];
   }
 
-  function safeBottom() {
-    if (cachedSafe != null) return cachedSafe;
-    var probe = document.createElement("div");
-    probe.style.cssText = "position:fixed;left:0;bottom:0;padding-bottom:env(safe-area-inset-bottom);visibility:hidden;pointer-events:none;";
-    document.body.appendChild(probe);
-    cachedSafe = probe.offsetHeight || 0;
-    probe.remove();
-    return cachedSafe;
-  }
-
-  function insetBox() {
-    var vw = document.documentElement.clientWidth || window.innerWidth;
-    var vh = window.innerHeight;
-    var mobile = vw <= 860;
-    var gap = mobile ? 10 : 24;
-    var width;
-    var height;
-    if (mobile) {
-      width = Math.max(160, vw - gap * 2);
-      height = vh < 520 ? 156 : 184;
-    } else {
-      width = Math.min(560, Math.max(460, Math.round(vw * 0.36)));
-      height = Math.round(width * 0.66);
-    }
-    var safe = mobile ? safeBottom() : 0;
+  function viewportMetrics() {
     return {
-      mobile: mobile,
-      gap: gap,
-      safe: safe,
-      top: Math.max(0, Math.round(vh - height - gap - safe)),
-      left: Math.max(gap, Math.round(vw - width - gap)),
-      width: width,
-      height: height,
-      header: 32,
-      footer: mobile ? 44 : 0
+      vw: document.documentElement.clientWidth || window.innerWidth,
+      vh: window.innerHeight
     };
   }
 
-  function applyBox(box) {
-    viewport.style.top = box.top + "px";
-    viewport.style.left = box.left + "px";
-    viewport.style.width = box.width + "px";
-    viewport.style.height = box.height + "px";
-  }
-
-  function fitStage(box) {
-    var pad = 10;
-    var innerW = box.width - pad * 2;
-    var innerH = box.height - box.header - box.footer - pad;
-    if (innerW < 40 || innerH < 40) return;
-    var scale = Math.min(innerW / 1200, innerH / 740);
-    var tx = (box.width - 1200 * scale) / 2;
-    var availH = box.height - box.header - box.footer;
-    var ty = box.header + Math.max(0, (availH - 740 * scale) / 2);
-    stage.style.transform = "translate(" + tx.toFixed(1) + "px," + ty.toFixed(1) + "px) scale(" + scale.toFixed(4) + ")";
-  }
-
-  function snapStage(fn) {
-    stage.style.transition = "none";
-    fn();
-    void stage.offsetWidth;
-    stage.style.transition = "";
+  function insetBox() {
+    var m = viewportMetrics();
+    return cam.insetBox(m.vw, m.vh);
   }
 
   function layoutPage(box) {
     if (!pageMode) return;
-    box = box || insetBox();
-    var root = document.documentElement.style;
-    root.setProperty("--inset-w", box.width + "px");
-    root.setProperty("--inset-gap", box.gap + "px");
-    if (box.mobile) {
-      var h = persistTitle ? persistTitle.offsetHeight : 64;
-      root.setProperty("--page-top", h + "px");
-      root.setProperty("--inset-stack", (box.height + box.gap + box.safe + 8) + "px");
-    } else {
-      root.removeProperty("--page-top");
-      root.removeProperty("--inset-stack");
+    cam.layoutPage(box || insetBox());
+  }
+
+  function cancelMorph() {
+    if (!morphLock && !viewport.classList.contains("is-animating")) return;
+    if (animTimer) {
+      clearTimeout(animTimer);
+      animTimer = null;
     }
+    if (settleEnd) {
+      viewport.removeEventListener("transitionend", settleEnd);
+      settleEnd = null;
+    }
+    morphLock = false;
+    viewport.classList.remove("is-animating");
   }
 
-  function clearPageVars() {
-    var root = document.documentElement.style;
-    root.removeProperty("--page-top");
-    root.removeProperty("--inset-stack");
-    root.removeProperty("--inset-w");
-    root.removeProperty("--inset-gap");
-  }
-
-  function settleAnim() {
+  function settleAnim(onDone) {
     if (animTimer) clearTimeout(animTimer);
-    animTimer = setTimeout(function () {
+    if (settleEnd) {
+      viewport.removeEventListener("transitionend", settleEnd);
+      settleEnd = null;
+    }
+    var finished = false;
+    function done() {
+      if (finished) return;
+      finished = true;
+      morphLock = false;
       viewport.classList.remove("is-animating");
       animTimer = null;
-    }, 940);
+      settleEnd = null;
+      if (onDone) onDone();
+    }
+    function onEnd(e) {
+      if (e.target !== viewport) return;
+      if (e.propertyName !== "width" && e.propertyName !== "height") return;
+      done();
+    }
+    settleEnd = onEnd;
+    viewport.addEventListener("transitionend", onEnd);
+    animTimer = setTimeout(done, MORPH_MS + 120);
   }
 
   function writeHash(hash, push) {
@@ -305,24 +215,40 @@
     var from = index;
     var moved = i !== index;
     index = i;
+    if (pageMode) {
+      show(i);
+      if (writeHistory !== false) writeHash(HASH[i], !!animate);
+      if (moved) {
+        travel(from, i);
+        scope.setTrace(i);
+      }
+      scrollPageTop();
+      return;
+    }
+    if (morphLock) cancelMorph();
     pageMode = true;
     document.body.classList.remove("circuit-on");
     document.body.classList.add("page-mode");
     syncSkip();
     var motion = !!animate && !reduce.matches;
-    if (motion) {
-      viewport.classList.add("is-animating");
-      void viewport.offsetWidth;
-    }
     var box = insetBox();
     if (motion) {
-      applyBox(box);
-      fitStage(box);
-      settleAnim();
+      morphLock = true;
+      if (animTimer) clearTimeout(animTimer);
+      viewport.classList.remove("is-animating");
+      cam.snapStage(function () { cam.fitStage(box); });
+      viewport.classList.add("is-animating");
+      void viewport.offsetWidth;
+      cam.applyBox(viewport, box);
+      settleAnim(function () {
+        var next = insetBox();
+        cam.snapStage(function () { cam.fitStage(next); });
+        layoutPage(next);
+      });
     } else {
-      snapStage(function () {
-        applyBox(box);
-        fitStage(box);
+      cam.snapStage(function () {
+        cam.applyBox(viewport, box);
+        cam.fitStage(box);
       });
     }
     layoutPage(box);
@@ -332,7 +258,7 @@
     if (navHint) navHint.classList.add("is-hidden");
     if (moved) {
       travel(from, i);
-      setTrace(i);
+      scope.setTrace(i);
     }
     scrollPageTop();
     focusIfLost(insetHome);
@@ -340,40 +266,41 @@
       if (!pageMode) return;
       var next = insetBox();
       layoutPage(next);
-      if (!motion) snapStage(function () { fitStage(next); });
+      if (!motion) cam.snapStage(function () { cam.fitStage(next); });
       scrollPageTop();
     });
   }
 
   function enterCircuit(animate, writeHistory) {
     if (!pageMode) return;
+    if (morphLock) cancelMorph();
     pageMode = false;
     document.body.classList.add("circuit-on");
     document.body.classList.remove("page-mode");
-    clearPageVars();
+    cam.clearPageVars();
     syncSkip();
     if (writeHistory !== false) writeHash("", !!animate);
     var motion = !!animate && !reduce.matches;
     if (motion) {
+      morphLock = true;
+      if (animTimer) clearTimeout(animTimer);
+      viewport.classList.remove("is-animating");
+      cam.snapStage(function () { frame(index); });
       viewport.classList.add("is-animating");
       void viewport.offsetWidth;
-      viewport.style.top = "0";
-      viewport.style.left = "0";
-      viewport.style.width = "100%";
-      viewport.style.height = "100%";
-      frame(index);
-      settleAnim();
+      cam.applyFull(viewport);
+      settleAnim(function () {
+        cam.snapStage(function () { frame(index); });
+        scope.draw();
+      });
     } else {
       viewport.classList.remove("is-animating");
-      snapStage(function () {
-        viewport.style.top = "0";
-        viewport.style.left = "0";
-        viewport.style.width = "100%";
-        viewport.style.height = "100%";
+      cam.snapStage(function () {
+        cam.applyFull(viewport);
         frame(index);
       });
+      scope.draw();
     }
-    requestAnimationFrame(function () { drawScope(); });
     var hot = document.querySelector('.hotspot[data-i="' + index + '"]');
     focusIfLost(hot);
   }
@@ -381,7 +308,7 @@
   function resolveHash(hash) {
     var raw = (hash || "").replace(/^#/, "");
     if (!raw || raw === "circuit") return -1;
-    var legacy = ["current", "charge", "leak", "threshold", "spike", "synapse", "highlights"];
+    var legacy = CFG.LEGACY_HASH;
     var start = HASH.indexOf(raw);
     if (start < 0) start = Math.min(5, legacy.indexOf(raw));
     if (raw === "highlights") start = 4;
@@ -431,157 +358,6 @@
     requestAnimationFrame(tick);
   }
 
-  function pushCurve(pts, a, b, n, pow) {
-    var p = pow || 1;
-    for (var i = 1; i <= n; i++) {
-      var t = i / n;
-      var eased = p > 0 ? 1 - Math.pow(1 - t, p) : Math.pow(t, -p);
-      pts.push(a + (b - a) * eased);
-    }
-  }
-
-  function buildTraces() {
-    var pts = [-65];
-    var stops = [];
-
-    // 01 · About (I(t)): Resting membrane potential V_rest = -65 mV
-    pushCurve(pts, -65, -65, 12, 1);
-    stops.push(pts.length);
-
-    // 02 · Experience (C): Exponential RC charging toward -55 mV
-    pushCurve(pts, -65, -55, 18, 2.2);
-    stops.push(pts.length);
-
-    // 03 · Skills (R): Subthreshold leak decay toward V_rest (-58 mV)
-    pushCurve(pts, -55, -58, 14, 1.8);
-    stops.push(pts.length);
-
-    // 04 · Projects (V >= V_th): Depolarization reaches threshold V_th = -50 mV
-    pushCurve(pts, -58, -50, 14, 1.5);
-    stops.push(pts.length);
-
-    // 05 · Highlights (Spike): Rapid action potential upstroke to +30 mV peak
-    pushCurve(pts, -50, 30, 8, -2.2);
-    stops.push(pts.length);
-
-    // 06 · Contact (Synapses): Repolarization & reset to V_reset = -70 mV
-    pushCurve(pts, 30, -72, 9, 1.6);
-    pushCurve(pts, -72, -70, 9, 1.5);
-    stops.push(pts.length);
-
-    return { pts: pts, stops: stops };
-  }
-
-  function formatMv(v) {
-    var rounded = Math.round(v);
-    if (rounded < 0) return "−" + Math.abs(rounded) + " mV";
-    if (rounded > 0) return "+" + rounded + " mV";
-    return "0 mV";
-  }
-
-  function drawScope() {
-    var w = canvas.clientWidth;
-    var h = canvas.clientHeight;
-    if (!w || !h) return;
-    var dpr = Math.min(2, window.devicePixelRatio || 1);
-    canvas.width = Math.max(1, Math.floor(w * dpr));
-    canvas.height = Math.max(1, Math.floor(h * dpr));
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, w, h);
-    var top = 42;
-    var bot = -80;
-    function yOf(v) {
-      return 7 + ((top - v) / (top - bot)) * (h - 14);
-    }
-    ctx.strokeStyle = "rgba(20,19,17,0.18)";
-    ctx.lineWidth = 1;
-    ctx.setLineDash([3, 3]);
-    [-50, -65].forEach(function (v) {
-      ctx.beginPath();
-      ctx.moveTo(0, yOf(v));
-      ctx.lineTo(w, yOf(v));
-      ctx.stroke();
-    });
-    ctx.setLineDash([]);
-
-    var total = FULL_TRACE.length;
-    var count = Math.max(2, Math.min(total, Math.round(reveal)));
-    function xOf(idx) {
-      return (idx / (total - 1)) * (w - 14) + 7;
-    }
-
-    ctx.beginPath();
-    for (var i = 0; i < count; i++) {
-      var x = xOf(i);
-      var y = yOf(FULL_TRACE[i]);
-      if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.strokeStyle = "#141311";
-    ctx.lineWidth = 1.65;
-    ctx.lineJoin = "round";
-    ctx.stroke();
-
-    // Highlight suprathreshold action potential segment (V >= -50 mV) in spike red
-    var spikeStart = TRACE_STOP[3] - 1;
-    var spikeEnd = -1;
-    for (var k = spikeStart; k < count; k++) {
-      if (FULL_TRACE[k] >= -50) spikeEnd = k;
-      else if (spikeEnd >= spikeStart) {
-        spikeEnd = k;
-        break;
-      }
-    }
-    if (spikeEnd > spikeStart) {
-      ctx.beginPath();
-      for (var s = spikeStart; s <= spikeEnd; s++) {
-        var sx = xOf(s);
-        var sy = yOf(FULL_TRACE[s]);
-        if (s === spikeStart) ctx.moveTo(sx, sy);
-        else ctx.lineTo(sx, sy);
-      }
-      ctx.strokeStyle = "#b42318";
-      ctx.lineWidth = 2.1;
-      ctx.lineJoin = "round";
-      ctx.stroke();
-    }
-
-    var last = FULL_TRACE[count - 1];
-    var headX = xOf(count - 1);
-    var headY = yOf(last);
-    ctx.beginPath();
-    ctx.arc(headX, headY, 2.8, 0, Math.PI * 2);
-    ctx.fillStyle = last >= -50 ? "#b42318" : "#141311";
-    ctx.fill();
-
-    vread.textContent = formatMv(last);
-    canvas.setAttribute(
-      "aria-label",
-      "Membrane voltage trace, currently " + formatMv(last) + (last >= -50 ? ", at or above threshold" : ", below threshold")
-    );
-  }
-
-  function setTrace(i) {
-    var target = TRACE_STOP[i];
-    var my = ++traceToken;
-    if (reduce.matches || Math.abs(reveal - target) < 0.5) {
-      reveal = target;
-      drawScope();
-      return;
-    }
-    var start = reveal;
-    var t0 = performance.now();
-    function step(now) {
-      if (my !== traceToken) return;
-      var t = Math.min(1, (now - t0) / 760);
-      var ease = 0.5 - 0.5 * Math.cos(Math.PI * t);
-      reveal = start + (target - start) * ease;
-      drawScope();
-      if (t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
   function triggerResetSwitch() {
     if (!symReset || !resetBlade) return;
     if (resetTimer) clearTimeout(resetTimer);
@@ -598,8 +374,8 @@
     if (index !== 0) {
       go(0);
     } else {
-      reveal = TRACE_STOP[1];
-      setTrace(0);
+      scope.setReveal(TRACE_STOP[1]);
+      scope.setTrace(0);
     }
   }
 
@@ -620,7 +396,7 @@
     frame(i);
     show(i);
     travel(from, i);
-    setTrace(i);
+    scope.setTrace(i);
     sections.scrollTop = 0;
   }
 
@@ -763,7 +539,6 @@
   buildMinimap();
   buildJumps();
 
-  var persistTitle = document.querySelector(".persist");
   if (persistTitle) {
     persistTitle.style.cursor = "pointer";
     persistTitle.addEventListener("click", function () {
@@ -875,15 +650,15 @@
   window.addEventListener("resize", function () {
     if (pageMode) {
       var box = insetBox();
-      snapStage(function () {
-        applyBox(box);
-        fitStage(box);
+      cam.snapStage(function () {
+        cam.applyBox(viewport, box);
+        cam.fitStage(box);
       });
       layoutPage(box);
     } else {
       frame(index);
     }
-    drawScope();
+    scope.draw();
   });
   window.addEventListener("hashchange", function () {
     var next = resolveHash(location.hash);
@@ -899,10 +674,10 @@
       if (pageMode) {
         var box = insetBox();
         layoutPage(box);
-        snapStage(function () { fitStage(box); });
+        cam.snapStage(function () { cam.fitStage(box); });
       } else {
         frame(index);
-        drawScope();
+        scope.draw();
       }
     });
   }
@@ -911,7 +686,7 @@
   if (start >= 0) {
     index = start;
     placeSpike(MAP[index]);
-    reveal = TRACE_STOP[index];
+    scope.setReveal(TRACE_STOP[index]);
     enterPage(start, false);
   } else {
     document.body.classList.add("circuit-on");
@@ -920,15 +695,15 @@
     placeSpike(MAP[0]);
     frame(0);
     show(0);
-    reveal = TRACE_STOP[0];
+    scope.setReveal(TRACE_STOP[0]);
   }
   app.hidden = false;
-  drawScope();
+  scope.draw();
   if (pageMode) {
     requestAnimationFrame(function () {
       var box = insetBox();
       layoutPage(box);
-      snapStage(function () { fitStage(box); });
+      cam.snapStage(function () { cam.fitStage(box); });
     });
   }
 })();
