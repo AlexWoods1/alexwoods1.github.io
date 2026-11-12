@@ -57,6 +57,9 @@
   var pageMode = false;
   var trip = 0;
   var animTimer = null;
+  var morphLock = false;
+  var settleEnd = null;
+  var MORPH_MS = 720;
   var cachedSafe = null;
   var reveal = TRACE_STOP[0];
   var traceToken = 0;
@@ -205,6 +208,13 @@
     viewport.style.height = box.height + "px";
   }
 
+  function applyFull() {
+    viewport.style.top = "0";
+    viewport.style.left = "0";
+    viewport.style.width = "100%";
+    viewport.style.height = "100%";
+  }
+
   function fitStage(box) {
     var pad = 10;
     var innerW = box.width - pad * 2;
@@ -218,10 +228,12 @@
   }
 
   function snapStage(fn) {
-    stage.style.transition = "none";
+    stage.classList.add("is-morphing");
     fn();
     void stage.offsetWidth;
-    stage.style.transition = "";
+    requestAnimationFrame(function () {
+      stage.classList.remove("is-morphing");
+    });
   }
 
   function layoutPage(box) {
@@ -248,12 +260,44 @@
     root.removeProperty("--inset-gap");
   }
 
-  function settleAnim() {
+  function cancelMorph() {
+    if (!morphLock && !viewport.classList.contains("is-animating")) return;
+    if (animTimer) {
+      clearTimeout(animTimer);
+      animTimer = null;
+    }
+    if (settleEnd) {
+      viewport.removeEventListener("transitionend", settleEnd);
+      settleEnd = null;
+    }
+    morphLock = false;
+    viewport.classList.remove("is-animating");
+  }
+
+  function settleAnim(onDone) {
     if (animTimer) clearTimeout(animTimer);
-    animTimer = setTimeout(function () {
+    if (settleEnd) {
+      viewport.removeEventListener("transitionend", settleEnd);
+      settleEnd = null;
+    }
+    var finished = false;
+    function done() {
+      if (finished) return;
+      finished = true;
+      morphLock = false;
       viewport.classList.remove("is-animating");
       animTimer = null;
-    }, 940);
+      settleEnd = null;
+      if (onDone) onDone();
+    }
+    function onEnd(e) {
+      if (e.target !== viewport) return;
+      if (e.propertyName !== "width" && e.propertyName !== "height") return;
+      done();
+    }
+    settleEnd = onEnd;
+    viewport.addEventListener("transitionend", onEnd);
+    animTimer = setTimeout(done, MORPH_MS + 120);
   }
 
   function writeHash(hash, push) {
@@ -305,20 +349,35 @@
     var from = index;
     var moved = i !== index;
     index = i;
+    if (pageMode) {
+      show(i);
+      if (writeHistory !== false) writeHash(HASH[i], !!animate);
+      if (moved) {
+        travel(from, i);
+        setTrace(i);
+      }
+      scrollPageTop();
+      return;
+    }
+    if (morphLock) cancelMorph();
     pageMode = true;
     document.body.classList.remove("circuit-on");
     document.body.classList.add("page-mode");
     syncSkip();
     var motion = !!animate && !reduce.matches;
-    if (motion) {
-      viewport.classList.add("is-animating");
-      void viewport.offsetWidth;
-    }
     var box = insetBox();
     if (motion) {
+      morphLock = true;
+      viewport.classList.remove("is-animating");
+      snapStage(function () { fitStage(box); });
+      viewport.classList.add("is-animating");
+      void viewport.offsetWidth;
       applyBox(box);
-      fitStage(box);
-      settleAnim();
+      settleAnim(function () {
+        var next = insetBox();
+        snapStage(function () { fitStage(next); });
+        layoutPage(next);
+      });
     } else {
       snapStage(function () {
         applyBox(box);
@@ -347,6 +406,7 @@
 
   function enterCircuit(animate, writeHistory) {
     if (!pageMode) return;
+    if (morphLock) cancelMorph();
     pageMode = false;
     document.body.classList.add("circuit-on");
     document.body.classList.remove("page-mode");
@@ -355,25 +415,24 @@
     if (writeHistory !== false) writeHash("", !!animate);
     var motion = !!animate && !reduce.matches;
     if (motion) {
+      morphLock = true;
+      viewport.classList.remove("is-animating");
+      snapStage(function () { frame(index); });
       viewport.classList.add("is-animating");
       void viewport.offsetWidth;
-      viewport.style.top = "0";
-      viewport.style.left = "0";
-      viewport.style.width = "100%";
-      viewport.style.height = "100%";
-      frame(index);
-      settleAnim();
+      applyFull();
+      settleAnim(function () {
+        snapStage(function () { frame(index); });
+        drawScope();
+      });
     } else {
       viewport.classList.remove("is-animating");
       snapStage(function () {
-        viewport.style.top = "0";
-        viewport.style.left = "0";
-        viewport.style.width = "100%";
-        viewport.style.height = "100%";
+        applyFull();
         frame(index);
       });
+      drawScope();
     }
-    requestAnimationFrame(function () { drawScope(); });
     var hot = document.querySelector('.hotspot[data-i="' + index + '"]');
     focusIfLost(hot);
   }
