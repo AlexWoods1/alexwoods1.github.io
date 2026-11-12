@@ -551,6 +551,7 @@ body.page-chrome-exit .viewport.is-animating {
   border-radius: 50%;
   background: var(--spike);
   box-shadow: 0 0 0 7px var(--spike-glow), 0 0 18px var(--phosphor-glow);
+  transform: translateZ(0);
   z-index: 3;
   pointer-events: none;
   transition:

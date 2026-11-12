@@ -653,13 +653,91 @@ async function testMidFlightReversalAndContactClean({ browser, baseUrl }) {
   await page.close();
 }
 
+/**
+ * Test 7: Clicking circuit hotspots/symbols followed by Arrow-key navigation never leaves a stale
+ * red :focus-visible ring or .is-hover highlight on a previous node, while preserving Tab focus sync.
+ */
+async function testNoStaleHotspotFocusCircleOnArrowNav({ browser, baseUrl }) {
+  const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+  await page.goto(`${baseUrl}/#experience`, { waitUntil: "networkidle" });
+  await waitForPageMode(page);
+  await page.waitForTimeout(300);
+
+  // 1. Click hotspot[0] (01 · About) with mouse, move mouse off minimap, then press ArrowRight twice
+  await page.locator('.hotspot[data-i="0"]').click();
+  await page.mouse.move(120, 120);
+  await page.waitForTimeout(700);
+  await page.keyboard.press("ArrowRight");
+  await page.waitForTimeout(650);
+  await page.keyboard.press("ArrowRight");
+  await page.waitForTimeout(650);
+
+  const afterMouseThenArrows = await page.evaluate(() => {
+    const focusVisHotspots = Array.from(document.querySelectorAll(".hotspot")).filter((el) =>
+      el.matches(":focus-visible")
+    );
+    const hoverSyms = Array.from(document.querySelectorAll(".sym.is-hover")).map((el) => el.id);
+    const hotSyms = Array.from(document.querySelectorAll(".sym.is-hot")).map((el) => el.id);
+    return {
+      focusVisCount: focusVisHotspots.length,
+      hoverSyms,
+      hotSyms
+    };
+  });
+
+  assert(
+    afterMouseThenArrows.focusVisCount === 0,
+    `Stale :focus-visible circle left on hotspot after mouse click + ArrowRight: ${JSON.stringify(afterMouseThenArrows)}`
+  );
+  assert(
+    afterMouseThenArrows.hoverSyms.length === 0,
+    `Stale .is-hover highlight left on symbol after mouse click + ArrowRight: ${JSON.stringify(afterMouseThenArrows)}`
+  );
+  assert(
+    afterMouseThenArrows.hotSyms.length === 1 && afterMouseThenArrows.hotSyms[0] === "sym-2",
+    `Expected only sym-2 hot, got ${JSON.stringify(afterMouseThenArrows.hotSyms)}`
+  );
+
+  // 2. Keyboard Tab focus on hotspot[2]: pressing ArrowRight moves focus to hotspot[3] (never stranded on 2),
+  //    and subsequent mouse click on hotspot[5] clears keyboard focus ring immediately.
+  await page.keyboard.press("Tab");
+  await page.evaluate(() => document.querySelector('.hotspot[data-i="2"]').focus());
+  await page.keyboard.press("ArrowRight");
+  await page.waitForTimeout(650);
+
+  const afterKbArrow = await page.evaluate(() => ({
+    activeDataI: document.activeElement?.dataset?.i || null,
+    staleOn2: document.querySelector('.hotspot[data-i="2"]').matches(":focus-visible")
+  }));
+  assert(
+    afterKbArrow.activeDataI === "3" && !afterKbArrow.staleOn2,
+    `Keyboard focus should follow active hotspot 3 instead of staying on 2: ${JSON.stringify(afterKbArrow)}`
+  );
+
+  await page.locator('.hotspot[data-i="5"]').click();
+  await page.mouse.move(120, 120);
+  await page.waitForTimeout(700);
+  const afterReturnToMouse = await page.evaluate(() => ({
+    focusVisCount: Array.from(document.querySelectorAll(".hotspot")).filter((el) => el.matches(":focus-visible")).length,
+    hoverSyms: Array.from(document.querySelectorAll(".sym.is-hover")).map((el) => el.id),
+    hotSyms: Array.from(document.querySelectorAll(".sym.is-hot")).map((el) => el.id)
+  }));
+  assert(
+    afterReturnToMouse.focusVisCount === 0 && afterReturnToMouse.hoverSyms.length === 0 && afterReturnToMouse.hotSyms[0] === "sym-5",
+    `Returning to mouse click left stale focus/hover state: ${JSON.stringify(afterReturnToMouse)}`
+  );
+
+  await page.close();
+}
+
 export const tests = [
   ["R3.1: Circuit to page smooth transition (no jump cuts/NaNs)", testCircuitToPageSmoothTransition],
   ["R3.2: Page to circuit smooth transition (restore zoom/position)", testPageToCircuitSmoothTransition],
   ["R3.3: Bidirectional 6-symbol synchronization in page mode", testBidirectionalSymbolSynchronization],
   ["R3.4: Mobile jumps bidirectional synchronization", testMobileJumpsSync],
   ["R3.5: Minimap frame chrome, stage scale & scrollbar sync", testMinimapFrameAndStageSync],
-  ["R3.6: Mid-flight reversal, mid-morph resize & Contact image removal", testMidFlightReversalAndContactClean]
+  ["R3.6: Mid-flight reversal, mid-morph resize & Contact image removal", testMidFlightReversalAndContactClean],
+  ["R3.7: No stale red hotspot circle on click + Arrow navigation", testNoStaleHotspotFocusCircleOnArrowNav]
 ];
 
 // CLI execution support

@@ -57,6 +57,26 @@
   var wheelLock = 0;
   var resetTimer = null;
   var lastTapTime = 0;
+  var lastInputWasKeyboard = false;
+
+  function canFineHover() {
+    return !!(window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches);
+  }
+
+  function preventPointerFocus(el) {
+    if (!el) return;
+    el.addEventListener("mousedown", function (e) {
+      e.preventDefault();
+    });
+  }
+
+  function clearStaleControlFocus() {
+    var active = document.activeElement;
+    if (!active || !active.closest) return;
+    if (active.closest(".hotspot, #inset-home, .inset-jump, #minimap, .controls")) {
+      active.blur();
+    }
+  }
 
   // Unified Transition Controller
   var transition = {
@@ -414,10 +434,48 @@
   }
 
   function syncNavIndicators(i) {
-    for (var s = 0; s < MAP.length; s++) {
-      if (symEls[s]) symEls[s].classList.toggle("is-hot", s === i);
-    }
+    var active = document.activeElement;
     var buttons = minimap.querySelectorAll("button");
+    var jumps = insetJumps ? insetJumps.querySelectorAll("button") : [];
+
+    if (active && active !== document.body && active !== document.documentElement) {
+      var hotIdx = hotspotEls.indexOf(active);
+      if (hotIdx >= 0 && hotIdx !== i) {
+        if (lastInputWasKeyboard && hotspotEls[i]) hotspotEls[i].focus({ preventScroll: true });
+        else active.blur();
+      } else if (active === resetBtn) {
+        if (lastInputWasKeyboard && !pageMode && hotspotEls[i]) hotspotEls[i].focus({ preventScroll: true });
+        else active.blur();
+      } else if (minimap && minimap.contains(active) && active !== buttons[i]) {
+        if (lastInputWasKeyboard && buttons[i]) buttons[i].focus({ preventScroll: true });
+        else active.blur();
+      } else if (insetJumps && insetJumps.contains(active) && active !== jumps[i]) {
+        if (lastInputWasKeyboard && jumps[i]) jumps[i].focus({ preventScroll: true });
+        else active.blur();
+      }
+      active = document.activeElement;
+    }
+
+    var fineHover = canFineHover() && !lastInputWasKeyboard;
+    for (var s = 0; s < MAP.length; s++) {
+      if (!symEls[s]) continue;
+      symEls[s].classList.toggle("is-hot", s === i);
+      var keepHover =
+        (lastInputWasKeyboard && active === hotspotEls[s]) ||
+        (fineHover && (
+          (hotspotEls[s] && hotspotEls[s].matches(":hover")) ||
+          symEls[s].matches(":hover")
+        ));
+      if (!keepHover) symEls[s].classList.remove("is-hover");
+    }
+    if (
+      symReset &&
+      !(lastInputWasKeyboard && active === resetBtn) &&
+      !(fineHover && ((resetBtn && resetBtn.matches(":hover")) || symReset.matches(":hover")))
+    ) {
+      symReset.classList.remove("is-hover");
+    }
+
     for (var b = 0; b < buttons.length; b++) {
       if (b === i) buttons[b].setAttribute("aria-current", "true");
       else buttons[b].removeAttribute("aria-current");
@@ -649,6 +707,7 @@
           frame(index);
         });
         scope.draw();
+        focusIfLost(hotspotEls[index]);
       });
     } else {
       leavePageMode();
@@ -780,6 +839,7 @@
       var btn = document.createElement("button");
       btn.type = "button";
       btn.textContent = "0" + (i + 1) + " " + name;
+      preventPointerFocus(btn);
       btn.addEventListener("click", function () { enterPage(i, true); });
       minimap.appendChild(btn);
     });
@@ -792,12 +852,13 @@
       btn.className = "inset-jump";
       btn.textContent = "0" + (i + 1);
       btn.setAttribute("aria-label", "0" + (i + 1) + " " + name);
+      preventPointerFocus(btn);
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
         enterPage(i, true);
       });
-      btn.addEventListener("mouseenter", function () { setCaption(i); });
-      btn.addEventListener("focus", function () { setCaption(i); });
+      btn.addEventListener("mouseenter", function () { if (canFineHover()) setCaption(i); });
+      btn.addEventListener("focus", function () { if (lastInputWasKeyboard) setCaption(i); });
       btn.addEventListener("mouseleave", function () { setCaption(index); });
       btn.addEventListener("blur", function () { setCaption(index); });
       insetJumps.appendChild(btn);
@@ -888,7 +949,7 @@
       if (startEl && startEl.closest && startEl.closest("#sections, .persist, .inset-jumps")) return;
       if (!startEl || !viewport.contains(startEl)) return;
       if (Math.abs(dx) > 22 || Math.abs(dy) > 22) return;
-      if (startEl.closest && startEl.closest(".inset-home, .inset-jump, .hotspot")) return;
+      if (startEl.closest && startEl.closest(".inset-home, .inset-jump, .hotspot, .sym")) return;
       handleStageTap(x, y);
       return;
     }
@@ -920,7 +981,18 @@
       });
     }
 
+    document.addEventListener("mousedown", function () {
+      lastInputWasKeyboard = false;
+      clearStaleControlFocus();
+    }, true);
+
+    document.addEventListener("touchstart", function () {
+      lastInputWasKeyboard = false;
+      clearStaleControlFocus();
+    }, { capture: true, passive: true });
+
     if (insetHome) {
+      preventPointerFocus(insetHome);
       insetHome.addEventListener("click", function (e) {
         e.stopPropagation();
         enterCircuit(true);
@@ -937,25 +1009,32 @@
     hotspotEls.forEach(function (btn) {
       var idx = Number(btn.dataset.i);
       var sym = symEls[idx];
+      preventPointerFocus(btn);
       btn.addEventListener("click", function (e) {
         e.stopPropagation();
         if (isTapThrottled()) return;
         toggleSectionOrCircuit(idx);
       });
       btn.addEventListener("mouseenter", function () {
+        if (!canFineHover()) return;
         if (sym) sym.classList.add("is-hover");
         if (pageMode) setCaption(idx);
       });
       btn.addEventListener("mouseleave", function () {
-        if (sym) sym.classList.remove("is-hover");
+        if (sym && !(lastInputWasKeyboard && document.activeElement === btn)) {
+          sym.classList.remove("is-hover");
+        }
         if (pageMode) setCaption(index);
       });
       btn.addEventListener("focus", function () {
-        if (sym) sym.classList.add("is-hover");
-        if (pageMode) setCaption(idx);
+        var visible = lastInputWasKeyboard || (btn.matches && btn.matches(":focus-visible"));
+        if (visible && sym) sym.classList.add("is-hover");
+        if (visible && pageMode) setCaption(idx);
       });
       btn.addEventListener("blur", function () {
-        if (sym) sym.classList.remove("is-hover");
+        if (sym && !(canFineHover() && (btn.matches(":hover") || sym.matches(":hover")))) {
+          sym.classList.remove("is-hover");
+        }
         if (pageMode) setCaption(index);
       });
       if (sym) {
@@ -964,22 +1043,36 @@
           if (isTapThrottled()) return;
           toggleSectionOrCircuit(idx);
         });
-        sym.addEventListener("mouseenter", function () { sym.classList.add("is-hover"); });
-        sym.addEventListener("mouseleave", function () { sym.classList.remove("is-hover"); });
+        sym.addEventListener("mouseenter", function () {
+          if (canFineHover()) sym.classList.add("is-hover");
+        });
+        sym.addEventListener("mouseleave", function () {
+          if (!(lastInputWasKeyboard && document.activeElement === btn)) {
+            sym.classList.remove("is-hover");
+          }
+        });
       }
     });
 
     if (resetBtn && symReset) {
+      preventPointerFocus(resetBtn);
       resetBtn.addEventListener("click", function (e) {
         e.stopPropagation();
         if (isTapThrottled()) return;
         hideNavHint();
         if (!pageMode) resetMembrane();
       });
-      resetBtn.addEventListener("mouseenter", function () { symReset.classList.add("is-hover"); });
-      resetBtn.addEventListener("mouseleave", function () { symReset.classList.remove("is-hover"); });
+      resetBtn.addEventListener("mouseenter", function () {
+        if (canFineHover()) symReset.classList.add("is-hover");
+      });
+      resetBtn.addEventListener("mouseleave", function () {
+        if (!(lastInputWasKeyboard && document.activeElement === resetBtn)) {
+          symReset.classList.remove("is-hover");
+        }
+      });
       resetBtn.addEventListener("focus", function () {
-        symReset.classList.add("is-hover");
+        var visible = lastInputWasKeyboard || (resetBtn.matches && resetBtn.matches(":focus-visible"));
+        if (visible) symReset.classList.add("is-hover");
         hideNavHint();
       });
       resetBtn.addEventListener("blur", function () { symReset.classList.remove("is-hover"); });
@@ -989,10 +1082,18 @@
         if (pageMode) enterCircuit(true);
         else resetMembrane();
       });
-      symReset.addEventListener("mouseenter", function () { symReset.classList.add("is-hover"); });
-      symReset.addEventListener("mouseleave", function () { symReset.classList.remove("is-hover"); });
+      symReset.addEventListener("mouseenter", function () {
+        if (canFineHover()) symReset.classList.add("is-hover");
+      });
+      symReset.addEventListener("mouseleave", function () {
+        if (!(lastInputWasKeyboard && document.activeElement === resetBtn)) {
+          symReset.classList.remove("is-hover");
+        }
+      });
     }
 
+    preventPointerFocus(prevBtn);
+    preventPointerFocus(nextBtn);
     prevBtn.addEventListener("click", function () { go(index - 1); });
     nextBtn.addEventListener("click", function () { go(index + 1); });
 
@@ -1029,6 +1130,20 @@
       if (lightbox && lightbox.open) return;
       var tag = e.target && e.target.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (
+        e.key === "Tab" ||
+        e.key === "ArrowRight" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "Home" ||
+        e.key === "End" ||
+        e.key === "Enter" ||
+        e.key === "Escape" ||
+        e.key === " "
+      ) {
+        lastInputWasKeyboard = true;
+      }
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         e.preventDefault();
         go(index + 1);
