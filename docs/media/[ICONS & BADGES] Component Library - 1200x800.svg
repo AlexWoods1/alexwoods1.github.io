@@ -3,9 +3,9 @@
   <defs>
     <style>
   @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
-  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
-  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
-  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+  .font-brand { font-family: 'Familjen Grotesk', 'Avenir Next', 'Segoe UI', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', 'Avenir Next', 'Segoe UI', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace; }
 </style>
     
     <pattern id="comp-grid" width="40" height="40" patternUnits="userSpaceOnUse">
