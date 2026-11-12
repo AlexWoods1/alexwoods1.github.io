@@ -34,6 +34,10 @@
   var navHint = document.getElementById("nav-hint");
   var skipLink = document.querySelector(".skip");
   var schematicEl = document.querySelector(".schematic");
+  var lightbox = document.getElementById("schematic-lightbox");
+  var lightboxImg = document.getElementById("schematic-lightbox-img");
+  var lightboxTitle = document.getElementById("schematic-lightbox-title");
+  var lightboxClose = document.getElementById("schematic-lightbox-close");
   var panelElements = sections.querySelectorAll("section");
   var hotspotEls = Array.prototype.slice.call(document.querySelectorAll(".hotspot[data-i]"));
   var symEls = MAP.map(function (_, s) { return document.getElementById("sym-" + s); });
@@ -815,7 +819,37 @@
     prevBtn.addEventListener("click", function () { go(index - 1); });
     nextBtn.addEventListener("click", function () { go(index + 1); });
 
+    if (lightbox && lightboxImg) {
+      sections.addEventListener("click", function (e) {
+        var zoomBtn = e.target.closest && e.target.closest(".schematic-zoom");
+        if (!zoomBtn) return;
+        var src = zoomBtn.getAttribute("data-schematic-src");
+        if (!src) return;
+        var innerImg = zoomBtn.querySelector("img");
+        lightboxImg.src = src;
+        lightboxImg.alt = innerImg ? innerImg.alt : "";
+        if (lightboxTitle) {
+          lightboxTitle.textContent = zoomBtn.getAttribute("data-schematic-title") || "Schematic";
+        }
+        if (typeof lightbox.showModal === "function") lightbox.showModal();
+        else lightbox.setAttribute("open", "");
+      });
+      if (lightboxClose) {
+        lightboxClose.addEventListener("click", function () {
+          if (typeof lightbox.close === "function") lightbox.close();
+          else lightbox.removeAttribute("open");
+        });
+      }
+      lightbox.addEventListener("click", function (e) {
+        if (e.target === lightbox) {
+          if (typeof lightbox.close === "function") lightbox.close();
+          else lightbox.removeAttribute("open");
+        }
+      });
+    }
+
     document.addEventListener("keydown", function (e) {
+      if (lightbox && lightbox.open) return;
       var tag = e.target && e.target.tagName;
       if (tag === "INPUT" || tag === "TEXTAREA") return;
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {

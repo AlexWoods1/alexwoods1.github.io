@@ -1237,9 +1237,115 @@ body.page-mode #sections section.is-on {
   }
 }
 
+/* Embedded Schematic Media & Lightbox */
+.schematic-card {
+  margin: 0.7rem 0 0.45rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.schematic-card--hero {
+  margin-top: 1.15rem;
+}
+
+.schematic-card--seal {
+  margin-top: 1.35rem;
+  max-width: 176px;
+}
+
+.schematic-zoom {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+  transition: transform 0.18s var(--ease-smooth);
+}
+
+.schematic-zoom:hover {
+  transform: translate(-1px, -1px);
+}
+
+.schematic-zoom img,
+.schematic-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.schematic-lightbox {
+  max-width: min(94vw, 1120px);
+  max-height: 90dvh;
+  width: fit-content;
+  margin: auto;
+  padding: 0;
+  border: 1.5px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.schematic-lightbox::backdrop {
+  background: rgba(20, 19, 17, 0.58);
+  backdrop-filter: blur(3px);
+}
+
+.schematic-lightbox-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.schematic-lightbox-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.schematic-lightbox-close {
+  flex: none;
+  min-height: 30px;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--ink);
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.schematic-lightbox-close:hover {
+  background: var(--spike);
+  border-color: var(--spike);
+  color: var(--paper);
+}
+
+.schematic-lightbox-body {
+  padding: 0.5rem;
+  overflow: auto;
+  max-height: calc(90dvh - 44px);
+}
+
+.schematic-lightbox-body img {
+  display: block;
+  max-width: min(90vw, 1080px);
+  max-height: calc(86dvh - 56px);
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+}
+
 /* Print Styles */
 @media print {
-  #app {
+  #app,
+  .schematic-lightbox {
     display: none !important;
   }
 
