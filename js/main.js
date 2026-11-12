@@ -8,6 +8,7 @@
   var NAMES = CFG.NAMES;
   var HASH = CFG.HASH;
   var MORPH_MS = CFG.MORPH_MS;
+  var PANEL_MS = 540;
 
   var app = document.getElementById("app");
   var stage = document.getElementById("stage");
@@ -67,10 +68,63 @@
     cam.frame(i, window.innerWidth, window.innerHeight);
   }
 
-  function show(i) {
+  function clearPanelMotion() {
     var panels = sections.querySelectorAll("section");
-    for (var p = 0; p < panels.length; p++) {
-      panels[p].classList.toggle("is-on", p === i);
+    var clear = [
+      "is-panel-active",
+      "panel-exit-left",
+      "panel-exit-right",
+      "panel-enter-left",
+      "panel-enter-right"
+    ];
+    for (var n = 0; n < panels.length; n++) {
+      for (var c = 0; c < clear.length; c++) {
+        panels[n].classList.remove(clear[c]);
+      }
+    }
+  }
+
+  function show(i, motion) {
+    var panels = sections.querySelectorAll("section");
+    var opts = motion || {};
+    var prevIdx = -1;
+    for (var q = 0; q < panels.length; q++) {
+      if (panels[q].classList.contains("is-on")) prevIdx = q;
+    }
+    var swap =
+      pageMode &&
+      opts.animate &&
+      !reduce.matches &&
+      typeof opts.from === "number" &&
+      prevIdx >= 0 &&
+      prevIdx !== i;
+    if (swap) {
+      var dir = i > opts.from ? 1 : -1;
+      var prev = panels[prevIdx];
+      var next = panels[i];
+      clearPanelMotion();
+      prev.classList.remove("is-on");
+      prev.classList.add("is-panel-active", dir > 0 ? "panel-exit-left" : "panel-exit-right");
+      next.classList.add("is-on", "is-panel-active", dir > 0 ? "panel-enter-right" : "panel-enter-left");
+      sections.style.minHeight = Math.max(prev.offsetHeight, next.offsetHeight) + "px";
+      void next.offsetWidth;
+      next.classList.remove(dir > 0 ? "panel-enter-right" : "panel-enter-left");
+      var ended = false;
+      function settle() {
+        if (ended) return;
+        ended = true;
+        sections.style.minHeight = "";
+        clearPanelMotion();
+      }
+      prev.addEventListener("transitionend", function (e) {
+        if (e.target === prev && (e.propertyName === "transform" || e.propertyName === "opacity")) settle();
+      });
+      setTimeout(settle, PANEL_MS + 80);
+    } else {
+      clearPanelMotion();
+      for (var p = 0; p < panels.length; p++) {
+        panels[p].classList.toggle("is-on", p === i);
+      }
     }
     for (var s = 0; s < MAP.length; s++) {
       var sym = document.getElementById("sym-" + s);
@@ -216,7 +270,7 @@
     var moved = i !== index;
     index = i;
     if (pageMode) {
-      show(i);
+      show(i, { animate: !!animate, from: from });
       if (writeHistory !== false) writeHash(HASH[i], !!animate);
       if (moved) {
         travel(from, i);
@@ -229,6 +283,11 @@
     pageMode = true;
     document.body.classList.remove("circuit-on");
     document.body.classList.add("page-mode");
+    if (animate && !reduce.matches) {
+      document.body.classList.add("page-chrome-enter");
+    } else {
+      document.body.classList.add("page-chrome-visible");
+    }
     syncSkip();
     var motion = !!animate && !reduce.matches;
     var box = insetBox();
@@ -252,7 +311,15 @@
       });
     }
     layoutPage(box);
-    show(i);
+    show(i, { animate: false, from: from });
+    if (motion) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          if (!pageMode) return;
+          document.body.classList.add("page-chrome-visible");
+        });
+      });
+    }
     if (writeHistory !== false) writeHash(HASH[i], !!animate);
     var navHint = document.getElementById("nav-hint");
     if (navHint) navHint.classList.add("is-hidden");
@@ -274,26 +341,37 @@
   function enterCircuit(animate, writeHistory) {
     if (!pageMode) return;
     if (morphLock) cancelMorph();
-    pageMode = false;
-    document.body.classList.add("circuit-on");
-    document.body.classList.remove("page-mode");
-    cam.clearPageVars();
-    syncSkip();
     if (writeHistory !== false) writeHash("", !!animate);
     var motion = !!animate && !reduce.matches;
+    function leavePageMode() {
+      pageMode = false;
+      document.body.classList.add("circuit-on");
+      document.body.classList.remove(
+        "page-mode",
+        "page-chrome-enter",
+        "page-chrome-visible",
+        "page-chrome-exit"
+      );
+      cam.clearPageVars();
+      syncSkip();
+    }
     if (motion) {
       morphLock = true;
       if (animTimer) clearTimeout(animTimer);
+      document.body.classList.add("page-chrome-exit");
+      document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
       viewport.classList.remove("is-animating");
       cam.snapStage(function () { frame(index); });
       viewport.classList.add("is-animating");
       void viewport.offsetWidth;
       cam.applyFull(viewport);
       settleAnim(function () {
+        leavePageMode();
         cam.snapStage(function () { frame(index); });
         scope.draw();
       });
     } else {
+      leavePageMode();
       viewport.classList.remove("is-animating");
       cam.snapStage(function () {
         cam.applyFull(viewport);

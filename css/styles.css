@@ -442,6 +442,31 @@ body.page-mode .hint {
   display: none;
 }
 
+.persist,
+#sections {
+  transition:
+    transform 720ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 520ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+body.page-chrome-enter .persist,
+body.page-chrome-enter #sections {
+  transform: translate3d(-22vw, 0, 0);
+  opacity: 0;
+}
+
+body.page-chrome-enter.page-chrome-visible .persist,
+body.page-chrome-enter.page-chrome-visible #sections {
+  transform: none;
+  opacity: 1;
+}
+
+body.page-chrome-exit .persist,
+body.page-chrome-exit #sections {
+  transform: translate3d(-22vw, 0, 0);
+  opacity: 0;
+}
+
 body.page-mode {
   overflow-x: hidden;
 }
@@ -450,13 +475,59 @@ body.page-mode #sections {
   overflow-wrap: break-word;
 }
 
+body.page-mode #sections {
+  position: relative;
+}
+
 body.page-mode #sections section {
   display: none;
   margin-top: 0.35rem;
 }
 
-body.page-mode #sections section.is-on {
+body.page-mode #sections section.is-on,
+body.page-mode #sections section.is-panel-active {
   display: block;
+}
+
+body.page-mode #sections section.is-panel-active {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  margin-top: 0;
+  transition:
+    transform 520ms cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 420ms cubic-bezier(0.32, 0.72, 0, 1);
+  z-index: 0;
+}
+
+body.page-mode #sections section.is-panel-active.is-on {
+  z-index: 1;
+}
+
+body.page-mode #sections section.panel-exit-left {
+  transform: translate3d(-105%, 0, 0);
+  opacity: 0;
+}
+
+body.page-mode #sections section.panel-exit-right {
+  transform: translate3d(105%, 0, 0);
+  opacity: 0;
+}
+
+body.page-mode #sections section.panel-enter-right {
+  transform: translate3d(105%, 0, 0);
+}
+
+body.page-mode #sections section.panel-enter-left {
+  transform: translate3d(-105%, 0, 0);
+}
+
+body.page-mode #sections section.is-on:not(.panel-enter-right):not(.panel-enter-left) {
+  transform: none;
+}
+
+body.page-mode #sections section.is-on:not(.is-panel-active) {
   animation: panelFade 420ms cubic-bezier(0.25, 1, 0.5, 1);
 }
 
@@ -854,6 +925,9 @@ p:last-child { margin-bottom: 0; }
   .stage::before,
   .viewport.is-animating { transition: none; }
   body.page-mode #sections section.is-on { animation: none; }
+  .persist,
+  #sections,
+  body.page-mode #sections section.is-panel-active { transition: none; }
 }
 
 @media print {
