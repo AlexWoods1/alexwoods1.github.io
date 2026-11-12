@@ -24,9 +24,11 @@
   var nextBtn = document.getElementById("next");
   var minimap = document.getElementById("minimap");
   var viewport = document.getElementById("viewport");
+  var insetBar = document.getElementById("inset-bar");
   var insetHome = document.getElementById("inset-home");
   var insetCaption = document.getElementById("inset-caption");
   var insetJumps = document.getElementById("inset-jumps");
+  var controlsEl = document.querySelector(".controls");
   var resetBtn = document.getElementById("reset-btn");
   var symReset = document.getElementById("sym-reset");
   var resetBlade = document.getElementById("reset-blade");
@@ -61,7 +63,7 @@
     isMorphing: false,
     isExiting: false,
     animTimer: null,
-    chromeTimer: null,
+    unclipTimer: null,
     settleListener: null,
 
     cancel: function () {
@@ -69,9 +71,9 @@
         clearTimeout(this.animTimer);
         this.animTimer = null;
       }
-      if (this.chromeTimer) {
-        clearTimeout(this.chromeTimer);
-        this.chromeTimer = null;
+      if (this.unclipTimer) {
+        clearTimeout(this.unclipTimer);
+        this.unclipTimer = null;
       }
       if (this.settleListener) {
         viewport.removeEventListener("transitionend", this.settleListener);
@@ -79,16 +81,25 @@
       }
       this.isMorphing = false;
       this.isExiting = false;
-      viewport.classList.remove("is-animating");
+      viewport.classList.remove("is-animating", "is-unclipped");
     },
 
     startMorph: function () {
       this.cancel();
       this.isMorphing = true;
-      viewport.classList.remove("is-animating");
-      void viewport.offsetWidth;
       viewport.classList.add("is-animating");
       void viewport.offsetWidth;
+    },
+
+    scheduleUnclip: function (delayMs) {
+      var self = this;
+      if (self.unclipTimer) clearTimeout(self.unclipTimer);
+      self.unclipTimer = setTimeout(function () {
+        self.unclipTimer = null;
+        if (self.isMorphing && self.isExiting) {
+          viewport.classList.add("is-unclipped");
+        }
+      }, delayMs);
     },
 
     settle: function (onComplete) {
@@ -102,7 +113,14 @@
       }
       self.settleListener = function (e) {
         if (e.target !== viewport) return;
-        if (e.propertyName === "width" || e.propertyName === "height") complete();
+        if (
+          e.propertyName === "width" ||
+          e.propertyName === "height" ||
+          e.propertyName === "top" ||
+          e.propertyName === "left"
+        ) {
+          complete();
+        }
       };
       viewport.addEventListener("transitionend", self.settleListener);
       self.animTimer = setTimeout(complete, TIMING.MORPH_MS + TIMING.SETTLE_BUFFER_MS);
@@ -134,7 +152,7 @@
   }
 
   function allowChromeMotion(animate) {
-    return !!animate && !reduce.matches && !isMobileViewport();
+    return !!animate && !reduce.matches;
   }
 
   function allowPanelSwap(animate) {
@@ -142,8 +160,13 @@
   }
 
   function viewportMetrics() {
+    var rootW = document.documentElement.clientWidth || window.innerWidth;
+    var bodyW = document.body ? document.body.clientWidth : 0;
+    var vw = (document.documentElement.classList.contains("page-gutter") && bodyW > 0)
+      ? Math.min(rootW, bodyW)
+      : rootW;
     return {
-      vw: document.documentElement.clientWidth || window.innerWidth,
+      vw: vw,
       vh: window.innerHeight
     };
   }
@@ -173,9 +196,73 @@
     return b;
   }
 
+  function syncViewportState() {
+    if (transition.isMorphing && transition.isExiting) {
+      var fullVw = window.innerWidth || document.documentElement.clientWidth;
+      var fullVh = window.innerHeight;
+      cam.applyFullPx(viewport, fullVw, fullVh);
+      cam.frame(index, fullVw, fullVh);
+      return;
+    }
+    if (transition.isMorphing && pageMode) {
+      var b = insetBox();
+      layoutPage(b);
+      var bAfter = insetBox();
+      if (
+        bAfter.width !== b.width ||
+        bAfter.height !== b.height ||
+        bAfter.left !== b.left ||
+        bAfter.top !== b.top
+      ) {
+        b = bAfter;
+        layoutPage(b);
+      }
+      cam.applyBox(viewport, b);
+      cam.fitStage(b);
+      return;
+    }
+    if (pageMode) {
+      syncMinimapGeometry();
+    } else {
+      frame(index);
+    }
+  }
+
+  function captureChromeStyles() {
+    var vpStyle = window.getComputedStyle(viewport);
+    return {
+      bg: vpStyle.backgroundColor,
+      shadow: vpStyle.boxShadow,
+      barOp: insetBar ? window.getComputedStyle(insetBar).opacity : "",
+      jumpsOp: insetJumps ? window.getComputedStyle(insetJumps).opacity : ""
+    };
+  }
+
+  function applyInlineChrome(snapshot) {
+    if (!snapshot) return;
+    viewport.style.backgroundColor = snapshot.bg;
+    viewport.style.boxShadow = snapshot.shadow;
+    if (insetBar) insetBar.style.opacity = snapshot.barOp;
+    if (insetJumps) insetJumps.style.opacity = snapshot.jumpsOp;
+  }
+
+  function clearInlineChrome() {
+    viewport.style.backgroundColor = "";
+    viewport.style.boxShadow = "";
+    if (insetBar) insetBar.style.opacity = "";
+    if (insetJumps) insetJumps.style.opacity = "";
+  }
+
   function clearChromeMotionStyles() {
     sections.style.transform = "";
     sections.style.opacity = "";
+    sections.style.top = "";
+    clearInlineChrome();
+    if (controlsEl) {
+      controlsEl.style.transition = "";
+      controlsEl.style.right = "";
+      controlsEl.style.bottom = "";
+    }
   }
 
   function hideNavHint() {
@@ -350,15 +437,11 @@
   // Mode Routers & State Transitions
   function enterPage(i, animate, writeHistory) {
     i = clamp(i);
-    var isExiting = transition.isExiting ||
-      document.body.classList.contains("page-chrome-exit") ||
-      (transition.isMorphing && !document.body.classList.contains("page-chrome-enter"));
+    var isExiting = transition.isExiting || document.body.classList.contains("page-chrome-exit");
     if (pageMode && !isExiting) {
       if (i === index) return;
       switchSectionInPage(i, animate, writeHistory);
     } else {
-      transition.cancel();
-      document.body.classList.remove("page-chrome-exit");
       transitionCircuitToPage(i, animate, writeHistory);
     }
   }
@@ -366,6 +449,7 @@
   function switchSectionInPage(targetIndex, animate, writeHistory) {
     var from = index;
     var moved = targetIndex !== index;
+    var vwBefore = viewportMetrics().vw;
     index = targetIndex;
     show(targetIndex, { animate: !!animate, from: from });
     if (writeHistory !== false) writeHash(HASH[targetIndex], !!animate);
@@ -374,48 +458,92 @@
       scope.setTrace(targetIndex);
     }
     scrollPageTop();
+    if (!transition.isMorphing && viewportMetrics().vw !== vwBefore) {
+      syncMinimapGeometry();
+    }
   }
 
   function transitionCircuitToPage(targetIndex, animate, writeHistory) {
     var from = index;
     var moved = targetIndex !== index;
     index = targetIndex;
-    transition.cancel();
 
-    var motion = !!animate && !reduce.matches;
-    var m = viewportMetrics();
-    var box = cam.insetBox(m.vw, m.vh);
+    var wasAnimating = viewport.classList.contains("is-animating");
+    var startRect = wasAnimating ? viewport.getBoundingClientRect() : null;
+    var startTransform = wasAnimating ? window.getComputedStyle(stage).transform : null;
+    var startChrome = wasAnimating ? captureChromeStyles() : null;
+    var desktopEnter = !isMobileViewport();
+    var prevCtrlRect = (desktopEnter && controlsEl) ? controlsEl.getBoundingClientRect() : null;
+    var fullStartVw = window.innerWidth || document.documentElement.clientWidth;
+    var fullStartVh = window.innerHeight;
+    transition.cancel();
+    clearChromeMotionStyles();
+
+    var motion = allowChromeMotion(animate);
 
     if (motion) {
-      cam.applyFullPx(viewport, m.vw, m.vh);
-      void viewport.offsetWidth;
+      cam.snapStage(function () {
+        if (startRect && startRect.width > 0 && startRect.height > 0) {
+          viewport.style.top = startRect.top + "px";
+          viewport.style.left = startRect.left + "px";
+          viewport.style.width = startRect.width + "px";
+          viewport.style.height = startRect.height + "px";
+          if (startTransform && startTransform !== "none") {
+            stage.style.transform = startTransform;
+          }
+        } else {
+          cam.applyFullPx(viewport, fullStartVw, fullStartVh);
+        }
+        if (startChrome) applyInlineChrome(startChrome);
+        if (prevCtrlRect && prevCtrlRect.width > 0) {
+          controlsEl.style.transition = "none";
+        }
+      });
+    } else {
+      document.documentElement.classList.add("chrome-instant");
     }
 
     pageMode = true;
-    document.body.classList.remove("circuit-on", "page-chrome-exit");
+    document.documentElement.classList.add("page-gutter");
+    document.body.classList.remove("circuit-on", "page-chrome-exit", "page-chrome-visible");
     document.body.classList.add("page-mode");
 
-    if (allowChromeMotion(animate)) {
+    if (motion) {
       document.body.classList.add("page-chrome-enter");
-    } else {
-      document.body.classList.add("page-chrome-visible");
     }
 
     syncSkip();
-    layoutPage(box);
     show(targetIndex, { animate: false, from: from });
-    void sections.offsetWidth;
+    scrollPageTop();
+
+    var m = viewportMetrics();
+    var box = cam.insetBox(m.vw, m.vh);
+    layoutPage(box);
+    var mAfter = viewportMetrics();
+    if (mAfter.vw !== m.vw || mAfter.vh !== m.vh) {
+      box = cam.insetBox(mAfter.vw, mAfter.vh);
+      layoutPage(box);
+    }
 
     if (motion) {
+      if (prevCtrlRect && prevCtrlRect.width > 0) {
+        controlsEl.style.right = Math.max(0, mAfter.vw - prevCtrlRect.right) + "px";
+        controlsEl.style.bottom = Math.max(0, mAfter.vh - prevCtrlRect.bottom) + "px";
+      }
+      void sections.offsetWidth;
+      void viewport.offsetWidth;
       transition.startMorph();
+      if (controlsEl && controlsEl.style.transition) {
+        void controlsEl.offsetWidth;
+        controlsEl.style.transition = "";
+        void controlsEl.offsetWidth;
+        controlsEl.style.right = "";
+        controlsEl.style.bottom = "";
+      }
+      clearInlineChrome();
       cam.applyBox(viewport, box);
       cam.fitStage(box);
-      requestAnimationFrame(function () {
-        if (pageMode) document.body.classList.add("page-chrome-visible");
-      });
-      transition.chromeTimer = setTimeout(function () {
-        if (pageMode) document.body.classList.remove("page-chrome-enter");
-      }, TIMING.CHROME_TIMEOUT_MS);
+      document.body.classList.add("page-chrome-visible");
 
       transition.settle(function () {
         if (!pageMode) return;
@@ -428,6 +556,9 @@
         cam.applyBox(viewport, box);
         cam.fitStage(box);
       });
+      document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
+      void viewport.offsetWidth;
+      document.documentElement.classList.remove("chrome-instant");
     }
 
     if (writeHistory !== false) writeHash(HASH[targetIndex], !!animate);
@@ -436,37 +567,81 @@
       travel(from, targetIndex);
       scope.setTrace(targetIndex);
     }
-    scrollPageTop();
     focusIfLost(insetHome);
 
-    requestAnimationFrame(function () {
-      if (!pageMode) return;
-      var next = insetBox();
-      layoutPage(next);
-      if (!motion) cam.snapStage(function () { cam.fitStage(next); });
-      scrollPageTop();
-    });
+    if (!motion) {
+      requestAnimationFrame(function () {
+        if (!pageMode || transition.isMorphing) return;
+        syncMinimapGeometry();
+        scrollPageTop();
+      });
+    }
   }
 
   function enterCircuit(animate, writeHistory) {
     if (!pageMode) return;
+    var wasAnimating = viewport.classList.contains("is-animating");
+    var startRect = viewport.getBoundingClientRect();
+    var startTransform = wasAnimating ? window.getComputedStyle(stage).transform : null;
+    var startChrome = captureChromeStyles();
+    var desktopExit = !isMobileViewport();
+    var prevCtrlRect = (desktopExit && controlsEl) ? controlsEl.getBoundingClientRect() : null;
+    var startScrollY = desktopExit ? (window.scrollY || document.documentElement.scrollTop || 0) : 0;
+
     transition.cancel();
+    clearChromeMotionStyles();
     if (writeHistory !== false) writeHash("", !!animate);
-    var motion = !!animate && !reduce.matches;
+    var motion = allowChromeMotion(animate);
 
     if (motion) {
-      transition.isExiting = true;
-      document.body.classList.add("page-chrome-exit");
-      document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
       var m = viewportMetrics();
       var inset = cam.insetBox(m.vw, m.vh);
+      var fullVw = window.innerWidth || m.vw;
+      var fullVh = window.innerHeight || m.vh;
+
       cam.snapStage(function () {
-        cam.applyBox(viewport, inset);
-        cam.fitStage(inset);
+        if (startRect && startRect.width > 0 && startRect.height > 0) {
+          viewport.style.top = startRect.top + "px";
+          viewport.style.left = startRect.left + "px";
+          viewport.style.width = startRect.width + "px";
+          viewport.style.height = startRect.height + "px";
+        } else {
+          cam.applyBox(viewport, inset);
+        }
+        if (wasAnimating && startTransform && startTransform !== "none") {
+          stage.style.transform = startTransform;
+        } else {
+          cam.fitStage(inset);
+        }
+        applyInlineChrome(startChrome);
+        if (prevCtrlRect && prevCtrlRect.width > 0) {
+          controlsEl.style.transition = "none";
+          controlsEl.style.right = Math.max(0, fullVw - prevCtrlRect.right) + "px";
+          controlsEl.style.bottom = Math.max(0, fullVh - prevCtrlRect.bottom) + "px";
+        }
+        if (startScrollY > 0) {
+          sections.style.top = (-startScrollY) + "px";
+        }
       });
+
+      document.documentElement.classList.remove("page-gutter");
+      document.body.classList.add("page-chrome-exit");
+      document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
       transition.startMorph();
-      cam.applyFullPx(viewport, m.vw, m.vh);
-      frame(index);
+      transition.isExiting = true;
+      transition.scheduleUnclip(75);
+
+      if (controlsEl && controlsEl.style.transition) {
+        void controlsEl.offsetWidth;
+        controlsEl.style.transition = "";
+        void controlsEl.offsetWidth;
+        controlsEl.style.right = "";
+        controlsEl.style.bottom = "";
+      }
+      clearInlineChrome();
+
+      cam.applyFullPx(viewport, fullVw, fullVh);
+      cam.frame(index, fullVw, fullVh);
       transition.settle(function () {
         leavePageMode();
         cam.snapStage(function () {
@@ -477,7 +652,7 @@
       });
     } else {
       leavePageMode();
-      viewport.classList.remove("is-animating");
+      viewport.classList.remove("is-animating", "is-unclipped");
       cam.snapStage(function () {
         cam.applyFull(viewport);
         frame(index);
@@ -492,8 +667,10 @@
     pageMode = false;
     transition.isExiting = false;
     document.documentElement.classList.add("chrome-instant");
+    document.documentElement.classList.remove("page-gutter");
     document.body.classList.add("circuit-on");
     document.body.classList.remove("page-mode", "page-chrome-enter", "page-chrome-visible", "page-chrome-exit");
+    void document.body.offsetWidth;
     document.documentElement.classList.remove("chrome-instant");
     clearChromeMotionStyles();
     cam.clearPageVars();
@@ -877,11 +1054,7 @@
     window.addEventListener("touchstart", onTouchStart, { passive: true });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("resize", function () {
-      if (pageMode) {
-        syncMinimapGeometry();
-      } else {
-        frame(index);
-      }
+      syncViewportState();
       syncSkip();
       scope.draw();
     });
@@ -896,12 +1069,8 @@
 
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(function () {
-        if (pageMode) {
-          syncMinimapGeometry();
-        } else {
-          frame(index);
-          scope.draw();
-        }
+        syncViewportState();
+        if (!pageMode) scope.draw();
       });
     }
   }
@@ -930,7 +1099,7 @@
   scope.draw();
   if (pageMode) {
     requestAnimationFrame(function () {
-      syncMinimapGeometry();
+      if (pageMode && !transition.isMorphing) syncMinimapGeometry();
     });
   }
 })();
