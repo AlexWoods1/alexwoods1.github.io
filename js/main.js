@@ -72,6 +72,8 @@
     var panels = sections.querySelectorAll("section");
     var clear = [
       "is-panel-active",
+      "panel-motion",
+      "panel-pre-enter",
       "panel-exit-left",
       "panel-exit-right",
       "panel-enter-left",
@@ -104,17 +106,21 @@
       var next = panels[i];
       clearPanelMotion();
       prev.classList.remove("is-on");
-      prev.classList.add("is-panel-active", dir > 0 ? "panel-exit-left" : "panel-exit-right");
-      next.classList.add("is-on", "is-panel-active", dir > 0 ? "panel-enter-right" : "panel-enter-left");
+      var exitCls = dir > 0 ? "panel-exit-left" : "panel-exit-right";
+      var enterCls = dir > 0 ? "panel-enter-right" : "panel-enter-left";
+      prev.classList.add("is-panel-active", "panel-motion", exitCls);
+      next.classList.add("is-on", "is-panel-active", "panel-pre-enter", enterCls);
       sections.style.minHeight = Math.max(prev.offsetHeight, next.offsetHeight) + "px";
       void next.offsetWidth;
-      next.classList.remove(dir > 0 ? "panel-enter-right" : "panel-enter-left");
+      next.classList.remove("panel-pre-enter", enterCls);
+      next.classList.add("panel-motion");
       var ended = false;
       function settle() {
         if (ended) return;
         ended = true;
         sections.style.minHeight = "";
-        clearPanelMotion();
+        prev.classList.remove("is-panel-active", "panel-motion", exitCls);
+        next.classList.remove("panel-motion");
       }
       prev.addEventListener("transitionend", function (e) {
         if (e.target === prev && (e.propertyName === "transform" || e.propertyName === "opacity")) settle();
@@ -303,6 +309,7 @@
         var next = insetBox();
         cam.snapStage(function () { cam.fitStage(next); });
         layoutPage(next);
+        document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
       });
     } else {
       cam.snapStage(function () {
@@ -312,12 +319,11 @@
     }
     layoutPage(box);
     show(i, { animate: false, from: from });
+    void sections.offsetWidth;
     if (motion) {
       requestAnimationFrame(function () {
-        requestAnimationFrame(function () {
-          if (!pageMode) return;
-          document.body.classList.add("page-chrome-visible");
-        });
+        if (!pageMode) return;
+        document.body.classList.add("page-chrome-visible");
       });
     }
     if (writeHistory !== false) writeHash(HASH[i], !!animate);
@@ -345,6 +351,7 @@
     var motion = !!animate && !reduce.matches;
     function leavePageMode() {
       pageMode = false;
+      document.documentElement.classList.add("chrome-instant");
       document.body.classList.add("circuit-on");
       document.body.classList.remove(
         "page-mode",
@@ -352,6 +359,7 @@
         "page-chrome-visible",
         "page-chrome-exit"
       );
+      document.documentElement.classList.remove("chrome-instant");
       cam.clearPageVars();
       syncSkip();
     }
