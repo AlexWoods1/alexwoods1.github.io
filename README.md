@@ -1,10 +1,23 @@
 # Alexander Woods
 
-Personal site for [alexwoods1.github.io](https://alexwoods1.github.io). Static HTML, CSS, and JavaScript — no build step and no GitHub Actions workflow.
+Personal portfolio at **[alexwoods1.github.io](https://alexwoods1.github.io)** — built as a leaky integrate-and-fire neuron schematic. Each circuit node is a section: About, Experience, Skills, Projects, Honors, and Contact.
 
-The page opens on a leaky integrate-and-fire schematic. You are the spike. Arrows, scroll, or swipe move from node to node; a click opens that section as a page. On a page the schematic shrinks to a corner map that stays put while you read. Click the map to return to the full circuit, or click a node on it to jump to another section. The membrane trace charges as you move and fires at threshold. If the browser asks for reduced motion, the camera jumps and the map snaps into place. Without JavaScript, every section is on the page as ordinary text.
+## How it works
 
-## Preview locally
+The site opens on the full diagram. You are the red spike on the wire.
+
+- **Explore:** arrow keys, scroll, swipe, or **Previous** / **Next**
+- **Open a section:** click a node or a label in the bottom rail — the diagram shrinks to a corner map and the section fills the page
+- **Back to the circuit:** click **Circuit** on the map, click the open area of the map, or press **Esc**
+- **Jump sections:** click another node on the map, use the numbered buttons on small screens, or keep using the keyboard while you read
+
+The oscilloscope at the bottom left tracks membrane voltage as you move; the trace reaches threshold at Projects and fires at Honors. With **prefers-reduced-motion**, pans and transitions shorten. With JavaScript off, every section still appears as normal text on the page.
+
+## Live site
+
+[https://alexwoods1.github.io/](https://alexwoods1.github.io/) — served from this repo via GitHub Pages (`main`, site root). No build step.
+
+## Run locally
 
 From the repository root:
 
@@ -12,12 +25,10 @@ From the repository root:
 python3 -m http.server 8000
 ```
 
-Open [http://localhost:8000](http://localhost:8000).
+Then open [http://localhost:8000](http://localhost:8000).
 
-## GitHub Pages
+## Stack
 
-Pages already publishes this repository. `.nojekyll` keeps Jekyll from theming `index.html`.
+Static **HTML**, **CSS**, and **vanilla JavaScript** (Familjen Grotesk & IBM Plex Mono). `.nojekyll` at the repo root keeps GitHub Pages from running Jekyll on `index.html`.
 
-After this branch is merged into `main`, wait for the Pages deployment and reload [https://alexwoods1.github.io/](https://alexwoods1.github.io/).
-
-Leave **Settings → Pages → Source** on **Deploy from a branch**, branch **main**, folder **/ (root)**. Do not switch the source to GitHub Actions — there is no workflow.
+**Topics:** `portfolio` · `github-pages` · `neuroscience` · `machine-learning` · `static-site`
