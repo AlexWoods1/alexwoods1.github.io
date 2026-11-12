@@ -56,12 +56,22 @@ window.PortfolioCamera = function (stage, persistTitle) {
       height = Math.round(width * 0.66);
     }
     var safe = mobile ? safeBottom() : 0;
+    var top;
+    var left;
+    if (mobile) {
+      top = Math.max(0, Math.round(vh - height - gap - safe));
+      left = Math.max(gap, Math.round(vw - width - gap));
+    } else {
+      var topChrome = 16;
+      top = topChrome;
+      left = Math.max(gap, Math.round(vw - width - gap));
+    }
     return {
       mobile: mobile,
       gap: gap,
       safe: safe,
-      top: Math.max(0, Math.round(vh - height - gap - safe)),
-      left: Math.max(gap, Math.round(vw - width - gap)),
+      top: top,
+      left: left,
       width: width,
       height: height,
       header: 32,

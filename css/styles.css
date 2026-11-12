@@ -574,7 +574,7 @@ body.page-mode:not(.page-chrome-enter):not(.page-chrome-exit) #sections section.
   body.page-mode .controls {
     display: flex;
     z-index: 9;
-    right: calc(var(--inset-w, 500px) + var(--inset-gap, 24px) + 1.5rem);
+    right: 1.25rem;
   }
 
   body.page-mode #sections {

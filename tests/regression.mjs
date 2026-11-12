@@ -5,7 +5,7 @@
 import { chromium, devices } from "playwright";
 
 const BASE = process.env.SITE_URL || "http://127.0.0.1:8010";
-const CACHE = process.env.CACHE_BUST || "23";
+const CACHE = process.env.CACHE_BUST || "24";
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
@@ -37,12 +37,35 @@ async function testDesktopControlsInPageMode(browser) {
   await page.goto(`${BASE}/?v=${CACHE}`, { waitUntil: "networkidle" });
   await page.locator('.hotspot[data-i="0"]').click();
   await page.waitForFunction(() => document.body.classList.contains("page-mode"));
+  await page.waitForFunction(() => {
+    var vp = document.getElementById("viewport");
+    return vp && vp.getBoundingClientRect().height < 420;
+  });
+  await page.waitForTimeout(400);
   const visible = await page.evaluate(() => {
     var bar = document.querySelector(".controls");
     if (!bar) return false;
     return window.getComputedStyle(bar).display !== "none";
   });
   assert(visible, "Desktop page mode should show the bottom controls bar");
+  const layout = await page.evaluate(() => {
+    var vp = document.getElementById("viewport");
+    var bar = document.querySelector(".controls");
+    if (!vp || !bar) return null;
+    var vr = vp.getBoundingClientRect();
+    var br = bar.getBoundingClientRect();
+    return {
+      mapTop: vr.top,
+      mapBottom: vr.bottom,
+      barTop: br.top,
+      mapRight: vr.right,
+      vw: window.innerWidth
+    };
+  });
+  assert(layout, "layout metrics missing");
+  assert(layout.mapTop < layout.vw * 0.25, "Inset map should sit upper on screen");
+  assert(layout.mapBottom <= layout.barTop + 8, "Inset map should sit above the bottom bar");
+  assert(layout.mapRight > layout.vw * 0.55, "Inset map should be on the right");
   await page.close();
 }
 
