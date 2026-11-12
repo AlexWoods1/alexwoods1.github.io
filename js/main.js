@@ -92,23 +92,24 @@
     if (mobile) {
       scale = Math.max(0.44, Math.min(0.62, vw / 720));
     } else {
-      var margin = 12;
-      var chromeBottom = 68;
-      var chromeTop = 44;
-      scale = Math.min((vw - margin * 2) / 1200, (vh - chromeTop - chromeBottom) / 740, 1.48);
-      scale = Math.max(1, scale);
+      var margin = 6;
+      var chromeBottom = 52;
+      var chromeTop = 34;
+      scale = Math.min((vw - margin * 2) / 1200, (vh - chromeTop - chromeBottom) / 740, 1.65);
+      if (vw >= 1100) scale = Math.max(1.12, scale);
+      else scale = Math.max(1.02, scale);
     }
     var ax = mobile ? 0.5 : 0.5;
-    var ay = mobile ? 0.42 : 0.47;
-    var cx = mobile ? nwp[0] * 0.65 + 560 * 0.35 : nwp[0] * 0.68 + 600 * 0.32;
-    var cy = mobile ? nwp[1] * 0.65 + 370 * 0.35 : nwp[1] * 0.78 + 370 * 0.22;
+    var ay = mobile ? 0.42 : 0.49;
+    var cx = mobile ? nwp[0] * 0.65 + 560 * 0.35 : nwp[0] * 0.6 + 600 * 0.4;
+    var cy = mobile ? nwp[1] * 0.65 + 370 * 0.35 : nwp[1] * 0.74 + 370 * 0.26;
     var tx = vw * ax - cx * scale;
     var ty = vh * ay - cy * scale;
     if (!mobile) {
       var sw = 1200 * scale;
       var sh = 740 * scale;
-      var minTx = vw - 14 - sw;
-      var maxTx = 14;
+      var minTx = vw - margin - sw;
+      var maxTx = margin;
       var minTy = vh - chromeBottom - sh;
       var maxTy = chromeTop;
       tx = Math.max(minTx, Math.min(maxTx, tx));
@@ -180,8 +181,8 @@
       width = Math.max(160, vw - gap * 2);
       height = vh < 520 ? 156 : 184;
     } else {
-      width = Math.min(480, Math.max(400, Math.round(vw * 0.33)));
-      height = Math.round(width * 0.64);
+      width = Math.min(560, Math.max(460, Math.round(vw * 0.36)));
+      height = Math.round(width * 0.66);
     }
     var safe = mobile ? safeBottom() : 0;
     return {
