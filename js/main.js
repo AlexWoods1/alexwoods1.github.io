@@ -64,8 +64,22 @@
     spike.style.top = WAY[wp][1] + "px";
   }
 
+  function isMobileViewport() {
+    return (document.documentElement.clientWidth || window.innerWidth) <= 860;
+  }
+
+  function allowChromeMotion(animate) {
+    return !!animate && !reduce.matches && !isMobileViewport();
+  }
+
+  function allowPanelSwap(animate) {
+    return !!animate && !reduce.matches && !isMobileViewport();
+  }
+
   function frame(i) {
-    cam.frame(i, window.innerWidth, window.innerHeight);
+    var vw = viewport.clientWidth || document.documentElement.clientWidth || window.innerWidth;
+    var vh = viewport.clientHeight || window.innerHeight;
+    cam.frame(i, vw, vh);
   }
 
   function clearPanelMotion() {
@@ -95,8 +109,7 @@
     }
     var swap =
       pageMode &&
-      opts.animate &&
-      !reduce.matches &&
+      allowPanelSwap(opts.animate) &&
       typeof opts.from === "number" &&
       prevIdx >= 0 &&
       prevIdx !== i;
@@ -289,7 +302,7 @@
     pageMode = true;
     document.body.classList.remove("circuit-on");
     document.body.classList.add("page-mode");
-    if (animate && !reduce.matches) {
+    if (allowChromeMotion(animate)) {
       document.body.classList.add("page-chrome-enter");
     } else {
       document.body.classList.add("page-chrome-visible");
@@ -366,17 +379,24 @@
     if (motion) {
       morphLock = true;
       if (animTimer) clearTimeout(animTimer);
-      document.body.classList.add("page-chrome-exit");
-      document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
+      if (allowChromeMotion(animate)) {
+        document.body.classList.add("page-chrome-exit");
+        document.body.classList.remove("page-chrome-enter", "page-chrome-visible");
+      }
       viewport.classList.remove("is-animating");
-      cam.snapStage(function () { frame(index); });
+      var inset = insetBox();
+      cam.snapStage(function () { cam.fitStage(inset); });
       viewport.classList.add("is-animating");
       void viewport.offsetWidth;
       cam.applyFull(viewport);
       settleAnim(function () {
         leavePageMode();
-        cam.snapStage(function () { frame(index); });
-        scope.draw();
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            cam.snapStage(function () { frame(index); });
+            scope.draw();
+          });
+        });
       });
     } else {
       leavePageMode();
@@ -598,6 +618,7 @@
     touchTarget = null;
 
     if (pageMode) {
+      if (startEl && startEl.closest && startEl.closest("#sections, .persist, .inset-jumps")) return;
       if (!startEl || !viewport.contains(startEl)) return;
       if (Math.abs(dx) > 22 || Math.abs(dy) > 22) return;
       if (startEl.closest && startEl.closest(".inset-home, .inset-jump, .hotspot")) return;
