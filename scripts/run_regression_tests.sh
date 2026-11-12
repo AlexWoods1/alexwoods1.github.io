@@ -3,7 +3,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 PORT="${PORT:-8010}"
 export SITE_URL="${SITE_URL:-http://127.0.0.1:${PORT}}"
-export CACHE_BUST="${CACHE_BUST:-21}"
+export CACHE_BUST="${CACHE_BUST:-22}"
 
 if ! curl -sf "${SITE_URL}/" >/dev/null 2>&1; then
   echo "Starting static server on port ${PORT}..."

@@ -5,7 +5,7 @@
 import { chromium, devices } from "playwright";
 
 const BASE = process.env.SITE_URL || "http://127.0.0.1:8010";
-const CACHE = process.env.CACHE_BUST || "21";
+const CACHE = process.env.CACHE_BUST || "22";
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);
