@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" id="[PROJECTS] EMG Flappy Bird Neural Interface - 600x400">
+  <defs>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+</style>
+    
+    <pattern id="emg-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(20, 19, 17, 0.035)" stroke-width="1"/>
+    </pattern>
+  
+    <marker id="emg-arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 1 2 L 7 5 L 1 8" fill="none" stroke="#141311" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background Base Canvas -->
+  <rect width="600" height="400" fill="#f3f0e8"/>
+  <rect width="600" height="400" fill="url(#emg-grid)"/>
+
+  <!-- Minimal Outer Frame -->
+  
+    <!-- Subtle drop shadow -->
+    <rect x="23" y="23" width="560" height="360" fill="#141311" rx="0" />
+    <!-- Paper background frame -->
+    <rect x="20" y="20" width="560" height="360" fill="#f3f0e8" stroke="#141311" stroke-width="1.75" rx="0" />
+  
+
+  <!-- Header -->
+  
+    <g transform="translate(40, 48)">
+      <text x="0" y="0" class="font-mono" font-size="10.5" font-weight="500" fill="#b42318" letter-spacing="0.12em">04 · PROJECTS // NEURAL INTERFACE · UCSD BENG 152</text>
+      <text x="0" y="32" class="font-brand" font-size="22" font-weight="600" fill="#141311" letter-spacing="-0.02em">EMG Flappy Bird</text>
+      <text x="0" y="52" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.6)">Surface-EMG signal processing driving a two-player, muscle-controlled Flappy Bird.</text>
+    </g>
+  
+
+  <!-- Bio-Potential Pipeline Layout -->
+  <g transform="translate(40, 130)">
+    <rect x="0" y="0" width="520" height="225" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="16" y="24" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">SURFACE-EMG SIGNAL PROCESSING &amp; GAME CONTROL</text>
+
+    <!-- Signal Acquisition Stage -->
+    <g transform="translate(20, 40)">
+      <rect x="0" y="0" width="145" height="110" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <text x="10" y="20" class="font-mono" font-size="8" font-weight="600" fill="#141311">01 · sEMG INPUT</text>
+      <!-- Forearm Electrode Icon -->
+      <path d="M 20 55 Q 50 35 80 55 T 130 55" fill="none" stroke="#141311" stroke-width="1.2" />
+      <circle cx="50" cy="45" r="3" fill="#b42318" />
+      <circle cx="80" cy="55" r="3" fill="#b42318" />
+      <text x="10" y="80" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Surface Forearm Electrodes</text>
+      <text x="10" y="96" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Differential Bio-Amp</text>
+    </g>
+
+    <path d="M 165 95 H 188" stroke="#141311" stroke-width="1.5" marker-end="url(#emg-arr)" />
+
+    <!-- Rectification & Threshold Stage -->
+    <g transform="translate(188, 40)">
+      <rect x="0" y="0" width="145" height="110" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <text x="10" y="20" class="font-mono" font-size="8" font-weight="600" fill="#141311">02 · ENVELOPE &amp; Vth</text>
+      <!-- Full Wave Rectified Trace -->
+      <path d="M 15 65 Q 25 35 35 65 Q 45 40 55 65 Q 65 30 75 65 Q 85 45 95 65 Q 105 32 115 65" fill="none" stroke="#141311" stroke-width="1.2" />
+      <line x1="15" y1="45" x2="130" y2="45" stroke="#b42318" stroke-width="1" stroke-dasharray="2 2" />
+      <text x="10" y="80" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Bandpass 20–450 Hz</text>
+      <text x="10" y="96" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318">Comparator V ≥ V_th</text>
+    </g>
+
+    <path d="M 333 95 H 356" stroke="#141311" stroke-width="1.5" marker-end="url(#emg-arr)" />
+
+    <!-- Game Engine Stage -->
+    <g transform="translate(356, 40)">
+      <rect x="0" y="0" width="145" height="110" fill="rgba(180, 35, 24, 0.05)" stroke="#b42318" stroke-width="1.5" />
+      <text x="10" y="20" class="font-mono" font-size="8" font-weight="600" fill="#b42318">03 · GAME TRIGGER</text>
+      <!-- Wireframe Bird & Obstacle (clear of text below y=72) -->
+      <polygon points="35,47 48,42 42,52" fill="#b42318" stroke="#141311" stroke-width="1" />
+      <rect x="78" y="27" width="14" height="14" fill="#141311" />
+      <rect x="78" y="51" width="14" height="15" fill="#141311" />
+      <text x="10" y="80" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318">Two-Player Control</text>
+      <text x="10" y="96" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.7)">Muscle Impulse Jump</text>
+    </g>
+
+    <!-- Footer Note -->
+    <rect x="20" y="165" width="481" height="42" fill="#ffffff" stroke="#141311" stroke-width="0.8" />
+    <text x="30" y="184" class="font-mono" font-size="8" font-weight="600" fill="#141311">COURSEWORK &amp; IMPLEMENTATION:</text>
+    <text x="30" y="198" class="font-mono" font-size="8" fill="rgba(20, 19, 17, 0.75)">UCSD BENG 152 BioSystems Engineering Lab  ·  Live Bio-Amplifier Hardware</text>
+  </g>
+</svg>

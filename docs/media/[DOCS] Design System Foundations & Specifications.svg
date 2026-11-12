@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" width="1600" height="1200" id="[DOCS] Design System Foundations &amp; Specifications">
+  <defs>
+    <style>
+      
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+    </style>
+    <pattern id="f1-grid-minor" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(20, 19, 17, 0.03)" stroke-width="1"/>
+    </pattern>
+    <pattern id="f1-grid-major" width="120" height="120" patternUnits="userSpaceOnUse">
+      <rect width="120" height="120" fill="url(#f1-grid-minor)"/>
+      <path d="M 120 0 L 0 0 0 120" fill="none" stroke="rgba(20, 19, 17, 0.06)" stroke-width="1.2"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Base Canvas & Grid -->
+  <rect width="1600" height="1200" fill="#f3f0e8"/>
+  <rect width="1600" height="1200" fill="url(#f1-grid-major)"/>
+
+  <!-- Minimal Hairline Structural Border -->
+  <rect x="36" y="36" width="1528" height="1128" fill="none" stroke="#141311" stroke-width="1.5"/>
+
+  <!-- ========================================================================= -->
+  <!-- HEADER: MINIMAL LAB NOTEBOOK BANNER                                       -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 75)">
+    <text x="0" y="20" class="font-mono" font-size="13" font-weight="600" fill="#b42318" letter-spacing="0.14em">LAB NOTEBOOK // ARCHITECTURAL SPECIFICATION 01</text>
+    <text x="0" y="65" class="font-brand" font-size="40" font-weight="600" fill="#141311" letter-spacing="-0.03em">Design System Foundations &amp; Specifications</text>
+    <text x="0" y="98" class="font-mono" font-size="14" fill="rgba(20, 19, 17, 0.7)">Alexander Woods Portfolio · Leaky Integrate-and-Fire Laboratory Metaphor · UC San Diego</text>
+    <line x1="0" y1="120" x2="1440" y2="120" stroke="rgba(20, 19, 17, 0.18)" stroke-width="1"/>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 1: COLOR PALETTE & TOKEN SYSTEM (Y: 230 to 450)                   -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 230)">
+    <text x="0" y="20" class="font-mono" font-size="12" font-weight="600" fill="#b42318" letter-spacing="0.12em">01 / COLOR PALETTE &amp; TOKEN SYSTEM</text>
+    <text x="0" y="44" class="font-sans" font-size="18" font-weight="600" fill="#141311">Laboratory Paper, Deep Carbon Ink &amp; Action Potential Crimson</text>
+
+    <!-- Color Swatches: Clean, Open Layout -->
+    <g transform="translate(0, 70)">
+      <!-- Swatch 1: paper token -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="260" height="90" fill="#f3f0e8" stroke="#141311" stroke-width="1.5"/>
+        <rect x="14" y="14" width="40" height="40" fill="#f3f0e8" stroke="#141311" stroke-width="1"/>
+        <text x="68" y="32" class="font-mono" font-size="13" font-weight="600" fill="#141311">--paper</text>
+        <text x="68" y="50" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">#f3f0e8 · Base Paper</text>
+        <text x="14" y="76" class="font-sans" font-size="11" fill="rgba(20, 19, 17, 0.65)">Laboratory parchment background</text>
+      </g>
+
+      <!-- Swatch 2: ink token -->
+      <g transform="translate(295, 0)">
+        <rect x="0" y="0" width="260" height="90" fill="#f3f0e8" stroke="#141311" stroke-width="1.5"/>
+        <rect x="14" y="14" width="40" height="40" fill="#141311"/>
+        <text x="68" y="32" class="font-mono" font-size="13" font-weight="600" fill="#141311">--ink</text>
+        <text x="68" y="50" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">#141311 · Carbon Ink</text>
+        <text x="14" y="76" class="font-sans" font-size="11" fill="rgba(20, 19, 17, 0.65)">Hairlines, borders &amp; typography</text>
+      </g>
+
+      <!-- Swatch 3: spike token -->
+      <g transform="translate(590, 0)">
+        <rect x="0" y="0" width="260" height="90" fill="#f3f0e8" stroke="#141311" stroke-width="1.5"/>
+        <rect x="14" y="14" width="40" height="40" fill="#b42318"/>
+        <text x="68" y="32" class="font-mono" font-size="13" font-weight="600" fill="#b42318">--spike</text>
+        <text x="68" y="50" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">#b42318 · Crimson Spike</text>
+        <text x="14" y="76" class="font-sans" font-size="11" fill="rgba(20, 19, 17, 0.65)">Action potential crest &amp; focal pulse</text>
+      </g>
+
+      <!-- Swatch 4: paper-glass token -->
+      <g transform="translate(885, 0)">
+        <rect x="0" y="0" width="260" height="90" fill="#f3f0e8" stroke="#141311" stroke-width="1.5"/>
+        <rect x="14" y="14" width="40" height="40" fill="rgba(243, 240, 232, 0.92)" stroke="#141311" stroke-width="1"/>
+        <text x="68" y="32" class="font-mono" font-size="13" font-weight="600" fill="#141311">--paper-glass</text>
+        <text x="68" y="50" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">rgba(243,240,232,0.92)</text>
+        <text x="14" y="76" class="font-sans" font-size="11" fill="rgba(20, 19, 17, 0.65)">Frosted HUD overlays &amp; controls</text>
+      </g>
+
+      <!-- Swatch 5: ink-muted token -->
+      <g transform="translate(1180, 0)">
+        <rect x="0" y="0" width="260" height="90" fill="#f3f0e8" stroke="#141311" stroke-width="1.5"/>
+        <rect x="14" y="14" width="40" height="40" fill="rgba(20, 19, 17, 0.62)"/>
+        <text x="68" y="32" class="font-mono" font-size="13" font-weight="600" fill="#141311">--ink-muted</text>
+        <text x="68" y="50" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">rgba(20,19,17,0.62)</text>
+        <text x="14" y="76" class="font-sans" font-size="11" fill="rgba(20, 19, 17, 0.65)">Technical descriptions &amp; dates</text>
+      </g>
+    </g>
+
+    <!-- Extended Formal Tokens -->
+    <g transform="translate(0, 185)">
+      <text x="0" y="14" class="font-mono" font-size="12" fill="rgba(20, 19, 17, 0.8)">FORMALIZED TOKENS: --grid-major: rgba(20,19,17,0.068) (120px) · --grid-minor: rgba(20,19,17,0.032) (24px) · --shadow-hard: 4px 4px 0px var(--ink)</text>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 2: TYPOGRAPHY SYSTEM (Y: 480 to 710)                              -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 480)">
+    <line x1="0" y1="0" x2="1440" y2="0" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1"/>
+    <text x="0" y="30" class="font-mono" font-size="12" font-weight="600" fill="#b42318" letter-spacing="0.12em">02 / TYPOGRAPHY HIERARCHY</text>
+    <text x="0" y="56" class="font-sans" font-size="18" font-weight="600" fill="#141311">Dual Font Stack: Humanist Grotesque &amp; High-Legibility Monospace</text>
+
+    <g transform="translate(0, 80)">
+      <!-- Left Column: Familjen Grotesk -->
+      <g transform="translate(0, 0)">
+        <rect x="0" y="0" width="700" height="135" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+        <text x="20" y="32" class="font-mono" font-size="12" font-weight="600" fill="#b42318">FAMILJEN GROTESK (GOOGLE FONTS) · DISPLAY &amp; EDITORIAL</text>
+        <text x="20" y="68" class="font-brand" font-size="24" font-weight="600" fill="#141311">Alexander Woods — Computational Neuroscience</text>
+        <text x="20" y="96" class="font-sans" font-size="16" font-weight="400" fill="rgba(20, 19, 17, 0.8)">SemiBold 600 (Headings, titles, brand) · Regular 400 (Body text, project descriptions)</text>
+        <text x="20" y="118" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.6)">Tracking: -0.04em on titles · Line-height: 0.90–1.25</text>
+      </g>
+
+      <!-- Right Column: IBM Plex Mono -->
+      <g transform="translate(740, 0)">
+        <rect x="0" y="0" width="700" height="135" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+        <text x="20" y="32" class="font-mono" font-size="12" font-weight="600" fill="#b42318">IBM PLEX MONO (GOOGLE FONTS) · TECHNICAL &amp; EQUATIONS</text>
+        <text x="20" y="68" class="font-mono" font-size="20" font-weight="500" fill="#141311">τ_m · (dV/dt) = -(V - V_rest) + R · I(t)</text>
+        <text x="20" y="96" class="font-mono" font-size="13" font-weight="400" fill="rgba(20, 19, 17, 0.8)">Medium 500 (Kickers, chip controls, values) · Regular 400 (Dates, telemetry, formulas)</text>
+        <text x="20" y="118" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.6)">Tracking: +0.12em uppercase kickers · Line-height: 1.00–1.45</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 3: LIF CIRCUIT METAPHOR PARAMETERS (Y: 740 to 950)                -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 740)">
+    <line x1="0" y1="0" x2="1440" y2="0" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1"/>
+    <text x="0" y="30" class="font-mono" font-size="12" font-weight="600" fill="#b42318" letter-spacing="0.12em">03 / BIOLOGICAL LIF EQUIVALENT CIRCUIT PARAMETERS</text>
+    <text x="0" y="56" class="font-sans" font-size="18" font-weight="600" fill="#141311">Physical Constants Derived Directly from data/lif-circuit.json &amp; index.html</text>
+
+    <g transform="translate(0, 80)">
+      <rect x="0" y="0" width="1440" height="110" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1"/>
+
+      <!-- Parameter List in 3 Columns -->
+      <g transform="translate(30, 32)">
+        <text x="0" y="0" class="font-mono" font-size="13" font-weight="600" fill="#141311">C = 200 pF</text>
+        <text x="0" y="20" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">Membrane Capacitance (Sec 02)</text>
+        <text x="0" y="44" class="font-mono" font-size="13" font-weight="600" fill="#141311">R = 100 MΩ</text>
+        <text x="0" y="64" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">Leak Resistance (Sec 03)</text>
+      </g>
+
+      <g transform="translate(500, 32)">
+        <text x="0" y="0" class="font-mono" font-size="13" font-weight="600" fill="#141311">τ_m = R · C = 20 ms</text>
+        <text x="0" y="20" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">Membrane Time Constant</text>
+        <text x="0" y="44" class="font-mono" font-size="13" font-weight="600" fill="#b42318">V_th = -50 mV</text>
+        <text x="0" y="64" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">Comparator Threshold (Sec 04)</text>
+      </g>
+
+      <g transform="translate(970, 32)">
+        <text x="0" y="0" class="font-mono" font-size="13" font-weight="600" fill="#141311">V_rest = -65 mV</text>
+        <text x="0" y="20" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">Resting Membrane Potential</text>
+        <text x="0" y="44" class="font-mono" font-size="13" font-weight="600" fill="#b42318">V_spike = +30 mV  [V_reset = -70 mV]</text>
+        <text x="0" y="64" class="font-mono" font-size="11.5" fill="rgba(20, 19, 17, 0.7)">Action Potential Crest (Sec 05)</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- SECTION 4: MINIMALIST STANDARDS & REDIRECT COMPLIANCE (Y: 980 to 1130)    -->
+  <!-- ========================================================================= -->
+  <g transform="translate(80, 980)">
+    <line x1="0" y1="0" x2="1440" y2="0" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1"/>
+    <text x="0" y="30" class="font-mono" font-size="12" font-weight="600" fill="#b42318" letter-spacing="0.12em">04 / MINIMALIST LAYOUT STANDARDS &amp; INTEGRITY MANDATE</text>
+    <text x="0" y="58" class="font-sans" font-size="15" fill="#141311">
+      • ZERO initials or lettermarks: strictly NO lettermarks, initial seals, or initial watermarks anywhere.
+    </text>
+    <text x="0" y="82" class="font-sans" font-size="15" fill="#141311">
+      • Minimalist aesthetic: abundant warm paper (#f3f0e8) whitespace, crisp hairlines (#141311), sparse typography, and single spike crimson (#b42318) accent.
+    </text>
+    <text x="0" y="106" class="font-sans" font-size="15" fill="#141311">
+      • Factuality: 100% adherence to Alexander_Woods_Resume.pdf and index.html. No invented telemetry, fake badges, or made-up metrics.
+    </text>
+  </g>
+</svg>

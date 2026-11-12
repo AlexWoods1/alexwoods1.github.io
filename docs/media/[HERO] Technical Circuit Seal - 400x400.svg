@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400" id="[HERO] Technical Circuit Seal - 400x400">
+  <defs>
+    <style>
+      
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+    </style>
+    <pattern id="seal-grid" width="16" height="16" patternUnits="userSpaceOnUse">
+      <path d="M 16 0 L 0 0 0 16" fill="none" stroke="rgba(20, 19, 17, 0.035)" stroke-width="1"/>
+    </pattern>
+    <!-- Circular Path for Text Alignment -->
+    <path id="seal-text-path-top" d="M 45 200 A 155 155 0 0 1 355 200" fill="none"/>
+    <path id="seal-text-path-bottom" d="M 355 200 A 155 155 0 0 1 45 200" fill="none"/>
+  </defs>
+
+  <!-- Background Base Canvas & Grid -->
+  <rect width="400" height="400" fill="#f3f0e8"/>
+  <rect width="400" height="400" fill="url(#seal-grid)"/>
+
+  <!-- Outer Concentric Calibration Rings -->
+  <circle cx="200" cy="200" r="186" fill="none" stroke="#141311" stroke-width="2.5"/>
+  <circle cx="200" cy="200" r="174" fill="none" stroke="#141311" stroke-width="1"/>
+  <circle cx="200" cy="200" r="142" fill="none" stroke="rgba(20, 19, 17, 0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+
+  <!-- Radial Angular Calibration Ticks -->
+  <g>
+    
+    <line x1="374.00" y1="200.00" x2="386.00" y2="200.00" stroke="#141311" stroke-width="2"/>
+    <line x1="368.07" y1="245.03" x2="379.66" y2="248.14" stroke="#141311" stroke-width="1.25"/>
+    <line x1="350.69" y1="287.00" x2="361.08" y2="293.00" stroke="#141311" stroke-width="1.25"/>
+    <line x1="323.04" y1="323.04" x2="331.52" y2="331.52" stroke="#141311" stroke-width="2"/>
+    <line x1="287.00" y1="350.69" x2="293.00" y2="361.08" stroke="#141311" stroke-width="1.25"/>
+    <line x1="245.03" y1="368.07" x2="248.14" y2="379.66" stroke="#141311" stroke-width="1.25"/>
+    <line x1="200.00" y1="374.00" x2="200.00" y2="386.00" stroke="#141311" stroke-width="2"/>
+    <line x1="154.97" y1="368.07" x2="151.86" y2="379.66" stroke="#141311" stroke-width="1.25"/>
+    <line x1="113.00" y1="350.69" x2="107.00" y2="361.08" stroke="#141311" stroke-width="1.25"/>
+    <line x1="76.96" y1="323.04" x2="68.48" y2="331.52" stroke="#141311" stroke-width="2"/>
+    <line x1="49.31" y1="287.00" x2="38.92" y2="293.00" stroke="#141311" stroke-width="1.25"/>
+    <line x1="31.93" y1="245.03" x2="20.34" y2="248.14" stroke="#141311" stroke-width="1.25"/>
+    <line x1="26.00" y1="200.00" x2="14.00" y2="200.00" stroke="#141311" stroke-width="2"/>
+    <line x1="31.93" y1="154.97" x2="20.34" y2="151.86" stroke="#141311" stroke-width="1.25"/>
+    <line x1="49.31" y1="113.00" x2="38.92" y2="107.00" stroke="#141311" stroke-width="1.25"/>
+    <line x1="76.96" y1="76.96" x2="68.48" y2="68.48" stroke="#141311" stroke-width="2"/>
+    <line x1="113.00" y1="49.31" x2="107.00" y2="38.92" stroke="#141311" stroke-width="1.25"/>
+    <line x1="154.97" y1="31.93" x2="151.86" y2="20.34" stroke="#141311" stroke-width="1.25"/>
+    <line x1="200.00" y1="26.00" x2="200.00" y2="14.00" stroke="#141311" stroke-width="2"/>
+    <line x1="245.03" y1="31.93" x2="248.14" y2="20.34" stroke="#141311" stroke-width="1.25"/>
+    <line x1="287.00" y1="49.31" x2="293.00" y2="38.92" stroke="#141311" stroke-width="1.25"/>
+    <line x1="323.04" y1="76.96" x2="331.52" y2="68.48" stroke="#141311" stroke-width="2"/>
+    <line x1="350.69" y1="113.00" x2="361.08" y2="107.00" stroke="#141311" stroke-width="1.25"/>
+    <line x1="368.07" y1="154.97" x2="379.66" y2="151.86" stroke="#141311" stroke-width="1.25"/>
+  </g>
+
+  <!-- Circular Text Inscriptions (Strictly NO INITIALS) -->
+  <text class="font-mono" font-size="10" font-weight="600" fill="#141311" letter-spacing="0.12em">
+    <textPath href="#seal-text-path-top" startOffset="50%" text-anchor="middle">
+      COMPUTATIONAL NEUROSCIENCE &amp; AI SYSTEMS
+    </textPath>
+  </text>
+  <text class="font-mono" font-size="10" font-weight="600" fill="#141311" letter-spacing="0.12em">
+    <textPath href="#seal-text-path-bottom" startOffset="50%" text-anchor="middle">
+      UC SAN DIEGO · LEAKY INTEGRATE-AND-FIRE
+    </textPath>
+  </text>
+
+  <!-- Center Motif: Clean Biological LIF Circuit Symbols & Spike Waveform -->
+  <g transform="translate(200, 200)">
+    <!-- Baseline resting trace -->
+    <line x1="-105" y1="36" x2="105" y2="36" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1.25" stroke-dasharray="3 3"/>
+    <text x="-102" y="51" class="font-mono" font-size="8.5" fill="rgba(20, 19, 17, 0.6)">V_rest = -65 mV</text>
+
+    <!-- Threshold trace -->
+    <line x1="-105" y1="-10" x2="105" y2="-10" stroke="rgba(180, 35, 24, 0.3)" stroke-width="1.25" stroke-dasharray="3 3"/>
+    <text x="-95" y="-16" class="font-mono" font-size="8.5" fill="#b42318">V_th = -50 mV</text>
+
+    <!-- Prominent Crimson Spike Waveform -->
+    <path d="M -105 36 
+             C -60 36, -30 28, -12 6 
+             L 0 -68 
+             L 14 65 
+             C 35 52, 65 38, 105 36" 
+          fill="none" stroke="#b42318" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Apex Spike Node Marker -->
+    <circle cx="0" cy="-68" r="6" fill="#b42318" stroke="#141311" stroke-width="1.5"/>
+    <text x="0" y="-80" text-anchor="middle" class="font-mono" font-size="9.5" font-weight="600" fill="#b42318">+30 mV</text>
+
+    <!-- Central Soma Capacitor & Comparator Glyph -->
+    <g transform="translate(0, 72)">
+      <line x1="-20" y1="-4" x2="20" y2="-4" stroke="#141311" stroke-width="2"/>
+      <line x1="-20" y1="4" x2="20" y2="4" stroke="#141311" stroke-width="2"/>
+      <text x="0" y="20" text-anchor="middle" class="font-mono" font-size="8.5" font-weight="500" fill="#141311">C = 200 pF · τ_m = 20 ms</text>
+    </g>
+  </g>
+</svg>

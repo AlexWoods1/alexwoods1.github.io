@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" id="[ICONS &amp; BADGES] Component Library - 1200x800">
+  <defs>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+</style>
+    
+    <pattern id="comp-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(20, 19, 17, 0.035)" stroke-width="1"/>
+    </pattern>
+  
+  </defs>
+
+  <!-- Background Base Canvas -->
+  <rect width="1200" height="800" fill="#f3f0e8"/>
+  <rect width="1200" height="800" fill="url(#comp-grid)"/>
+
+  <!-- Minimal Outer Frame -->
+  
+    <!-- Subtle drop shadow -->
+    <rect x="31" y="31" width="1144" height="744" fill="#141311" rx="0" />
+    <!-- Paper background frame -->
+    <rect x="28" y="28" width="1144" height="744" fill="#f3f0e8" stroke="#141311" stroke-width="1.75" rx="0" />
+  
+
+  <!-- Header -->
+  
+    <g transform="translate(56, 60)">
+      <text x="0" y="0" class="font-mono" font-size="10.5" font-weight="500" fill="#b42318" letter-spacing="0.12em">DESIGN SYSTEM // MICRO-ASSETS &amp; VECTOR GLYPHS</text>
+      <text x="0" y="32" class="font-brand" font-size="22" font-weight="600" fill="#141311" letter-spacing="-0.02em">Component Library &amp; Design Tokens</text>
+      <text x="0" y="52" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.6)">Precision vector icons, navigation controls, technology chips, and academic crests.</text>
+    </g>
+  
+
+  <!-- ===================================================================== -->
+  <!-- ROW 1: 24x24 ICONS & 20x20 NAV GLYPHS (Y: 150)                       -->
+  <!-- ===================================================================== -->
+  <!-- Panel A: Vector Link Icons (24x24) -->
+  <g transform="translate(56, 150)">
+    <rect x="0" y="0" width="520" height="230" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="20" y="26" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">TECHNICAL LINK ICON SUITE (24 × 24 PX · 1.75 PX WIRE GAUGE)</text>
+
+    <!-- Icon 1: GitHub -->
+    <g transform="translate(30, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(18, 18)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">GitHub</text>
+    </g>
+
+    <!-- Icon 2: LinkedIn -->
+    <g transform="translate(110, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(18, 18)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="3"/>
+        <line x1="7" y1="10" x2="7" y2="17"/>
+        <line x1="7" y1="6" x2="7.01" y2="6"/>
+        <path d="M11 17v-4.5a2.5 2.5 0 0 1 5 0V17"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">LinkedIn</text>
+    </g>
+
+    <!-- Icon 3: Resume PDF -->
+    <g transform="translate(190, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(18, 18)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14 2 14 8 20 8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">Resume</text>
+    </g>
+
+    <!-- Icon 4: Email Envelope -->
+    <g transform="translate(270, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(18, 18)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">Email</text>
+    </g>
+
+    <!-- Icon 5: External Link -->
+    <g transform="translate(350, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(18, 18)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">External</text>
+    </g>
+
+    <!-- Icon 6: Terminal -->
+    <g transform="translate(430, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(18, 18)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="4 17 10 11 4 5"/>
+        <line x1="12" y1="19" x2="20" y2="19"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">Terminal</text>
+    </g>
+
+    <!-- Specifications Footer -->
+    <text x="24" y="160" class="font-mono" font-size="8" fill="rgba(20, 19, 17, 0.65)">• 24x24 px pixel-aligned stroke bounds  ·  1.75 px stroke width matching circuit traces</text>
+    <text x="24" y="176" class="font-mono" font-size="8" fill="rgba(20, 19, 17, 0.65)">• Universal hover feedback state: stroke shifts to #b42318 (Action Potential Crimson)</text>
+    <text x="24" y="196" class="font-mono" font-size="8" font-weight="600" fill="#b42318">Used in #about, #threshold (projects), and #out (contact) sections</text>
+  </g>
+
+  <!-- Panel B: Navigation & Mode Controls (20x20) -->
+  <g transform="translate(606, 150)">
+    <rect x="0" y="0" width="538" height="230" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="20" y="26" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">NAVIGATION &amp; MODE CONTROLS (20 × 20 PX GLYPHS)</text>
+
+    <!-- Nav 1: Prev Chevron -->
+    <g transform="translate(30, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(20, 20)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="13 16 7 10 13 4"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">Previous</text>
+    </g>
+
+    <!-- Nav 2: Next Chevron -->
+    <g transform="translate(120, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(20, 20)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="7 16 13 10 7 4"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">Next</text>
+    </g>
+
+    <!-- Nav 3: Circuit Return Loop -->
+    <g transform="translate(210, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="rgba(180, 35, 24, 0.05)" stroke="#b42318" stroke-width="1.2" />
+      <g transform="translate(20, 20)" fill="none" stroke="#b42318" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 17 7 A 7 7 0 1 0 17 13"/>
+        <polyline points="17 3 17 7 13 7"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" font-weight="600" fill="#b42318" text-anchor="middle">Circuit</text>
+    </g>
+
+    <!-- Nav 4: Reset Pot Switch -->
+    <g transform="translate(300, 50)">
+      <rect x="0" y="0" width="60" height="60" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      <g transform="translate(20, 20)" fill="none" stroke="#141311" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10" cy="10" r="7"/>
+        <line x1="10" y1="5" x2="10" y2="10"/>
+      </g>
+      <text x="30" y="78" class="font-mono" font-size="8" fill="#141311" text-anchor="middle">Reset (V)</text>
+    </g>
+
+    <!-- Explanations -->
+    <text x="24" y="160" class="font-mono" font-size="8" fill="rgba(20, 19, 17, 0.65)">• Inset controls for toggling between full LIF circuit exploration and reader page mode</text>
+    <text x="24" y="176" class="font-mono" font-size="8" fill="rgba(20, 19, 17, 0.65)">• Synchronized 6-symbol rail navigation (I(t), C=200pF, R=100MΩ, V≥Vth, spike, out)</text>
+    <text x="24" y="196" class="font-mono" font-size="8" font-weight="600" fill="#141311">Verified seamless 300ms cubic-bezier transition curves</text>
+  </g>
+
+  <!-- ===================================================================== -->
+  <!-- ROW 2: MODULAR SKILL CHIPS & ACHIEVEMENT CRESTS (Y: 410)              -->
+  <!-- ===================================================================== -->
+  <!-- Panel C: Modular Technology Chips -->
+  <g transform="translate(56, 410)">
+    <rect x="0" y="0" width="600" height="340" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="20" y="26" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">MODULAR TECHNOLOGY SKILL CHIPS (VERIFIED FROM RESUME &amp; SITE)</text>
+
+    <!-- Group 1: Core Languages -->
+    <g transform="translate(20, 48)">
+      <text x="0" y="10" class="font-mono" font-size="8" font-weight="600" fill="#b42318">LANGUAGES:</text>
+      <!-- Python (Active) -->
+      <g transform="translate(0, 18)">
+        <rect x="0" y="0" width="85" height="28" fill="rgba(180, 35, 24, 0.08)" stroke="#b42318" stroke-width="1.2" rx="2" />
+        <circle cx="12" cy="14" r="3" fill="#b42318" />
+        <text x="22" y="18" class="font-mono" font-size="9" font-weight="600" fill="#b42318">Python</text>
+      </g>
+      <!-- Java -->
+      <g transform="translate(95, 18)">
+        <rect x="0" y="0" width="70" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">Java</text>
+      </g>
+      <!-- MATLAB -->
+      <g transform="translate(175, 18)">
+        <rect x="0" y="0" width="85" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">MATLAB</text>
+      </g>
+      <!-- HTML/CSS -->
+      <g transform="translate(270, 18)">
+        <rect x="0" y="0" width="95" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">HTML/CSS</text>
+      </g>
+      <!-- Bash / PowerShell -->
+      <g transform="translate(375, 18)">
+        <rect x="0" y="0" width="105" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">Bash/PowerShell</text>
+      </g>
+    </g>
+
+    <!-- Group 2: ML & Computational Neuroscience Libraries -->
+    <g transform="translate(20, 120)">
+      <text x="0" y="10" class="font-mono" font-size="8" font-weight="600" fill="#b42318">ML &amp; NEUROSCIENCE LIBRARIES:</text>
+      <!-- PyTorch (Active) -->
+      <g transform="translate(0, 18)">
+        <rect x="0" y="0" width="90" height="28" fill="rgba(180, 35, 24, 0.08)" stroke="#b42318" stroke-width="1.2" rx="2" />
+        <circle cx="12" cy="14" r="3" fill="#b42318" />
+        <text x="22" y="18" class="font-mono" font-size="9" font-weight="600" fill="#b42318">PyTorch</text>
+      </g>
+      <!-- JAX (Active) -->
+      <g transform="translate(100, 18)">
+        <rect x="0" y="0" width="70" height="28" fill="rgba(180, 35, 24, 0.08)" stroke="#b42318" stroke-width="1.2" rx="2" />
+        <circle cx="12" cy="14" r="3" fill="#b42318" />
+        <text x="22" y="18" class="font-mono" font-size="9" font-weight="600" fill="#b42318">JAX</text>
+      </g>
+      <!-- NumPy -->
+      <g transform="translate(180, 18)">
+        <rect x="0" y="0" width="75" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">NumPy</text>
+      </g>
+      <!-- scikit-learn -->
+      <g transform="translate(265, 18)">
+        <rect x="0" y="0" width="115" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">scikit-learn</text>
+      </g>
+      <!-- EEGLAB -->
+      <g transform="translate(390, 18)">
+        <rect x="0" y="0" width="85" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">EEGLAB</text>
+      </g>
+      <!-- FastAPI -->
+      <g transform="translate(485, 18)">
+        <rect x="0" y="0" width="80" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">FastAPI</text>
+      </g>
+    </g>
+
+    <!-- Group 3: Tools & Infrastructure -->
+    <g transform="translate(20, 192)">
+      <text x="0" y="10" class="font-mono" font-size="8" font-weight="600" fill="#b42318">TOOLS &amp; INFRASTRUCTURE:</text>
+      <!-- Git -->
+      <g transform="translate(0, 18)">
+        <rect x="0" y="0" width="60" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">Git</text>
+      </g>
+      <!-- Docker -->
+      <g transform="translate(70, 18)">
+        <rect x="0" y="0" width="80" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">Docker</text>
+      </g>
+      <!-- AWS -->
+      <g transform="translate(160, 18)">
+        <rect x="0" y="0" width="65" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">AWS</text>
+      </g>
+      <!-- Pytest -->
+      <g transform="translate(235, 18)">
+        <rect x="0" y="0" width="80" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">Pytest</text>
+      </g>
+      <!-- Cursor / Jira -->
+      <g transform="translate(325, 18)">
+        <rect x="0" y="0" width="85" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">Cursor</text>
+      </g>
+      <!-- WSL / Ubuntu -->
+      <g transform="translate(420, 18)">
+        <rect x="0" y="0" width="115" height="28" fill="#ffffff" stroke="#141311" stroke-width="1" rx="2" />
+        <text x="14" y="18" class="font-mono" font-size="9" fill="#141311">WSL/Ubuntu</text>
+      </g>
+    </g>
+
+    <!-- Chip Tokens Legend -->
+    <text x="24" y="285" class="font-mono" font-size="8" fill="rgba(20, 19, 17, 0.65)">• Auto-layout chip geometry: Height 28 px  ·  Border radius 2 px  ·  IBM Plex Mono 9 px</text>
+    <text x="24" y="305" class="font-mono" font-size="8" font-weight="600" fill="#b42318">• Active status dot indicates research &amp; flagship production usage</text>
+  </g>
+
+  <!-- Panel D: Academic & Achievement Crests (120x120) -->
+  <g transform="translate(686, 410)">
+    <rect x="0" y="0" width="458" height="340" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="20" y="26" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">ACHIEVEMENT CRESTS &amp; RECOGNITION (120 × 120 PX)</text>
+
+    <!-- Crest 1: AIC Hack for Humanity 1st Place (Authentic Nov 2026) -->
+    <g transform="translate(40, 50)">
+      <!-- 120x120 Octagon Plaque -->
+      <polygon points="35,0 85,0 120,35 120,85 85,120 35,120 0,85 0,35" fill="rgba(180, 35, 24, 0.05)" stroke="#b42318" stroke-width="1.75" />
+      <polygon points="38,6 82,6 114,38 114,82 82,114 38,114 6,82 6,38" fill="none" stroke="#141311" stroke-width="0.8" />
+      
+      <!-- Laurel / Circuit Converging Motifs -->
+      <path d="M 60 25 L 60 48 M 45 35 L 60 48 L 75 35" stroke="#b42318" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx="60" cy="25" r="3" fill="#b42318" />
+
+      <!-- Text Inscription -->
+      <text x="60" y="66" class="font-mono" font-size="8" font-weight="700" fill="#b42318" text-anchor="middle">1ST PLACE</text>
+      <text x="60" y="78" class="font-mono" font-size="6.5" font-weight="600" fill="#141311" text-anchor="middle">AIC HACK 2026</text>
+      <text x="60" y="90" class="font-mono" font-size="6" fill="rgba(20, 19, 17, 0.7)" text-anchor="middle">FOR HUMANITY</text>
+      <text x="60" y="104" class="font-mono" font-size="5.5" font-weight="600" fill="#b42318" text-anchor="middle">HEADCOUNT</text>
+    </g>
+
+    <!-- Crest 2: UC San Diego Instructional Apprentice Crest -->
+    <g transform="translate(230, 50)">
+      <!-- 120x120 Academic Shield Plaque -->
+      <path d="M 10 10 H 110 V 70 Q 110 115 60 120 Q 10 115 10 70 Z" fill="#ffffff" stroke="#141311" stroke-width="1.75" />
+      <path d="M 16 16 H 104 V 68 Q 104 109 60 114 Q 16 109 16 68 Z" fill="none" stroke="rgba(20, 19, 17, 0.2)" stroke-width="0.8" />
+
+      <!-- Book / Circuit Academic Emblem -->
+      <path d="M 40 45 Q 60 38 60 52 Q 60 38 80 45" fill="none" stroke="#141311" stroke-width="1.5" />
+      <line x1="60" y1="38" x2="60" y2="52" stroke="#141311" stroke-width="1.5" />
+      <circle cx="60" cy="32" r="2.5" fill="#b42318" />
+
+      <!-- Text Inscription -->
+      <text x="60" y="68" class="font-mono" font-size="7.5" font-weight="700" fill="#141311" text-anchor="middle">UC SAN DIEGO</text>
+      <text x="60" y="80" class="font-mono" font-size="6.5" font-weight="600" fill="#b42318" text-anchor="middle">PYTHON IA</text>
+      <text x="60" y="92" class="font-mono" font-size="6" fill="rgba(20, 19, 17, 0.7)" text-anchor="middle">COGS 18 / 195</text>
+      <text x="60" y="104" class="font-mono" font-size="5.5" fill="rgba(20, 19, 17, 0.7)" text-anchor="middle">60+ STUDENTS / WK</text>
+    </g>
+
+    <!-- Crest Descriptions -->
+    <g transform="translate(20, 205)">
+      <rect x="0" y="0" width="418" height="110" fill="#ffffff" stroke="#141311" stroke-width="0.8" />
+      <text x="14" y="20" class="font-mono" font-size="8" font-weight="600" fill="#b42318">ACADEMIC &amp; COMPETITIVE RECORD:</text>
+      <text x="14" y="38" class="font-mono" font-size="7.5" fill="#141311">• AIC Hack for Humanity: 1st Place win for Headcount (Nov 2026)</text>
+      <text x="14" y="54" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.75)">  Calls older adults in wildfire evacuation zones until accounted for</text>
+      <text x="14" y="72" class="font-mono" font-size="7.5" fill="#141311">• Instructional Assistant in Python: Sep 2024 – Dec 2024</text>
+      <text x="14" y="88" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.75)">  Assisted intro lab (60+ students/wk) in NumPy, pandas &amp; scikit-learn</text>
+    </g>
+  </g>
+</svg>

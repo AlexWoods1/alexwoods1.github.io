@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" id="[PROJECTS] Headcount Evacuation Pipeline - 800x450">
+  <defs>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+</style>
+    
+    <pattern id="headcount-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(20, 19, 17, 0.035)" stroke-width="1"/>
+    </pattern>
+  
+    <marker id="hc-arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 1 2 L 7 5 L 1 8" fill="none" stroke="#141311" stroke-width="1.5" stroke-linecap="round"/>
+    </marker>
+  </defs>
+
+  <!-- Background Base Canvas -->
+  <rect width="800" height="450" fill="#f3f0e8"/>
+  <rect width="800" height="450" fill="url(#headcount-grid)"/>
+
+  <!-- Minimal Outer Frame -->
+  
+    <!-- Subtle drop shadow -->
+    <rect x="27" y="27" width="752" height="402" fill="#141311" rx="0" />
+    <!-- Paper background frame -->
+    <rect x="24" y="24" width="752" height="402" fill="#f3f0e8" stroke="#141311" stroke-width="1.75" rx="0" />
+  
+
+  <!-- Minimal Header -->
+  
+    <g transform="translate(48, 52)">
+      <text x="0" y="0" class="font-mono" font-size="10.5" font-weight="500" fill="#b42318" letter-spacing="0.12em">04 · PROJECTS // 1ST PLACE · AIC HACK FOR HUMANITY (NOV 2026)</text>
+      <text x="0" y="32" class="font-brand" font-size="22" font-weight="600" fill="#141311" letter-spacing="-0.02em">Headcount Evacuation Pipeline</text>
+      <text x="0" y="52" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.6)">Calls every older adult in an evacuation zone, in their language, until everyone is accounted for.</text>
+    </g>
+  
+
+  <!-- ===================================================================== -->
+  <!-- HORIZONTAL DATAFLOW PIPELINE (SPACIOUS, OPEN, STRICTLY FACTUAL)        -->
+  <!-- ===================================================================== -->
+  <g transform="translate(48, 140)">
+    <!-- Stage 1: Evacuation Zone Roster -->
+    <g transform="translate(0, 0)">
+      <rect x="0" y="0" width="155" height="150" fill="#ffffff" stroke="#141311" stroke-width="1.25" />
+      <text x="14" y="24" class="font-mono" font-size="8" font-weight="600" fill="#141311">01 · EVACUATION ZONE</text>
+      <text x="14" y="44" class="font-brand" font-size="13.5" font-weight="600" fill="#141311">Resident Outreach</text>
+      <text x="14" y="66" class="font-sans" font-size="8" fill="rgba(20, 19, 17, 0.7)">Older adults in active zone</text>
+      <line x1="14" y1="85" x2="141" y2="85" stroke="rgba(20, 19, 17, 0.15)" stroke-width="0.8" />
+      <text x="14" y="105" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.65)">Automated outbound call</text>
+      <text x="14" y="125" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.65)">Persistent retry loop</text>
+    </g>
+
+    <!-- Connector 1 -->
+    <path d="M 155 75 H 183" stroke="#141311" stroke-width="1.5" marker-end="url(#hc-arr)" />
+
+    <!-- Stage 2: Multilingual Voice Agent -->
+    <g transform="translate(183, 0)">
+      <rect x="0" y="0" width="155" height="150" fill="#ffffff" stroke="#141311" stroke-width="1.25" />
+      <text x="14" y="24" class="font-mono" font-size="8" font-weight="600" fill="#141311">02 · VOICE AGENT</text>
+      <text x="14" y="44" class="font-brand" font-size="13.5" font-weight="600" fill="#141311">Multilingual Call</text>
+      <text x="14" y="66" class="font-sans" font-size="8" fill="rgba(20, 19, 17, 0.7)">Speaks resident language</text>
+      <line x1="14" y1="85" x2="141" y2="85" stroke="rgba(20, 19, 17, 0.15)" stroke-width="0.8" />
+      <text x="14" y="105" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.65)">Live voice dialogue</text>
+      <text x="14" y="125" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.65)">Accessible phone reach</text>
+    </g>
+
+    <!-- Connector 2 -->
+    <path d="M 338 75 H 366" stroke="#141311" stroke-width="1.5" marker-end="url(#hc-arr)" />
+
+    <!-- Stage 3: Safety Check-In -->
+    <g transform="translate(366, 0)">
+      <rect x="0" y="0" width="155" height="150" fill="#ffffff" stroke="#141311" stroke-width="1.25" />
+      <text x="14" y="24" class="font-mono" font-size="8" font-weight="600" fill="#141311">03 · STATUS CHECK</text>
+      <text x="14" y="44" class="font-brand" font-size="13.5" font-weight="600" fill="#141311">Safety Verification</text>
+      <text x="14" y="66" class="font-sans" font-size="8" fill="rgba(20, 19, 17, 0.7)">Confirms resident status</text>
+      <line x1="14" y1="85" x2="141" y2="85" stroke="rgba(20, 19, 17, 0.15)" stroke-width="0.8" />
+      <text x="14" y="105" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.65)">Evacuation readiness</text>
+      <text x="14" y="125" class="font-mono" font-size="7.5" fill="rgba(20, 19, 17, 0.65)">Assistance escalation</text>
+    </g>
+
+    <!-- Connector 3 -->
+    <path d="M 521 75 H 549" stroke="#141311" stroke-width="1.5" marker-end="url(#hc-arr)" />
+
+    <!-- Stage 4: Full Accountability (Crimson Accent) -->
+    <g transform="translate(549, 0)">
+      <rect x="0" y="0" width="155" height="150" fill="rgba(180, 35, 24, 0.05)" stroke="#b42318" stroke-width="1.5" />
+      <text x="14" y="24" class="font-mono" font-size="8" font-weight="600" fill="#b42318">04 · ACCOUNTABILITY</text>
+      <text x="14" y="44" class="font-brand" font-size="13.5" font-weight="600" fill="#b42318">Zone Accounted</text>
+      <text x="14" y="66" class="font-sans" font-size="8" fill="rgba(20, 19, 17, 0.7)">Zero residents left behind</text>
+      <line x1="14" y1="85" x2="141" y2="85" stroke="rgba(180, 35, 24, 0.2)" stroke-width="0.8" />
+      <text x="14" y="105" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318">Confirmed Evacuated</text>
+      <text x="14" y="125" class="font-mono" font-size="7.5" font-weight="600" fill="#b42318">Needs Immediate Help</text>
+    </g>
+  </g>
+
+  <!-- Bottom Details Bar -->
+  <g transform="translate(48, 320)">
+    <rect x="0" y="0" width="704" height="65" fill="#f3f0e8" stroke="#141311" stroke-width="1" />
+    <text x="20" y="26" class="font-mono" font-size="9" font-weight="600" fill="#141311">RECOGNITION &amp; VERIFIED OVERVIEW:</text>
+    <text x="20" y="48" class="font-mono" font-size="8.5" fill="rgba(20, 19, 17, 0.75)">1st Place · AIC Hack for Humanity (Nov 2026 · UC San Diego) · Multilingual Evacuation Voice Agent</text>
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" id="[BRAND] PWA Launcher Icon - 512x512">
+  <rect x="16" y="16" width="480" height="480" rx="80" fill="#f3f0e8" stroke="#141311" stroke-width="28"/>
+  <line x1="64" y1="240" x2="448" y2="240" stroke="#141311" stroke-width="13" stroke-dasharray="24 24" opacity="0.35"/>
+  <path d="M64 336 H152 L184 288" fill="none" stroke="#141311" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M328 304 H448" fill="none" stroke="#141311" stroke-width="32" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M184 288 L232 96 L288 408 L328 304" fill="none" stroke="#b42318" stroke-width="35" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="232" cy="96" r="35" fill="#b42318"/>
+</svg>

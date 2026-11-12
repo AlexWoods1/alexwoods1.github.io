@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200" id="[BRAND] Open Graph Square - 1200x1200">
+  <defs>
+    <style>
+      
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+    </style>
+    <pattern id="ogsq-grid-minor" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(20, 19, 17, 0.032)" stroke-width="1"/>
+    </pattern>
+    <pattern id="ogsq-grid-major" width="120" height="120" patternUnits="userSpaceOnUse">
+      <rect width="120" height="120" fill="url(#ogsq-grid-minor)"/>
+      <path d="M 120 0 L 0 0 0 120" fill="none" stroke="rgba(20, 19, 17, 0.068)" stroke-width="1.25"/>
+    </pattern>
+  </defs>
+
+  <!-- Background Base Canvas & Grid -->
+  <rect width="1200" height="1200" fill="#f3f0e8"/>
+  <rect width="1200" height="1200" fill="url(#ogsq-grid-major)"/>
+
+  <!-- Minimal Hairline Border -->
+  <rect x="28" y="28" width="1144" height="1144" fill="none" stroke="#141311" stroke-width="1.5"/>
+
+  <!-- Top Typographic Header -->
+  <g transform="translate(80, 75)">
+    <text x="0" y="20" class="font-mono" font-size="13" font-weight="600" fill="#b42318" letter-spacing="0.14em">I(t) · LEAKY INTEGRATE-AND-FIRE DYNAMICS</text>
+    <text x="0" y="104" class="font-brand" font-size="68" font-weight="600" fill="#141311" letter-spacing="-0.04em">Alexander Woods</text>
+    <text x="0" y="152" class="font-sans" font-size="25" font-weight="500" fill="#141311">Machine Learning, Neural Computation &amp; Applied Math</text>
+    <text x="0" y="190" class="font-mono" font-size="15" fill="rgba(20, 19, 17, 0.7)">UC San Diego · Cognitive Science (ML &amp; Neural Comp) &amp; Applied Math</text>
+    <text x="0" y="228" class="font-sans" font-size="18" fill="rgba(20, 19, 17, 0.8)">Spiking neural networks, real-time &amp; clinical EEG, and applied AI systems.</text>
+
+    <!-- Factual Honor Pill -->
+    <g transform="translate(0, 260)">
+      <rect x="0" y="0" width="370" height="30" rx="2" fill="rgba(180, 35, 24, 0.08)" stroke="#b42318" stroke-width="1"/>
+      <text x="14" y="20" class="font-mono" font-size="11.5" font-weight="600" fill="#b42318" letter-spacing="0.04em">1st Place · AIC Hack for Humanity (Headcount)</text>
+    </g>
+  </g>
+
+  <!-- Center: Wide Spacious Biological LIF Schematic -->
+  <g id="ogsq-circuit" transform="translate(180, 580)">
+    <!-- Circuit Lines -->
+    <g fill="none" stroke="#141311" stroke-width="1.8" stroke-linecap="butt" stroke-linejoin="miter">
+      <path d="M 0 0 H 130"/>
+      <path d="M 130 0 H 260"/>
+      <!-- Capacitor Branch -->
+      <path d="M 260 0 V 85"/>
+      <path d="M 260 101 V 160"/>
+      <!-- Resistor Branch -->
+      <path d="M 260 0 V -85"/>
+      <!-- Comparator path -->
+      <path d="M 260 0 H 420"/>
+      <!-- Comparator to Spike -->
+      <path d="M 500 0 H 580"/>
+      <!-- Spike to Synapses -->
+      <path d="M 640 0 H 740"/>
+      <path d="M 700 0 L 740 -40"/>
+      <path d="M 700 0 L 740 40"/>
+    </g>
+
+    <!-- Current Source I(t) -->
+    <g transform="translate(60, 0)">
+      <circle cx="0" cy="0" r="28" fill="#f3f0e8" stroke="#141311" stroke-width="1.8"/>
+      <line x1="-14" y1="0" x2="10" y2="0" stroke="#141311" stroke-width="1.8"/>
+      <polygon points="10,-5 18,0 10,5" fill="#141311"/>
+      <text x="0" y="44" text-anchor="middle" class="font-mono" font-size="14" font-weight="500" fill="#141311">I(t)</text>
+    </g>
+
+    <!-- Membrane Voltage Node V -->
+    <circle cx="260" cy="0" r="5" fill="#141311"/>
+    <text x="276" y="-8" class="font-sans" font-size="22" font-weight="600" fill="#141311">V</text>
+
+    <!-- Capacitor C = 200 pF -->
+    <g transform="translate(260, 93)">
+      <line x1="-28" y1="-8" x2="28" y2="-8" stroke="#141311" stroke-width="2.2"/>
+      <line x1="-28" y1="8" x2="28" y2="8" stroke="#141311" stroke-width="2.2"/>
+      <!-- Ground -->
+      <line x1="-20" y1="67" x2="20" y2="67" stroke="#141311" stroke-width="1.8"/>
+      <line x1="-14" y1="73" x2="14" y2="73" stroke="#141311" stroke-width="1.8"/>
+      <line x1="-8" y1="79" x2="8" y2="79" stroke="#141311" stroke-width="1.8"/>
+      <text x="-36" y="4" text-anchor="end" class="font-mono" font-size="13" font-weight="500" fill="#141311">C = 200 pF</text>
+    </g>
+
+    <!-- Resistor R = 100 MΩ & Resting Potential V_rest -->
+    <g transform="translate(260, -118)">
+      <path d="M 0 33 L 14 25 L -14 17 L 14 9 L -14 1 L 14 -7 L -14 -15 L 0 -23" fill="none" stroke="#141311" stroke-width="1.8"/>
+      <!-- Connecting wire from top of zigzag to bottom battery plate -->
+      <line x1="0" y1="-23" x2="0" y2="-62" stroke="#141311" stroke-width="1.8"/>
+      <!-- Battery plates: Long plate (-62) and Short plate (-76) matching index.html -->
+      <line x1="-24" y1="-62" x2="24" y2="-62" stroke="#141311" stroke-width="2.2"/>
+      <line x1="-14" y1="-76" x2="14" y2="-76" stroke="#141311" stroke-width="2.2"/>
+      <text x="32" y="4" class="font-mono" font-size="13" font-weight="500" fill="#141311">R = 100 MΩ</text>
+      <text x="32" y="-65" class="font-mono" font-size="12" font-weight="500" fill="#141311">V_rest = -65 mV</text>
+    </g>
+
+    <!-- Comparator -->
+    <g transform="translate(460, 0)">
+      <polygon points="-40,-35 -40,35 40,0" fill="#f3f0e8" stroke="#141311" stroke-width="1.8"/>
+      <text x="-28" y="-12" class="font-mono" font-size="13" fill="#141311">+</text>
+      <text x="-28" y="22" class="font-mono" font-size="13" fill="#141311">−</text>
+      <text x="0" y="-45" text-anchor="middle" class="font-mono" font-size="12" font-weight="500" fill="#141311">V_th = -50 mV</text>
+    </g>
+
+    <!-- Spike Waveform -->
+    <g transform="translate(610, 0)">
+      <path d="M -30 0 L -10 -55 L 10 50 L 30 0" fill="none" stroke="#b42318" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="-10" cy="-55" r="5.5" fill="#b42318"/>
+      <text x="-10" y="-68" text-anchor="middle" class="font-mono" font-size="12" font-weight="600" fill="#b42318">+30 mV</text>
+    </g>
+
+    <!-- Synapses -->
+    <g transform="translate(740, 0)">
+      <circle cx="0" cy="-40" r="5" fill="#141311"/>
+      <circle cx="0" cy="0" r="5" fill="#141311"/>
+      <circle cx="0" cy="40" r="5" fill="#141311"/>
+    </g>
+  </g>
+
+  <!-- Bottom: Oscilloscope Dynamics Trace & Formula -->
+  <g transform="translate(80, 830)">
+    <line x1="0" y1="0" x2="1040" y2="0" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1"/>
+
+    <!-- Math Equation -->
+    <text x="0" y="36" class="font-mono" font-size="14" font-weight="500" fill="#141311">τ_m · (dV/dt) = -(V - V_rest) + R · I(t)   [τ_m = R · C = 20 ms]</text>
+
+    <!-- Oscilloscope waveform -->
+    <g transform="translate(0, 105)">
+      <!-- Reference lines -->
+      <line x1="0" y1="20" x2="1040" y2="20" stroke="rgba(180, 35, 24, 0.25)" stroke-dasharray="4 4"/>
+      <circle cx="456" cy="20" r="5" fill="#b42318"/>
+      <text x="456" y="8" text-anchor="middle" class="font-mono" font-size="12" font-weight="600" fill="#b42318">+30 mV (Spike Peak)</text>
+
+      <line x1="0" y1="80" x2="1040" y2="80" stroke="rgba(180, 35, 24, 0.3)" stroke-dasharray="4 4"/>
+      <text x="10" y="74" class="font-mono" font-size="11" fill="#b42318">-50 mV (Threshold)</text>
+
+      <line x1="0" y1="120" x2="1040" y2="120" stroke="rgba(20, 19, 17, 0.2)" stroke-dasharray="4 4"/>
+      <text x="10" y="114" class="font-mono" font-size="11" fill="rgba(20, 19, 17, 0.6)">-65 mV (Resting)</text>
+
+      <line x1="0" y1="146" x2="1040" y2="146" stroke="rgba(20, 19, 17, 0.15)" stroke-dasharray="4 4"/>
+      <text x="10" y="142" class="font-mono" font-size="11" fill="rgba(20, 19, 17, 0.5)">-70 mV (Reset)</text>
+
+      <!-- Waveform trace -->
+      <path d="M 0 120 
+               C 120 120, 240 112, 340 98 
+               C 380 92, 410 84, 440 80 
+               L 456 20 
+               L 472 146 
+               C 490 140, 520 124, 570 120 
+               L 1040 120"
+            fill="none" stroke="#b42318" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Footer URL -->
+    <text x="0" y="295" class="font-mono" font-size="12" fill="rgba(20, 19, 17, 0.5)">ALEXANDER WOODS · HTTPS://ALEXWOODS1.GITHUB.IO/</text>
+  </g>
+</svg>

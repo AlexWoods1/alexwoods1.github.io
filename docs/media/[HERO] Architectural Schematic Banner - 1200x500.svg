@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" id="[HERO] Architectural Schematic Banner - 1200x500">
+  <defs>
+    <style>
+      
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+
+    </style>
+    <pattern id="hb-grid-minor" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M 24 0 L 0 0 0 24" fill="none" stroke="rgba(20, 19, 17, 0.032)" stroke-width="1"/>
+    </pattern>
+    <pattern id="hb-grid-major" width="120" height="120" patternUnits="userSpaceOnUse">
+      <rect width="120" height="120" fill="url(#hb-grid-minor)"/>
+      <path d="M 120 0 L 0 0 0 120" fill="none" stroke="rgba(20, 19, 17, 0.068)" stroke-width="1.25"/>
+    </pattern>
+  </defs>
+
+  <!-- Canvas Background & Grid -->
+  <rect width="1200" height="500" fill="#f3f0e8"/>
+  <rect width="1200" height="500" fill="url(#hb-grid-major)"/>
+
+  <!-- Outer Hairline Structural Border -->
+  <rect x="20" y="20" width="1160" height="460" fill="none" stroke="#141311" stroke-width="1.5"/>
+
+  <!-- ========================================================================= -->
+  <!-- ZONE 1: LEFT TYPOGRAPHIC & SPECS COLUMN (X: 56..336)                      -->
+  <!-- ========================================================================= -->
+  <g transform="translate(56, 60)">
+    <text x="0" y="16" class="font-mono" font-size="11" font-weight="600" fill="#b42318" letter-spacing="0.14em">01 // ARCHITECTURAL SCHEMATIC</text>
+    <text x="0" y="52" class="font-brand" font-size="30" font-weight="600" fill="#141311" letter-spacing="-0.03em">Leaky Integrate-and-Fire</text>
+    <text x="0" y="78" class="font-sans" font-size="14" fill="rgba(20, 19, 17, 0.75)">Biological Neural Circuit Model</text>
+
+    <!-- Formula Box -->
+    <g transform="translate(0, 110)">
+      <rect x="0" y="0" width="280" height="42" fill="#ffffff" stroke="#141311" stroke-width="1"/>
+      <text x="14" y="26" class="font-mono" font-size="11" font-weight="500" fill="#141311">τ_m · (dV/dt) = -(V - V_rest) + R · I(t)</text>
+    </g>
+
+    <!-- Parameter Specifications Card -->
+    <g transform="translate(0, 168)">
+      <rect x="0" y="0" width="280" height="150" fill="#ffffff" stroke="#141311" stroke-width="1"/>
+      <text x="16" y="26" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">MODEL PARAMETERS</text>
+      <line x1="16" y1="36" x2="264" y2="36" stroke="rgba(20, 19, 17, 0.15)" stroke-width="0.8"/>
+      <text x="16" y="58" class="font-mono" font-size="10.5" fill="#141311">τ_m = R · C = 20 ms</text>
+      <text x="16" y="80" class="font-mono" font-size="10.5" fill="#141311">C = 200 pF (Capacitance)</text>
+      <text x="16" y="102" class="font-mono" font-size="10.5" fill="#141311">R = 100 MΩ (Leak Resistance)</text>
+      <text x="16" y="124" class="font-mono" font-size="10.5" fill="#b42318">V_rest = -65 mV · V_th = -50 mV</text>
+      <text x="16" y="142" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.6)">Spike = +30 mV · Reset = -70 mV</text>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- ZONE 2: CENTER CIRCUIT SCHEMATIC (X: 370..760, Y: 220)                   -->
+  <!-- ========================================================================= -->
+  <g id="hb-schematic" transform="translate(370, 220)">
+    <!-- Main Wiring Lines -->
+    <g fill="none" stroke="#141311" stroke-width="1.8" stroke-linecap="butt" stroke-linejoin="miter">
+      <path d="M 0 0 H 60"/>
+      <path d="M 60 0 H 140"/>
+      <!-- Down to Capacitor -->
+      <path d="M 140 0 V 55"/>
+      <path d="M 140 69 V 105"/>
+      <!-- Up to Resistor -->
+      <path d="M 140 0 V -45"/>
+      <!-- Through to Comparator -->
+      <path d="M 140 0 H 260"/>
+      <!-- Comparator output to Right Zone -->
+      <path d="M 320 0 H 380"/>
+    </g>
+
+    <!-- 01 · Current Source I(t) -->
+    <g transform="translate(30, 0)">
+      <circle cx="0" cy="0" r="22" fill="#f3f0e8" stroke="#141311" stroke-width="1.8"/>
+      <line x1="-12" y1="0" x2="6" y2="0" stroke="#141311" stroke-width="1.8"/>
+      <polygon points="6,-4 12,0 6,4" fill="#141311"/>
+      <text x="0" y="34" text-anchor="middle" class="font-mono" font-size="11" font-weight="500" fill="#141311">I(t)</text>
+    </g>
+
+    <!-- Node V -->
+    <circle cx="140" cy="0" r="4.5" fill="#141311"/>
+    <text x="152" y="-8" class="font-sans" font-size="18" font-weight="600" fill="#141311">V</text>
+
+    <!-- 02 · Capacitor C = 200 pF & Ground -->
+    <g transform="translate(140, 62)">
+      <line x1="-22" y1="-7" x2="22" y2="-7" stroke="#141311" stroke-width="2.2"/>
+      <line x1="-22" y1="7" x2="22" y2="7" stroke="#141311" stroke-width="2.2"/>
+      <!-- Ground -->
+      <line x1="-16" y1="43" x2="16" y2="43" stroke="#141311" stroke-width="1.8"/>
+      <line x1="-10" y1="49" x2="10" y2="49" stroke="#141311" stroke-width="1.8"/>
+      <line x1="-5" y1="55" x2="5" y2="55" stroke="#141311" stroke-width="1.8"/>
+      <text x="-28" y="4" text-anchor="end" class="font-mono" font-size="11" font-weight="500" fill="#141311">C = 200 pF</text>
+    </g>
+
+    <!-- 03 · Resistor R = 100 MΩ & Battery V_rest (matching index.html) -->
+    <g transform="translate(140, -80)">
+      <path d="M 0 35 L 10 27 L -10 19 L 10 11 L -10 3 L 10 -5 L -10 -13 L 0 -22" fill="none" stroke="#141311" stroke-width="1.8"/>
+      <!-- Wire from zigzag to bottom battery plate -->
+      <line x1="0" y1="-22" x2="0" y2="-45" stroke="#141311" stroke-width="1.8"/>
+      <!-- Battery plates: Long plate (-45) and Short plate (-57) matching index.html -->
+      <line x1="-20" y1="-45" x2="20" y2="-45" stroke="#141311" stroke-width="2.2"/>
+      <line x1="-12" y1="-57" x2="12" y2="-57" stroke="#141311" stroke-width="2.2"/>
+      <text x="24" y="4" class="font-mono" font-size="11" font-weight="500" fill="#141311">R = 100 MΩ</text>
+      <text x="24" y="-48" class="font-mono" font-size="11" font-weight="500" fill="#141311">V_rest = -65 mV</text>
+    </g>
+
+    <!-- 04 · Comparator V_th -->
+    <g transform="translate(290, 0)">
+      <polygon points="-30,-28 -30,28 30,0" fill="#f3f0e8" stroke="#141311" stroke-width="1.8"/>
+      <text x="-20" y="-8" class="font-mono" font-size="11" fill="#141311">+</text>
+      <text x="-20" y="16" class="font-mono" font-size="11" fill="#141311">−</text>
+      <text x="0" y="-34" text-anchor="middle" class="font-mono" font-size="10.5" font-weight="500" fill="#141311">V_th = -50 mV</text>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- ZONE 3: RIGHT OSCILLOSCOPE DYNAMICS & WAVEFORM TRACE (X: 775..1145)       -->
+  <!-- ========================================================================= -->
+  <g transform="translate(775, 60)">
+    <rect x="0" y="0" width="370" height="340" fill="#ffffff" stroke="#141311" stroke-width="1.25"/>
+    <text x="18" y="28" class="font-mono" font-size="10" font-weight="600" fill="#b42318" letter-spacing="0.1em">ACTION POTENTIAL DYNAMICS</text>
+    <text x="18" y="48" class="font-sans" font-size="13" font-weight="500" fill="#141311">Membrane Voltage Oscilloscope</text>
+
+    <!-- Oscilloscope Grid & Reference Lines -->
+    <g transform="translate(18, 70)">
+      <!-- Spike Peak (+30 mV) -->
+      <line x1="0" y1="30" x2="334" y2="30" stroke="rgba(180, 35, 24, 0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+      <circle cx="180" cy="30" r="4.5" fill="#b42318"/>
+      <text x="330" y="25" text-anchor="end" class="font-mono" font-size="9" font-weight="600" fill="#b42318">+30 mV (Spike Peak)</text>
+
+      <!-- Threshold (-50 mV) -->
+      <line x1="0" y1="90" x2="334" y2="90" stroke="rgba(180, 35, 24, 0.25)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="330" y="85" text-anchor="end" class="font-mono" font-size="9" fill="#b42318">-50 mV (Threshold)</text>
+
+      <!-- Resting (-65 mV) -->
+      <line x1="0" y1="130" x2="334" y2="130" stroke="rgba(20, 19, 17, 0.2)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="330" y="125" text-anchor="end" class="font-mono" font-size="9" fill="rgba(20, 19, 17, 0.6)">-65 mV (Resting)</text>
+
+      <!-- Reset (-70 mV) -->
+      <line x1="0" y1="154" x2="334" y2="154" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="330" y="150" text-anchor="end" class="font-mono" font-size="9" fill="rgba(20, 19, 17, 0.5)">-70 mV (Reset)</text>
+
+      <!-- Oscilloscope Waveform Trace -->
+      <path d="M 0 130 
+               C 50 130, 100 125, 135 110 
+               C 155 100, 168 94, 174 90 
+               L 180 30 
+               L 188 154 
+               C 200 148, 225 134, 260 130 
+               L 334 130" 
+            fill="none" stroke="#b42318" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- Synapses / Output Terminal -->
+    <g transform="translate(18, 280)">
+      <line x1="0" y1="0" x2="334" y2="0" stroke="rgba(20, 19, 17, 0.12)" stroke-width="0.8"/>
+      <text x="0" y="24" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.7)">Axonal Transmission: Postsynaptic Terminals</text>
+      <circle cx="280" cy="22" r="3.5" fill="#141311"/>
+      <circle cx="300" cy="12" r="3.5" fill="#141311"/>
+      <circle cx="300" cy="32" r="3.5" fill="#141311"/>
+    </g>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- ZONE 4: BOTTOM TECHNICAL BAR (Y: 440)                                     -->
+  <!-- ========================================================================= -->
+  <g transform="translate(56, 440)">
+    <line x1="0" y1="0" x2="1088" y2="0" stroke="rgba(20, 19, 17, 0.15)" stroke-width="1"/>
+    <text x="0" y="20" class="font-mono" font-size="10" fill="rgba(20, 19, 17, 0.6)">PARAMETERS: C=200pF · R=100MΩ · τ_m=20ms · V_rest=-65mV · V_th=-50mV · V_spike=+30mV · V_reset=-70mV</text>
+    <text x="1088" y="20" text-anchor="end" class="font-mono" font-size="10" fill="#b42318" font-weight="500">ALEXANDER WOODS · UC SAN DIEGO</text>
+  </g>
+</svg>

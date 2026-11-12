@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450" id="[PROJECTS] EEG Lie Detection Architecture - 800x450">
+  <defs>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Mono:wght@400;500;600&amp;display=swap');
+  .font-brand { font-family: 'Familjen Grotesk', -apple-system, sans-serif; font-weight: 600; }
+  .font-sans { font-family: 'Familjen Grotesk', -apple-system, sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+</style>
+    
+    <pattern id="eeg-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(20, 19, 17, 0.035)" stroke-width="1"/>
+    </pattern>
+  
+  </defs>
+
+  <!-- Background Base Canvas -->
+  <rect width="800" height="450" fill="#f3f0e8"/>
+  <rect width="800" height="450" fill="url(#eeg-grid)"/>
+
+  <!-- Minimal Outer Frame -->
+  
+    <!-- Subtle drop shadow -->
+    <rect x="27" y="27" width="752" height="402" fill="#141311" rx="0" />
+    <!-- Paper background frame -->
+    <rect x="24" y="24" width="752" height="402" fill="#f3f0e8" stroke="#141311" stroke-width="1.75" rx="0" />
+  
+
+  <!-- Minimal Header -->
+  
+    <g transform="translate(48, 52)">
+      <text x="0" y="0" class="font-mono" font-size="10.5" font-weight="500" fill="#b42318" letter-spacing="0.12em">04 · PROJECTS // REAL-TIME 8-CHANNEL BCI</text>
+      <text x="0" y="32" class="font-brand" font-size="22" font-weight="600" fill="#141311" letter-spacing="-0.02em">EEG Lie Detection Architecture</text>
+      <text x="0" y="52" class="font-mono" font-size="9.5" fill="rgba(20, 19, 17, 0.6)">Group project. Real-time 8-channel EEG classification pipeline with under 100ms end-to-end latency and 75% accuracy.</text>
+    </g>
+  
+
+  <!-- ===================================================================== -->
+  <!-- LEFT: 8-CHANNEL EEG MONTAGE (X: 48, Y: 130, W: 330, H: 255)           -->
+  <!-- ===================================================================== -->
+  <g transform="translate(48, 130)">
+    <rect x="0" y="0" width="330" height="255" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="14" y="24" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">8-CHANNEL SCALP MONTAGE (10-20)</text>
+
+    <!-- Scope Frame -->
+    <g transform="translate(14, 36)">
+      <rect x="0" y="0" width="302" height="205" fill="#ffffff" stroke="#141311" stroke-width="0.8" />
+      <text x="10" y="33" class="font-mono" font-size="8" font-weight="600" fill="#141311">Fp1</text><line x1="36" y1="30" x2="292" y2="30" stroke="rgba(20, 19, 17, 0.08)" stroke-width="0.8" /><path d="M 38 30 Q 45 30 53 30 Q 60 31 68 31 Q 75 32 83 30 Q 90 33 98 31 Q 105 27 113 29 Q 120 28 128 30 Q 135 29 143 29 Q 150 30 158 30 Q 165 31 173 31 Q 180 32 188 30 Q 195 33 203 31 Q 210 27 218 29 Q 225 28 233 30 Q 240 29 248 29 Q 255 30 263 30 Q 270 31 278 31 Q 285 32 293 30" fill="none" stroke="#141311" stroke-width="0.9" /><text x="10" y="55" class="font-mono" font-size="8" font-weight="600" fill="#141311">Fp2</text><line x1="36" y1="52" x2="292" y2="52" stroke="rgba(20, 19, 17, 0.08)" stroke-width="0.8" /><path d="M 38 52 Q 45 54 53 52 Q 60 51 68 51 Q 75 55 83 53 Q 90 52 98 52 Q 105 49 113 51 Q 120 53 128 53 Q 135 50 143 52 Q 150 54 158 52 Q 165 51 173 51 Q 180 55 188 53 Q 195 52 203 52 Q 210 49 218 51 Q 225 53 233 53 Q 240 50 248 52 Q 255 54 263 52 Q 270 51 278 51 Q 285 55 293 53" fill="none" stroke="#141311" stroke-width="0.9" /><text x="10" y="77" class="font-mono" font-size="8" font-weight="600" fill="#141311">C3</text><line x1="36" y1="74" x2="292" y2="74" stroke="rgba(20, 19, 17, 0.08)" stroke-width="0.8" /><path d="M 38 74 Q 45 71 53 73 Q 60 71 68 73 Q 75 71 83 73 Q 90 71 98 73 Q 105 71 113 73 Q 120 71 128 73 Q 135 71 143 73 Q 150 71 158 73 Q 165 71 173 73 Q 180 71 188 73 Q 195 71 203 73 Q 210 71 218 73 Q 225 71 233 73 Q 240 71 248 73 Q 255 71 263 73 Q 270 71 278 73 Q 285 71 293 73" fill="none" stroke="#141311" stroke-width="0.9" /><text x="10" y="99" class="font-mono" font-size="8" font-weight="600" fill="#141311">C4</text><line x1="36" y1="96" x2="292" y2="96" stroke="rgba(20, 19, 17, 0.08)" stroke-width="0.8" /><path d="M 38 96 Q 45 95 53 95 Q 60 98 68 96 Q 75 94 83 96 Q 90 97 98 97 Q 105 93 113 95 Q 120 96 128 96 Q 135 99 143 97 Q 150 95 158 95 Q 165 98 173 96 Q 180 94 188 96 Q 195 97 203 97 Q 210 93 218 95 Q 225 96 233 96 Q 240 99 248 97 Q 255 95 263 95 Q 270 98 278 96 Q 285 94 293 96" fill="none" stroke="#141311" stroke-width="0.9" /><text x="10" y="121" class="font-mono" font-size="8" font-weight="600" fill="#141311">T3</text><line x1="36" y1="118" x2="292" y2="118" stroke="rgba(20, 19, 17, 0.08)" stroke-width="0.8" /><path d="M 38 118 Q 45 119 53 119 Q 60 118 68 118 Q 75 117 83 117 Q 90 116 98 118 Q 105 115 113 117 Q 120 121 128 119 Q 135 120 143 118 Q 150 119 158 119 Q 165 118 173 118 Q 180 117 188 117 Q 195 116 203 118 Q 210 115 218 117 Q 225 121 233 119 Q 240 120 248 118 Q 255 119 263 119 Q 270 118 278 118 Q 285 117 293 117" fill="none" stroke="#141311" stroke-width="0.9" /><text x="10" y="143" class="font-mono" font-size="8" font-weight="600" fill="#141311">T4</text><line x1="36" y1="140" x2="292" y2="140" stroke="rgba(20, 19, 17, 0.08)" stroke-width="0.8" /><path d="M 38 140 Q 45 143 53 141 Q 60 138 68 140 Q 75 140 83 140 Q 90 142 98 140 Q 105 137 113 139 Q 120 139 128 139 Q 135 141 143 141 Q 150 143 158 141 Q 165 138 173 140 Q 180 140 188 140 Q 195 142 203 140 Q 210 137 218 139 Q 225 139 233 139 Q 240 141 248 141 Q 255 143 263 141 Q 270 138 278 140 Q 285 140 293 140" fill="none" stroke="#141311" stroke-width="0.9" /><text x="10" y="165" class="font-mono" font-size="8" font-weight="600" fill="#b42318">P3</text><line x1="36" y1="162" x2="292" y2="162" stroke="rgba(20, 19, 17, 0.08)" stroke-width="0.8" /><path d="M 38 162 Q 45 160 53 162 Q 60 165 68 163 Q 75 163 83 163 Q 90 161 98 161 Q 105 159 113 161 Q 120 164 128 162 Q 135 162 143 162 Q 150 160 158 162 Q 165 159 173 161 Q 180 157 188 161 Q 195 155 203 161 Q 210 153 218 161 Q 225 164 233 162 Q 240 162 248 162 Q 255 160 263 162 Q 270 165 278 163 Q 285 163 293 163" fill="none" stroke="#b42318" stroke-width="1.5" /><text x="10" y="187" class="font-mono" font-size="8" font-weight="600" fill="#b42318">P4</text><line x1="36" y1="184" x2="292" y2="184" stroke="rgba(20, 19, 17, 0.08)" stroke-width="0.8" /><path d="M 38 184 Q 45 184 53 184 Q 60 185 68 185 Q 75 186 83 184 Q 90 187 98 185 Q 105 181 113 183 Q 120 182 128 184 Q 135 183 143 183 Q 150 184 158 184 Q 165 179 173 183 Q 180 180 188 184 Q 195 181 203 183 Q 210 175 218 183 Q 225 182 233 184 Q 240 183 248 183 Q 255 184 263 184 Q 270 185 278 185 Q 285 186 293 184" fill="none" stroke="#b42318" stroke-width="1.5" />
+      <!-- Stimulus Onset Line -->
+      <line x1="145" y1="10" x2="145" y2="196" stroke="rgba(180, 35, 24, 0.4)" stroke-width="1" stroke-dasharray="3 3" />
+      <text x="149" y="18" class="font-mono" font-size="7" font-weight="600" fill="#b42318">STIMULUS ONSET (t = 0)</text>
+    </g>
+  </g>
+
+  <!-- ===================================================================== -->
+  <!-- RIGHT: P300 ERP DEFLECTION & METRICS (X: 400, Y: 130, W: 352, H: 255)  -->
+  <!-- ===================================================================== -->
+  <g transform="translate(400, 130)">
+    <rect x="0" y="0" width="352" height="255" fill="#f3f0e8" stroke="#141311" stroke-width="1.25" />
+    <text x="16" y="24" class="font-mono" font-size="9" font-weight="600" fill="#141311" letter-spacing="0.08em">EVENT-RELATED POTENTIAL CLASSIFICATION</text>
+
+    <!-- ERP Graph -->
+    <g transform="translate(16, 38)">
+      <rect x="0" y="0" width="320" height="145" fill="#ffffff" stroke="#141311" stroke-width="1" />
+      
+      <!-- Axes (time axis separated cleanly below waveform trough) -->
+      <line x1="52" y1="16" x2="52" y2="112" stroke="#141311" stroke-width="1" />
+      <line x1="52" y1="82" x2="302" y2="82" stroke="rgba(20, 19, 17, 0.2)" stroke-width="0.8" stroke-dasharray="2 2" />
+      <line x1="52" y1="112" x2="302" y2="112" stroke="#141311" stroke-width="1" />
+
+      <!-- Y-Axis Ticks (left of x=52, zero intersection) -->
+      <text x="46" y="36" text-anchor="end" class="font-mono" font-size="7" fill="rgba(20, 19, 17, 0.55)">+μV</text>
+      <text x="46" y="85" text-anchor="end" class="font-mono" font-size="7" fill="rgba(20, 19, 17, 0.55)">0 μV</text>
+
+      <!-- X-Axis Ticks (below y=112, zero intersection) -->
+      <text x="52" y="126" text-anchor="middle" class="font-mono" font-size="7" fill="#141311">0 ms</text>
+      <text x="120" y="126" text-anchor="middle" class="font-mono" font-size="7" fill="#141311">150 ms</text>
+      <text x="192" y="126" text-anchor="middle" class="font-mono" font-size="7" font-weight="600" fill="#b42318">300 ms</text>
+      <text x="275" y="126" text-anchor="middle" class="font-mono" font-size="7" fill="#141311">500 ms</text>
+
+      <!-- Baseline & Deflection Traces (strictly x >= 52, y <= 96) -->
+      <path d="M 52 82 Q 82 79 115 85 T 175 81 T 245 83 L 300 82" fill="none" stroke="rgba(20, 19, 17, 0.45)" stroke-width="1.2" stroke-dasharray="3 3" />
+      <path d="M 52 82 Q 82 74 122 92 Q 160 82 185 34 Q 200 29 215 44 Q 242 86 272 91 L 300 82" fill="none" stroke="#b42318" stroke-width="2" />
+      <circle cx="192" cy="32" r="3.5" fill="#b42318" />
+      <text x="202" y="30" class="font-mono" font-size="8" font-weight="600" fill="#b42318">ERP Peak</text>
+    </g>
+
+    <!-- Real Verified Metrics Readout -->
+    <rect x="16" y="196" width="320" height="46" fill="#ffffff" stroke="#141311" stroke-width="0.8" />
+    <text x="24" y="214" class="font-mono" font-size="8.5" font-weight="600" fill="#141311">VERIFIED PIPELINE PERFORMANCE:</text>
+    <text x="24" y="230" class="font-mono" font-size="8" fill="#141311">End-to-End Latency: <tspan font-weight="600" fill="#b42318">&lt; 100 ms</tspan>   ·   Classification Accuracy: <tspan font-weight="600" fill="#b42318">75%</tspan></text>
+  </g>
+</svg>
